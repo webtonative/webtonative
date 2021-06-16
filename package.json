@@ -1,0 +1,19 @@
+{
+  "name": "webtonative",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webtonative/webtonative.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/webtonative/webtonative/issues"
+  },
+  "homepage": "https://github.com/webtonative/webtonative#readme"
+}
