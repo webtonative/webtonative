@@ -1,0 +1,15 @@
+export default {
+  UNKNOWN: 0,
+  CONTACT_INFO: 1,
+  EMAIL: 2,
+  ISBN: 3,
+  PHONE: 4,
+  PRODUCT: 5,
+  SMS: 6,
+  TEXT: 7,
+  URL: 8,
+  WIFI: 9,
+  GEO: 10,
+  CALENDAR_EVENT: 11,
+  DRIVER_LICENSE: 12,
+};
