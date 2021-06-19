@@ -13,6 +13,7 @@ const platform = webToNative.getAndroidVersion
 const isNativeApp = isClient && platform !== "";
 const cbObj = {};
 let counter = 1;
+const abMobCb = null;
 if (isNativeApp) {
   webToNative.androidCBHook = (results) => {
     console.log(results);
@@ -23,6 +24,10 @@ if (isNativeApp) {
       cbObj[key].cb(responseObj);
       delete cbObj[key];
     }
+  };
+  webToNative.androidAdMobCBHook = (results) => {
+    const responseObj = JSON.parse(results);
+    abMobCb && abMobCb(responseObj);
   };
   window.iosCBHook = (results) => {
     console.log(results);
@@ -36,6 +41,16 @@ const registerCb = (cb) => {
     counter += 1;
   }
 };
+const registerForAbMobCb = (cb) => {
+  if (typeof cb === "function") {
+    abMobCb = cb;
+  }
+};
+const deRegisterForAbMobCb = () => {
+  if (abMobCb) {
+    abMobCb = null;
+  }
+};
 export {
   webToNative,
   isClient,
@@ -43,4 +58,6 @@ export {
   platform,
   registerCb,
   webToNativeIos,
+  registerForAbMobCb,
+  deRegisterForAbMobCb
 };

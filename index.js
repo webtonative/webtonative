@@ -15,8 +15,15 @@ export default {
   platform: platform,
   version: null,
   isNativeApp,
-  statusBar: (options) => {},
-  deviceInfo: () => {},
+  statusBar: (options) => {
+    isNativeApp && webToNative.statusBar(JSON.stringify(options));
+  },
+  deviceInfo: (options) => {
+    if(isNativeApp){
+      let deviceInfo = webToNative.getDeviceInfo();
+      options.cb && options.cb(deviceInfo);
+    }
+  },
   /**
    * This function hides splash screen
    * @example wtn.hideSplashScreen()
@@ -38,5 +45,6 @@ export default {
     } else {
       throw "url is mandatory";
     }
-  }
+  },
+
 };
