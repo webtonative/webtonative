@@ -12,3 +12,4 @@ const removeExternalUserId = () => {
   return isNativeApp && webToNative.removeExternalUserId();
 };
 export { getPlayerId, setExternalUserId, removeExternalUserId };
+export default { getPlayerId, setExternalUserId, removeExternalUserId }
