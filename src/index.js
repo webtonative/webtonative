@@ -18,9 +18,16 @@ export const hideSplashScreen = () => {
   isNativeApp && webToNative.hideSplashScreen();
 }
 
-export const statusBar = (options) => {};
+export const statusBar = (options) => {
+  isNativeApp && webToNative.statusBar(JSON.stringify(options));
+};
 
-export const deviceInfo = () => {};
+export const deviceInfo = () => {
+  if(isNativeApp){
+    let deviceInfo = webToNative.getDeviceInfo();
+    return deviceInfo;//options.cb && options.cb(deviceInfo);
+  }
+};
 
 export const showInAppReview = () => {
   isNativeApp && webToNative.showInAppReview();
