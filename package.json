@@ -3,9 +3,9 @@
   "version": "1.0.1",
   "description": "",
   "main": "index.js",
-  "private":true,
+  "private": true,
   "scripts": {
-    "build": "babel src --presets @babel/preset-env --out-dir build && node buildScript.js",
+    "build": "babel src --presets @babel/preset-env,minify --out-dir build && node buildScript.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dist": "NODE_ENV=production webpack --config webpack.config.js"
   },
@@ -19,13 +19,13 @@
     "url": "https://github.com/webtonative/webtonative/issues"
   },
   "homepage": "https://github.com/webtonative/webtonative#readme",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.14.5",
     "@babel/core": "^7.14.6",
     "@babel/preset-env": "^7.14.7",
     "babel-loader": "^8.2.2",
+    "babel-preset-minify": "^0.5.1",
     "webpack": "^5.40.0",
     "webpack-cli": "^4.7.2"
   }
