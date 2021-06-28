@@ -9,12 +9,12 @@ let adMobCb = null;
  *  }
  * });
  */
-export default bannerAd = (options = {}) => {
+const bannerAd = (options = {}) => {
   isNativeApp && webToNative.showBannerAd(JSON.stringify(options));
   return this;
 };
 
-export default fullScreenAd = (options = {}) => {
+const fullScreenAd = (options = {}) => {
 	if(platform == "ANDROID_APP"){
 		const { fullScreenAdCallback } = options;
 		registerForAbMobCb((response) => {
@@ -35,7 +35,7 @@ export default fullScreenAd = (options = {}) => {
 	}
 };
 
-export default rewardsAd = (options = {}) => {
+const rewardsAd = (options = {}) => {
 	if(platform == "ANDROID_APP"){
 		const { rewardsAdCallback } = options;
 		registerForAbMobCb((response) => {
@@ -55,3 +55,9 @@ export default rewardsAd = (options = {}) => {
 		return this;
 	}
 };
+
+export {
+	bannerAd,
+	fullScreenAd,
+	rewardsAd
+}

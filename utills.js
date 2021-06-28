@@ -13,7 +13,7 @@ const platform = webToNative.getAndroidVersion
 const isNativeApp = isClient && platform !== "";
 const cbObj = {};
 let counter = 1;
-const abMobCb = null;
+let abMobCb = null;
 if (isNativeApp) {
   webToNative.androidCBHook = (results) => {
     console.log(results);

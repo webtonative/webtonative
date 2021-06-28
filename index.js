@@ -21,7 +21,7 @@ export default {
   deviceInfo: (options) => {
     if(isNativeApp){
       let deviceInfo = webToNative.getDeviceInfo();
-      options.cb && options.cb(deviceInfo);
+      return deviceInfo;//options.cb && options.cb(deviceInfo);
     }
   },
   /**
