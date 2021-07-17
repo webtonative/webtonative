@@ -50,3 +50,15 @@ export {
   platform,
   isNativeApp,
 };
+
+export default {
+  isAndroidApp,
+  isIosApp,
+  hideSplashScreen,
+  statusBar,
+  deviceInfo,
+  showInAppReview,
+  shareLink,
+  platform,
+  isNativeApp
+}

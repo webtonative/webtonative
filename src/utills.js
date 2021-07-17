@@ -17,7 +17,7 @@ let abMobCb = null;
 if (isNativeApp) {
   webToNative.androidCBHook = (results) => {
     console.log(results);
-    alert(results);
+    //alert(results);
     const responseObj = JSON.parse(results);
     const { type } = responseObj;
     for (var key in cbObj) {
@@ -31,7 +31,7 @@ if (isNativeApp) {
   };
   window.iosCBHook = (results) => {
     console.log(results);
-    alert(results);
+    //alert(results);
   };
 }
 
