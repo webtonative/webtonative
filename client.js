@@ -9,3 +9,12 @@ window.WTN.OneSignal = OneSignal
 window.WTN.VoiceSearch = VoiceSearch
 window.WTN.Barcode = Barcode
 window.WTN.AdMob = AdMob
+
+if(window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion){
+    window.navigator.share = function(obj){
+        return new Promise((resolve, reject) => {
+            window.WebToNativeInterface.openShareIntent(obj.url);
+            resolve();
+        })
+    }
+}
