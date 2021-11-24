@@ -1,14 +1,50 @@
-import { isNativeApp, platform, webToNative, registerCb } from "../utills";
+import {
+  isNativeApp,
+  platform,
+  webToNative,
+  registerCb,
+  webToNativeIos,
+} from "../utills";
 const getPlayerId = () => {
-  return isNativeApp && webToNative.getOneSignalId();
+  return new Promise((resolve, reject) => {
+    if (platform === "ANDROID_APP") {
+      resolve(webToNative.getOneSignalId());
+    } else if (platform === "IOS_APP") {
+      registerCb((results) => {
+        if (results.isSuccess) {
+          resolve(results.playerId);
+        } else {
+          reject(results);
+        }
+      });
+      webToNativeIos.postMessage({
+        action: "getPlayerId",
+      });
+    } else {
+      reject("This function will work in Native App Powered By WebToNative");
+    }
+  });
 };
 const setExternalUserId = (userId) => {
   if (userId) {
-    return isNativeApp && webToNative.setExternalUserId(userId);
+    if (platform === "ANDROID_APP") {
+      return isNativeApp && webToNative.setExternalUserId(userId);
+    } else if (platform === "IOS_APP") {
+      webToNativeIos.postMessage({
+        action: "setExternalUserId",
+        userId: userId,
+      });
+    }
   }
   throw "userId is required";
 };
 const removeExternalUserId = () => {
-  return isNativeApp && webToNative.removeExternalUserId();
+  if (platform === "ANDROID_APP") {
+    return isNativeApp && webToNative.removeExternalUserId();
+  } else if (platform === "IOS_APP") {
+    webToNativeIos.postMessage({
+      action: "removeExternalUserId",
+    });
+  }
 };
 export { getPlayerId, setExternalUserId, removeExternalUserId };
