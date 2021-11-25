@@ -5,7 +5,7 @@
  * import webtonative from "webtonative";
  * const wtn = webtonative();
  */
-import { isNativeApp, webToNative, platform, webToNativeIos } from "./utills";
+import { isNativeApp, webToNative, platform, webToNativeIos, registerCb } from "./utills";
 export const isAndroidApp = platform === "ANDROID_APP";
 export const isIosApp = platform === "IOS_APP";
 
@@ -19,14 +19,40 @@ export const hideSplashScreen = () => {
 }
 
 export const statusBar = (options) => {
-  isNativeApp && webToNative.statusBar(JSON.stringify(options));
+  if(platform === "ANDROID_APP"){
+    webToNative.statusBar(JSON.stringify(options));
+  } else if (platform === "IOS_APP") {
+    webToNativeIos.postMessage({
+      action: "statusBar",
+      ...options
+    });
+  }
+  else {
+    console.log("error");
+  }
 };
 
 export const deviceInfo = () => {
-  if(isNativeApp){
-    let deviceInfo = webToNative.getDeviceInfo();
-    return deviceInfo;//options.cb && options.cb(deviceInfo);
-  }
+  return new Promise((resolve, reject) => {
+    if (platform === "ANDROID_APP") {
+      resolve(webToNative.getDeviceInfo());
+    } else if (platform === "IOS_APP") {
+      registerCb((results) => {
+        if (results) {
+          resolve(results);
+        } else {
+          reject({
+            err:"Error getting device info"
+          });
+        }
+      });
+      webToNativeIos.postMessage({
+        action: "deviceInfo",
+      });
+    } else {
+      reject("This function will work in Native App Powered By WebToNative");
+    }
+  });
 };
 
 export const showInAppReview = () => {
