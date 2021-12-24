@@ -5,7 +5,7 @@
  * import webtonative from "webtonative";
  * const wtn = webtonative();
  */
-import { isNativeApp, webToNative, platform, webToNativeIos } from "./utills";
+import { isNativeApp, webToNative, platform, webToNativeIos, registerCb } from "./utills";
 export const isAndroidApp = platform === "ANDROID_APP";
 export const isIosApp = platform === "IOS_APP";
 
