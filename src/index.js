@@ -23,10 +23,26 @@ export const statusBar = (options) => {
 };
 
 export const deviceInfo = () => {
-  if(isNativeApp){
-    let deviceInfo = webToNative.getDeviceInfo();
-    return deviceInfo;//options.cb && options.cb(deviceInfo);
-  }
+  return new Promise((resolve, reject) => {
+    if (platform === "ANDROID_APP") {
+      resolve(webToNative.getDeviceInfo());
+    } else if (platform === "IOS_APP") {
+      registerCb((results) => {
+        if (results) {
+          resolve(results);
+        } else {
+          reject({
+            err:"Error getting device info"
+          });
+        }
+      });
+      webToNativeIos.postMessage({
+        action: "deviceInfo",
+      });
+    } else {
+      reject("This function will work in Native App Powered By WebToNative");
+    }
+  });
 };
 
 export const showInAppReview = () => {
