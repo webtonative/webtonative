@@ -35,6 +35,8 @@ export const deviceInfo = () => {
             err:"Error getting device info"
           });
         }
+      },{
+        key:"deviceInfo"
       });
       webToNativeIos.postMessage({
         action: "deviceInfo",

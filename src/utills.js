@@ -33,16 +33,28 @@ if (isNativeApp) {
       response = JSON.parse(results);
     } catch (e) {}
     for (var key in cbObj) {
-      cbObj[key].cb(response);
-      delete cbObj[key];
+      console.log(response.reqType + " : " +key);
+      if(response && response.reqType){
+        if(key == response['reqType'])
+          cbObj[key].cb(response);
+      }
+      else{
+        cbObj[key].cb(response);
+        delete cbObj[key];
+      }
     }
   };
 }
 
-const registerCb = (cb) => {
+const registerCb = (cb,obj) => {
   if (typeof cb === "function") {
-    cbObj[counter] = { cb };
-    counter += 1;
+    if(obj.key){
+      cbObj[obj['key']] = { cb };
+    }
+    else{
+      cbObj[counter] = { cb };
+      counter += 1;
+    }
   }
 };
 const registerForAbMobCb = (cb) => {

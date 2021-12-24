@@ -16,6 +16,8 @@ const getPlayerId = () => {
         } else {
           reject(results);
         }
+      },{
+        key:"getPlayerId"
       });
       webToNativeIos.postMessage({
         action: "getPlayerId",
