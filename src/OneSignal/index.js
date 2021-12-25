@@ -7,18 +7,18 @@ import {
 } from "../utills";
 const getPlayerId = () => {
   return new Promise((resolve, reject) => {
+    registerCb((results) => {
+      if (results.isSuccess) {
+        resolve(results.playerId);
+      } else {
+        reject(results);
+      }
+    },{
+      key:"getPlayerId"
+    });
     if (platform === "ANDROID_APP") {
-      resolve(webToNative.getOneSignalId());
+      webToNative.getOneSignalId();
     } else if (platform === "IOS_APP") {
-      registerCb((results) => {
-        if (results.isSuccess) {
-          resolve(results.playerId);
-        } else {
-          reject(results);
-        }
-      },{
-        key:"getPlayerId"
-      });
       webToNativeIos.postMessage({
         action: "getPlayerId",
       });
