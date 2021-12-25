@@ -19,8 +19,16 @@ if (isNativeApp) {
     const responseObj = JSON.parse(results);
     const { type } = responseObj;
     for (var key in cbObj) {
-      cbObj[key].cb(responseObj);
-      delete cbObj[key];
+      if(responseObj && responseObj.reqType){
+        if(key == responseObj['reqType']){
+          cbObj[key].cb(responseObj);
+          delete cbObj[key];
+        }
+      }
+      else{
+        cbObj[key].cb(responseObj);
+        delete cbObj[key];
+      }
     }
   };
   webToNative.androidAdMobCBHook = (results) => {
@@ -33,16 +41,29 @@ if (isNativeApp) {
       response = JSON.parse(results);
     } catch (e) {}
     for (var key in cbObj) {
-      cbObj[key].cb(response);
-      delete cbObj[key];
+      if(response && response.reqType){
+        if(key == response['reqType']){
+          cbObj[key].cb(response);
+          delete cbObj[key];
+        }
+      }
+      else{
+        cbObj[key].cb(response);
+        delete cbObj[key];
+      }
     }
   };
 }
 
-const registerCb = (cb) => {
+const registerCb = (cb,obj) => {
   if (typeof cb === "function") {
-    cbObj[counter] = { cb };
-    counter += 1;
+    if(obj && obj.key){
+      cbObj[obj['key']] = { cb };
+    }
+    else{
+      cbObj[counter] = { cb };
+      counter += 1;
+    }
   }
 };
 const registerForAbMobCb = (cb) => {

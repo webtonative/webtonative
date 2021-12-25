@@ -24,18 +24,20 @@ export const statusBar = (options) => {
 
 export const deviceInfo = () => {
   return new Promise((resolve, reject) => {
+    registerCb((results) => {
+      if (results) {
+        resolve(results);
+      } else {
+        reject({
+          err:"Error getting device info"
+        });
+      }
+    },{
+      key:"deviceInfo"
+    });
     if (platform === "ANDROID_APP") {
-      resolve(webToNative.getDeviceInfo());
+      webToNative.getDeviceInfo();
     } else if (platform === "IOS_APP") {
-      registerCb((results) => {
-        if (results) {
-          resolve(results);
-        } else {
-          reject({
-            err:"Error getting device info"
-          });
-        }
-      });
       webToNativeIos.postMessage({
         action: "deviceInfo",
       });
