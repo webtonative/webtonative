@@ -1,5 +1,5 @@
 import {login as loginFacebook,logout as logoutFacebook} from "./facebook";
-import {login as loginApple,logout as logoutApple} from "./apple";
+import {login as loginApple} from "./apple";
 import {login as loginGoogle,logout as logoutGoogle} from "./google";
 export const socialLogin = {
     facebook : {
@@ -12,6 +12,5 @@ export const socialLogin = {
     },
     apple : {
         login : loginApple,
-        logout: logoutApple
     }
 }
