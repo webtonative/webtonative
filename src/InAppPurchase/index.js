@@ -2,18 +2,18 @@ import {
     platform,
     registerCb,
     webToNativeIos,
-  } from "../utills";
-  /**
-   * This function handles native in app purchase
-   * @param {object} options
-   * @example wtn.purchase({
-   *  productId : 'productId'
-   *  callback:(data)=>{
-   *    console.log(data);
-   *  }
-   * });
-   */
-  export const purchase =  (options) => {
+} from "../utills";
+/**
+ * This function handles native in app purchase
+ * @param {object} options
+ * @example wtn.inAppPurchase({
+ *  productId : 'productId'
+ *  callback:(data)=>{
+ *    console.log(data);
+ *  }
+ * });
+ */
+const inAppPurchase =  (options) => {
     if (["IOS_APP"].includes(platform)) {
       const { callback, productId } = options;
   
@@ -29,4 +29,6 @@ import {
           productId
         });
     }
-  };
+};
+
+export default inAppPurchase
