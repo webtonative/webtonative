@@ -78,5 +78,5 @@ export default {
   showInAppReview,
   shareLink,
   platform,
-  isNativeApp
+  isNativeApp,
 }
