@@ -1,6 +1,7 @@
 import {
   platform,
   registerCb,
+  webToNative,
   webToNativeIos,
 } from "../utills";
 /**
@@ -22,6 +23,10 @@ export const login =  (options) => {
         callback && callback(response);
       }
     });
+
+    platform === "ANDROID_APP" &&
+      webToNative.signInWithGoogle();
+
     platform === "IOS_APP" &&
       webToNativeIos.postMessage({
         action: "googleSignIn",
@@ -50,6 +55,10 @@ export const logout = (options) => {
         callback && callback(response);
       }
     });
+
+    platform === "ANDROID_APP" &&
+      webToNative.signOutWithGoogle();
+
     platform === "IOS_APP" &&
       webToNativeIos.postMessage({
         action: "googleSignOut",
