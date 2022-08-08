@@ -5,6 +5,7 @@ import * as Barcode from './src/barcode'
 import * as AdMob from './src/AdMob'
 import { socialLogin } from './src/SocialLogin/index'
 import * as AppsFlyer from './src/AppsFlyer'
+import * as BackgroundLocation from './src/BackgroundLocation'
 import inAppPurchase from './src/InAppPurchase'
 window.WTN = webToNative;
 
@@ -15,6 +16,7 @@ window.WTN.AdMob = AdMob
 window.WTN.socialLogin = socialLogin
 window.WTN.inAppPurchase = inAppPurchase
 window.WTN.appsflyer = AppsFlyer
+window.WTN.backgroundLocation = BackgroundLocation
 
 if(window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion){
     window.navigator.share = function(obj){
