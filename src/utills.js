@@ -10,7 +10,7 @@ const platform = webToNative.getAndroidVersion
   : webToNativeIos
   ? "IOS_APP"
   : "WEBSITE";
-const isNativeApp = isClient && platform !== "";
+const isNativeApp = isClient && platform !== "WEBSITE";
 const cbObj = {};
 let counter = 1;
 let abMobCb = null;
