@@ -6,6 +6,7 @@ import * as AdMob from './src/AdMob'
 import { socialLogin } from './src/SocialLogin/index'
 import * as AppsFlyer from './src/AppsFlyer'
 import inAppPurchase from './src/InAppPurchase'
+import * as FBEvents from './src/Facebook/events'
 window.WTN = webToNative;
 
 window.WTN.OneSignal = OneSignal
@@ -15,6 +16,9 @@ window.WTN.AdMob = AdMob
 window.WTN.socialLogin = socialLogin
 window.WTN.inAppPurchase = inAppPurchase
 window.WTN.appsflyer = AppsFlyer
+window.WTN.facebook = {
+    events: FBEvents
+}
 
 if(window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion){
     window.navigator.share = function(obj){
