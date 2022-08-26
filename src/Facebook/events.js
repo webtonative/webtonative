@@ -11,6 +11,9 @@ import {
     if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
       const {event,valueToSum,parameters} = options
   
+      platform === "ANDROID_APP" &&
+        webToNative.addFbEvents(event,parameters);
+
       platform === "IOS_APP" &&
         webToNativeIos.postMessage({
           action: "sendFBEvent",
@@ -30,6 +33,8 @@ import {
     if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
       const {amount,currency,parameters} = options
       
+      platform === "ANDROID_APP" &&
+        webToNative.addFbPurchaseEvent(amount,currency,parameters);
   
       platform === "IOS_APP" &&
         webToNativeIos.postMessage({
