@@ -49,4 +49,16 @@ const removeExternalUserId = () => {
     });
   }
 };
-export { getPlayerId, setExternalUserId, removeExternalUserId };
+
+const setTags = ({tags}) => {
+  if (platform === "ANDROID_APP") {
+    return isNativeApp && webToNative.setUserTags();
+  } else if (platform === "IOS_APP") {
+    webToNativeIos.postMessage({
+      action: "setUserTags",
+      tags
+    });
+  }
+}
+
+export { getPlayerId, setExternalUserId, removeExternalUserId, setTags };
