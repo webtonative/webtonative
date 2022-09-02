@@ -52,7 +52,7 @@ const removeExternalUserId = () => {
 
 const setTags = ({tags}) => {
   if (platform === "ANDROID_APP") {
-    return isNativeApp && webToNative.setUserTags();
+    return isNativeApp && webToNative.setUserTags(tags);
   } else if (platform === "IOS_APP") {
     webToNativeIos.postMessage({
       action: "setUserTags",
