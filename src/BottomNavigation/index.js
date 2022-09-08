@@ -7,7 +7,7 @@ import {
    * 
    * 
    */
-  export const hideTabs =  () => {
+  export const hide =  () => {
     if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
   
       platform === "IOS_APP" &&
@@ -23,7 +23,7 @@ import {
    * 
    * 
    */
-   export const showTabs =  (options={}) => {
+   export const show =  (options={}) => {
     const {key} = options
     if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
   

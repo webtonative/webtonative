@@ -8,6 +8,8 @@ import * as AppsFlyer from './src/AppsFlyer'
 import inAppPurchase from './src/InAppPurchase'
 import * as FBEvents from './src/Facebook/events'
 import * as BottomNavigation from './src/BottomNavigation'
+import * as contacts from "./src/NativeContacts"
+import * as FirebaseEvents from "./src/FirebaseAnalytics/events"
 window.WTN = webToNative;
 
 window.WTN.OneSignal = OneSignal
@@ -18,8 +20,12 @@ window.WTN.socialLogin = socialLogin
 window.WTN.inAppPurchase = inAppPurchase
 window.WTN.appsflyer = AppsFlyer
 window.WTN.bottomNavigation = BottomNavigation
+window.WTN.contacts = contacts;
 window.WTN.facebook = {
     events: FBEvents
+}
+window.WTN.firebaseAnalytics = {
+    events: FirebaseEvents
 }
 
 if(window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion){
