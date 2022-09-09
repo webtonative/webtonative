@@ -3,7 +3,8 @@ import { platform, registerCb, webToNativeIos } from "../utills";
  *
  *
  */
-export const get = () => {
+export const get = (options = {}) => {
+	const { callback } = options;
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		registerCb((response) => {
 			const { type } = response;
@@ -15,7 +16,6 @@ export const get = () => {
 		platform === "IOS_APP" &&
 			webToNativeIos.postMessage({
 				action: "getClipBoardData",
-				flag: true,
 			});
 	}
 };
