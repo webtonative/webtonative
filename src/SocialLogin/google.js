@@ -1,9 +1,4 @@
-import {
-  platform,
-  registerCb,
-  webToNative,
-  webToNativeIos,
-} from "../utills";
+import { platform, registerCb, webToNative, webToNativeIos } from "../utills";
 /**
  * This function handles native facebook login
  * @param {object} options
@@ -13,28 +8,26 @@ import {
  *  }
  * });
  */
-export const login =  (options) => {
-  if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
-    const { callback, scope } = options;
+export const login = (options) => {
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		const { callback, scope } = options;
 
-    registerCb((response) => {
-      const { type } = response;
-      if (type === "googleLoginToken") {
-        callback && callback(response);
-      }
-    });
+		registerCb((response) => {
+			const { type } = response;
+			if (type === "googleLoginToken") {
+				callback && callback(response);
+			}
+		});
 
-    platform === "ANDROID_APP" &&
-      webToNative.signInWithGoogle();
+		platform === "ANDROID_APP" && webToNative.signInWithGoogle();
 
-    platform === "IOS_APP" &&
-      webToNativeIos.postMessage({
-        action: "googleSignIn",
-        scope
-      });
-  }
+		platform === "IOS_APP" &&
+			webToNativeIos.postMessage({
+				action: "googleSignIn",
+				scope,
+			});
+	}
 };
-
 
 /**
  * This function handles native google logout
@@ -46,23 +39,22 @@ export const login =  (options) => {
  * });
  */
 export const logout = (options) => {
-  if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
-    const { callback, scope } = options;
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		const { callback, scope } = options;
 
-    registerCb((response) => {
-      const { type } = response;
-      if (type === "googleLogOut") {
-        callback && callback(response);
-      }
-    });
+		registerCb((response) => {
+			const { type } = response;
+			if (type === "googleLogOut") {
+				callback && callback(response);
+			}
+		});
 
-    platform === "ANDROID_APP" &&
-      webToNative.signOutWithGoogle();
+		platform === "ANDROID_APP" && webToNative.signOutWithGoogle();
 
-    platform === "IOS_APP" &&
-      webToNativeIos.postMessage({
-        action: "googleSignOut",
-        scope
-      });
-  }
+		platform === "IOS_APP" &&
+			webToNativeIos.postMessage({
+				action: "googleSignOut",
+				scope,
+			});
+	}
 };

@@ -1,9 +1,4 @@
-import {
-  platform,
-  registerCb,
-  webToNative,
-  webToNativeIos,
-} from "../utills";
+import { platform, registerCb, webToNative, webToNativeIos } from "../utills";
 /**
  * This function handles native facebook login
  * @param {object} options
@@ -13,28 +8,26 @@ import {
  *  }
  * });
  */
-export const login =  (options) => {
-  if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
-    const { callback, scope } = options;
+export const login = (options) => {
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		const { callback, scope } = options;
 
-    registerCb((response) => {
-      const { type } = response;
-      if (type === "fbLoginToken") {
-        callback && callback(response);
-      }
-    });
+		registerCb((response) => {
+			const { type } = response;
+			if (type === "fbLoginToken") {
+				callback && callback(response);
+			}
+		});
 
-    platform === "ANDROID_APP" &&
-      webToNative.loginWithFacebook();
+		platform === "ANDROID_APP" && webToNative.loginWithFacebook();
 
-    platform === "IOS_APP" &&
-      webToNativeIos.postMessage({
-        action: "fbSignIn",
-        scope
-      });
-  }
+		platform === "IOS_APP" &&
+			webToNativeIos.postMessage({
+				action: "fbSignIn",
+				scope,
+			});
+	}
 };
-
 
 /**
  * This function handles native facebook logout
@@ -46,23 +39,22 @@ export const login =  (options) => {
  * });
  */
 export const logout = (options) => {
-  if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
-    const { callback, scope } = options;
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		const { callback, scope } = options;
 
-    registerCb((response) => {
-      const { type } = response;
-      if (type === "fbLogOut") {
-        callback && callback(response);
-      }
-    });
+		registerCb((response) => {
+			const { type } = response;
+			if (type === "fbLogOut") {
+				callback && callback(response);
+			}
+		});
 
-    platform === "ANDROID_APP" &&
-      webToNative.logoutWithFacebook();
+		platform === "ANDROID_APP" && webToNative.logoutWithFacebook();
 
-    platform === "IOS_APP" &&
-      webToNativeIos.postMessage({
-        action: "fbSignOut",
-        scope
-      });
-  }
+		platform === "IOS_APP" &&
+			webToNativeIos.postMessage({
+				action: "fbSignOut",
+				scope,
+			});
+	}
 };

@@ -1,8 +1,4 @@
-import {
-    platform,
-    registerCb,
-    webToNativeIos,
-} from "../utills";
+import { platform, registerCb, webToNativeIos } from "../utills";
 /**
  * This function handles native in app purchase
  * @param {object} options
@@ -13,22 +9,22 @@ import {
  *  }
  * });
  */
-const inAppPurchase =  (options) => {
-    if (["IOS_APP"].includes(platform)) {
-      const { callback, productId } = options;
-  
-      registerCb((response) => {
-        const { type } = response;
-        if (type === "inAppPurchase") {
-          callback && callback(response);
-        }
-      });
-      platform === "IOS_APP" &&
-        webToNativeIos.postMessage({
-          action: "inAppPurchase",
-          productId
-        });
-    }
+const inAppPurchase = (options) => {
+	if (["IOS_APP"].includes(platform)) {
+		const { callback, productId } = options;
+
+		registerCb((response) => {
+			const { type } = response;
+			if (type === "inAppPurchase") {
+				callback && callback(response);
+			}
+		});
+		platform === "IOS_APP" &&
+			webToNativeIos.postMessage({
+				action: "inAppPurchase",
+				productId,
+			});
+	}
 };
 
-export default inAppPurchase
+export default inAppPurchase;
