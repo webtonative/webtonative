@@ -41,15 +41,20 @@ if (isNativeApp) {
       response = JSON.parse(results);
     } catch (e) {}
     for (var key in cbObj) {
+      const {cb, ignoreDelete=false} = cbObj[key];
       if(response && response.reqType){
         if(key == response['reqType']){
-          cbObj[key].cb(response);
-          delete cbObj[key];
+          cb(response);
+          if(!ignoreDelete){
+            delete cbObj[key];
+          }
         }
       }
       else{
-        cbObj[key].cb(response);
-        delete cbObj[key];
+        cb(response);
+        if(!ignoreDelete){
+          delete cbObj[key];
+        }
       }
     }
   };
@@ -58,10 +63,10 @@ if (isNativeApp) {
 const registerCb = (cb,obj) => {
   if (typeof cb === "function") {
     if(obj && obj.key){
-      cbObj[obj['key']] = { cb };
+      cbObj[obj['key']] = { cb,ignoreDelete:obj.ignoreDelete ? true : false };
     }
     else{
-      cbObj[counter] = { cb };
+      cbObj[counter] = { cb,ignoreDelete:obj && obj.ignoreDelete ? true : false };
       counter += 1;
     }
   }
@@ -76,6 +81,11 @@ const deRegisterForAbMobCb = () => {
     abMobCb = null;
   }
 };
+
+const deRegisterCbByKey = (key) => {
+  delete cbObj[key]
+}
+
 export {
   webToNative,
   isClient,
@@ -85,4 +95,5 @@ export {
   webToNativeIos,
   registerForAbMobCb,
   deRegisterForAbMobCb,
+  deRegisterCbByKey
 };

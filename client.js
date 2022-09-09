@@ -9,6 +9,7 @@ import inAppPurchase from './src/InAppPurchase'
 import * as FBEvents from './src/Facebook/events'
 import * as BottomNavigation from './src/BottomNavigation'
 import * as contacts from "./src/NativeContacts"
+import * as backgroundLocation from "./src/BackgroundLocation"
 import * as FirebaseEvents from "./src/FirebaseAnalytics/events"
 window.WTN = webToNative;
 
@@ -21,6 +22,7 @@ window.WTN.inAppPurchase = inAppPurchase
 window.WTN.appsflyer = AppsFlyer
 window.WTN.bottomNavigation = BottomNavigation
 window.WTN.contacts = contacts;
+window.WTN.backgroundLocation = backgroundLocation
 window.WTN.facebook = {
     events: FBEvents
 }
