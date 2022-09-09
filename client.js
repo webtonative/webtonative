@@ -12,6 +12,7 @@ import * as contacts from "./src/NativeContacts";
 import * as backgroundLocation from "./src/BackgroundLocation";
 import * as screen from "./src/Screen";
 import * as clipboard from "./src/Clipboard";
+import * as appReview from "./src/AppReview";
 import * as FirebaseEvents from "./src/FirebaseAnalytics/events";
 window.WTN = webToNative;
 
@@ -27,6 +28,7 @@ window.WTN.contacts = contacts;
 window.WTN.screen = screen;
 window.WTN.backgroundLocation = backgroundLocation;
 window.WTN.clipboard = clipboard;
+window.WTN.appReview = appReview;
 window.WTN.facebook = {
 	events: FBEvents,
 };
