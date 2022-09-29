@@ -9,74 +9,83 @@ import { isNativeApp, webToNative, platform, webToNativeIos, registerCb } from "
 export const isAndroidApp = platform === "ANDROID_APP";
 export const isIosApp = platform === "IOS_APP";
 
-
 /**
  * This function hides splash screen
  * @example wtn.hideSplashScreen()
  */
 export const hideSplashScreen = () => {
-  isNativeApp && webToNative.hideSplashScreen();
-}
+	isNativeApp && webToNative.hideSplashScreen();
+};
 
 export const statusBar = (options) => {
-  isNativeApp && webToNative.statusBar(JSON.stringify(options));
+	if (isNativeApp) {
+		if (isAndroidApp) {
+			webToNative.statusBar(JSON.stringify(options));
+		} else if (isIosApp) {
+			webToNativeIos.postMessage({
+				action: "statusBar",
+				color: options.color,
+				style: options.style,
+			});
+		}
+	}
 };
 
 export const deviceInfo = () => {
-  return new Promise((resolve, reject) => {
-    registerCb((results) => {
-      if (results) {
-        resolve(results);
-      } else {
-        reject({
-          err:"Error getting device info"
-        });
-      }
-    },{
-      key:"deviceInfo"
-    });
-    if (platform === "ANDROID_APP") {
-      webToNative.getDeviceInfo();
-    } else if (platform === "IOS_APP") {
-      webToNativeIos.postMessage({
-        action: "deviceInfo",
-      });
-    } else {
-      reject("This function will work in Native App Powered By WebToNative");
-    }
-  });
+	return new Promise((resolve, reject) => {
+		registerCb(
+			(results) => {
+				if (results) {
+					resolve(results);
+				} else {
+					reject({
+						err: "Error getting device info",
+					});
+				}
+			},
+			{
+				key: "deviceInfo",
+			}
+		);
+		if (platform === "ANDROID_APP") {
+			webToNative.getDeviceInfo();
+		} else if (platform === "IOS_APP") {
+			webToNativeIos.postMessage({
+				action: "deviceInfo",
+			});
+		} else {
+			reject("This function will work in Native App Powered By WebToNative");
+		}
+	});
 };
 
 export const showInAppReview = () => {
-  isNativeApp && webToNative.showInAppReview();
-}
-
-export const shareLink = ({ url = "" }) => {
-  if (url) {
-    isAndroidApp && webToNative.openShareIntent(url);
-    isIosApp &&
-      webToNativeIos.postMessage({
-        action: "share",
-        url,
-      });
-  } else {
-    throw "url is mandatory";
-  }
-}
-
-export {
-  platform,
-  isNativeApp,
+	isNativeApp && webToNative.showInAppReview();
 };
 
+export const shareLink = ({ url = "" }) => {
+	if (url) {
+		isAndroidApp && webToNative.openShareIntent(url);
+		isIosApp &&
+			webToNativeIos.postMessage({
+				action: "share",
+				url,
+			});
+	} else {
+		throw "url is mandatory";
+	}
+};
+
+export { platform, isNativeApp };
+
 export default {
-  isAndroidApp,
-  isIosApp,
-  hideSplashScreen,
-  statusBar,
-  deviceInfo,
-  showInAppReview,
-  shareLink,
-  platform,
-  isNativeApp,
-}
+	isAndroidApp,
+	isIosApp,
+	hideSplashScreen,
+	statusBar,
+	deviceInfo,
+	showInAppReview,
+	shareLink,
+	platform,
+	isNativeApp,
+};
