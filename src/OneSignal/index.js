@@ -34,8 +34,9 @@ const setExternalUserId = (userId) => {
 				userId: userId,
 			});
 		}
+	} else {
+		throw "userId is required";
 	}
-	throw "userId is required";
 };
 const removeExternalUserId = () => {
 	if (platform === "ANDROID_APP") {
