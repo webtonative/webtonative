@@ -29,7 +29,7 @@ const setExternalUserId = (userId) => {
 		if (platform === "ANDROID_APP") {
 			return isNativeApp && webToNative.setExternalUserId(userId);
 		} else if (platform === "IOS_APP") {
-			webToNativeIos.postMessage({
+			return webToNativeIos.postMessage({
 				action: "setExternalUserId",
 				userId: userId,
 			});
