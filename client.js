@@ -13,7 +13,9 @@ import * as backgroundLocation from "./src/BackgroundLocation";
 import * as screen from "./src/Screen";
 import * as clipboard from "./src/Clipboard";
 import * as appReview from "./src/AppReview";
+import * as ATTConsent from "./src/ATTConsent";
 import * as FirebaseEvents from "./src/FirebaseAnalytics/events";
+import { webToNativeIos } from "./src/utills";
 window.WTN = webToNative;
 
 window.WTN.OneSignal = OneSignal;
@@ -29,6 +31,7 @@ window.WTN.screen = screen;
 window.WTN.backgroundLocation = backgroundLocation;
 window.WTN.clipboard = clipboard;
 window.WTN.appReview = appReview;
+window.WTN.ATTConsent = ATTConsent;
 window.WTN.facebook = {
 	events: FBEvents,
 };
@@ -40,6 +43,16 @@ if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndr
 	window.navigator.share = function (obj) {
 		return new Promise((resolve, reject) => {
 			window.WebToNativeInterface.openShareIntent(obj.url);
+			resolve();
+		});
+	};
+} else if (WTN.isIosApp) {
+	window.navigator.share = function (obj) {
+		return new Promise((resolve, reject) => {
+			webToNativeIos.postMessage({
+				action: "share",
+				url: obj.url,
+			});
 			resolve();
 		});
 	};
