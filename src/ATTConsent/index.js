@@ -25,3 +25,20 @@ export const request = (options = {}) => {
 			});
 	}
 };
+
+export const status = (options = {}) => {
+	const { callback } = options;
+	if (["IOS_APP"].includes(platform)) {
+		registerCb((response) => {
+			const { type } = response;
+			if (type === "trackingConsentStatus") {
+				callback && callback(response);
+			}
+		});
+
+		platform === "IOS_APP" &&
+			webToNativeIos.postMessage({
+				action: "trackingConsentStatus",
+			});
+	}
+};
