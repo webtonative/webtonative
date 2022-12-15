@@ -15,6 +15,7 @@ import * as clipboard from "./src/Clipboard";
 import * as appReview from "./src/AppReview";
 import * as ATTConsent from "./src/ATTConsent";
 import * as FirebaseAnalytics from "./src/FirebaseAnalytics";
+import * as Haptics from "./src/Haptics";
 import { webToNativeIos } from "./src/utills";
 window.WTN = webToNative;
 
@@ -36,6 +37,7 @@ window.WTN.facebook = {
 	events: FBEvents,
 };
 window.WTN.firebaseAnalytics = FirebaseAnalytics;
+window.WTN.haptics = Haptics;
 
 if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
 	window.navigator.share = function (obj) {
