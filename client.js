@@ -14,7 +14,7 @@ import * as screen from "./src/Screen";
 import * as clipboard from "./src/Clipboard";
 import * as appReview from "./src/AppReview";
 import * as ATTConsent from "./src/ATTConsent";
-import * as FirebaseEvents from "./src/FirebaseAnalytics/events";
+import * as FirebaseAnalytics from "./src/FirebaseAnalytics";
 import { webToNativeIos } from "./src/utills";
 window.WTN = webToNative;
 
@@ -35,9 +35,7 @@ window.WTN.ATTConsent = ATTConsent;
 window.WTN.facebook = {
 	events: FBEvents,
 };
-window.WTN.firebaseAnalytics = {
-	events: FirebaseEvents,
-};
+window.WTN.firebaseAnalytics = FirebaseAnalytics;
 
 if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
 	window.navigator.share = function (obj) {
