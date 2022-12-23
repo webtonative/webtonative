@@ -16,17 +16,27 @@ let counter = 1;
 let abMobCb = null;
 if (isNativeApp) {
 	webToNative.androidCBHook = (results) => {
-		const responseObj = JSON.parse(results);
-		const { type } = responseObj;
+		var response = results;
+		try {
+			response = JSON.parse(results);
+		} catch (e) {
+			console.log(e);
+		}
+		const { type } = response;
 		for (var key in cbObj) {
-			if (responseObj && responseObj.reqType) {
-				if (key == responseObj["reqType"]) {
-					cbObj[key].cb(responseObj);
-					delete cbObj[key];
+			const { cb, ignoreDelete = false } = cbObj[key];
+			if (response && response.reqType) {
+				if (key == response["reqType"]) {
+					cb(response);
+					if (!ignoreDelete) {
+						delete cbObj[key];
+					}
 				}
 			} else {
-				cbObj[key].cb(responseObj);
-				delete cbObj[key];
+				cb(response);
+				if (!ignoreDelete) {
+					delete cbObj[key];
+				}
 			}
 		}
 	};

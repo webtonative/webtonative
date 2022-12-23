@@ -42,6 +42,16 @@ export const start = (options = {}) => {
 				apiUrl,
 				timeout,
 			});
+
+		platform === "ANDROID_APP" &&
+			webToNative.startTrackingLocation(JSON.stringify({
+				action: "startLocation",
+				data,
+				interval:timeout,
+				callback,
+				apiUrl,
+				displacement:distanceFilter
+			}));
 	}
 };
 
@@ -57,5 +67,8 @@ export const stop = (options = {}) => {
 			webToNativeIos.postMessage({
 				action: "stopLocation",
 			});
+
+		platform === "ANDROID_APP" &&
+			webToNative.stopTrackingLocation();
 	}
 };
