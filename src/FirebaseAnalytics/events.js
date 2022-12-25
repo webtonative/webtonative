@@ -12,6 +12,9 @@ export const setCollection = (options) => {
 				action: "setFirebaseAnalyticsCollection",
 				enabled,
 			});
+
+		platform === "ANDROID_APP" && 
+			webToNative.setFirebaseAnalyticsCollection(enabled);
 	}
 };
 
@@ -28,6 +31,9 @@ export const setUserId = (options) => {
 				action: "setFirebaseUserId",
 				userId,
 			});
+		
+		platform === "ANDROID_APP" && 
+			webToNative.setFirebaseUserId(userId);
 	}
 };
 
@@ -41,6 +47,9 @@ export const setUserProperty = (options) => {
 				key,
 				value,
 			});
+
+		platform === "ANDROID_APP" && 
+			webToNative.setFirebaseUserProp(key,value);
 	}
 };
 
@@ -53,6 +62,9 @@ export const setDefaultEventParameters = (options) => {
 				action: "setFirebaseDefaultParam",
 				parameters,
 			});
+
+		platform === "ANDROID_APP" && 
+			webToNative.setFirebaseDefaultParam(parameters);
 	}
 };
 
@@ -66,6 +78,9 @@ export const logEvent = (options) => {
 				eventName,
 				parameters,
 			});
+
+		platform === "ANDROID_APP" && 
+			webToNative.logFirebaseEvent(eventName,parameters);
 	}
 };
 
@@ -79,5 +94,8 @@ export const logScreen = (options) => {
 				screenName,
 				screenClass,
 			});
+
+		platform === "ANDROID_APP" && 
+			webToNative.logFirebaseScreenView(screenName,screenClass);
 	}
 };
