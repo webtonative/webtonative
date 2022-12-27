@@ -34,6 +34,7 @@ export const unsubscribe = (options) => {
 
 export const getFCMToken = (options) => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		const { callback } = options;
 		registerCb((response) => {
 			const { type } = response;
 			if (type === "getFCMToken") {
