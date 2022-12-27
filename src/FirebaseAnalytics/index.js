@@ -1,3 +1,3 @@
-import * as FirebaseAnalyticsEvents from "./events";
+import * as FirebaseAnalyticsEvents from "../Firebase/Analytics";
 
 export { FirebaseAnalyticsEvents as events };

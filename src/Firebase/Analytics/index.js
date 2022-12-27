@@ -1,4 +1,4 @@
-import { platform, webToNative, webToNativeIos } from "../utills";
+import { platform, webToNative, webToNativeIos } from "../../utills";
 /**
  *
  * @example
@@ -13,8 +13,7 @@ export const setCollection = (options) => {
 				enabled,
 			});
 
-		platform === "ANDROID_APP" && 
-			webToNative.setFirebaseAnalyticsCollection(enabled);
+		platform === "ANDROID_APP" && webToNative.setFirebaseAnalyticsCollection(enabled);
 	}
 };
 
@@ -31,9 +30,8 @@ export const setUserId = (options) => {
 				action: "setFirebaseUserId",
 				userId,
 			});
-		
-		platform === "ANDROID_APP" && 
-			webToNative.setFirebaseUserId(userId);
+
+		platform === "ANDROID_APP" && webToNative.setFirebaseUserId(userId);
 	}
 };
 
@@ -48,8 +46,7 @@ export const setUserProperty = (options) => {
 				value,
 			});
 
-		platform === "ANDROID_APP" && 
-			webToNative.setFirebaseUserProp(key,value);
+		platform === "ANDROID_APP" && webToNative.setFirebaseUserProp(key, value);
 	}
 };
 
@@ -63,8 +60,7 @@ export const setDefaultEventParameters = (options) => {
 				parameters,
 			});
 
-		platform === "ANDROID_APP" && 
-			webToNative.setFirebaseDefaultParam(parameters);
+		platform === "ANDROID_APP" && webToNative.setFirebaseDefaultParam(parameters);
 	}
 };
 
@@ -79,8 +75,7 @@ export const logEvent = (options) => {
 				parameters,
 			});
 
-		platform === "ANDROID_APP" && 
-			webToNative.logFirebaseEvent(eventName,parameters);
+		platform === "ANDROID_APP" && webToNative.logFirebaseEvent(eventName, parameters);
 	}
 };
 
@@ -95,7 +90,6 @@ export const logScreen = (options) => {
 				screenClass,
 			});
 
-		platform === "ANDROID_APP" && 
-			webToNative.logFirebaseScreenView(screenName,screenClass);
+		platform === "ANDROID_APP" && webToNative.logFirebaseScreenView(screenName, screenClass);
 	}
 };
