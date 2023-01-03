@@ -1,4 +1,4 @@
-import { platform, registerCb, webToNativeIos } from "../utills";
+import { platform, registerCb, webToNative, webToNativeIos } from "../utills";
 /**
  *
  *
@@ -17,6 +17,8 @@ export const get = (options = {}) => {
 			webToNativeIos.postMessage({
 				action: "getClipBoardData",
 			});
+
+		platform === "ANDROID_APP" && webToNative.getText();
 	}
 };
 
@@ -31,5 +33,7 @@ export const set = (options = {}) => {
 				action: "setClipBoardData",
 				text: options.data || "",
 			});
+
+		platform === "ANDROID_APP" && webToNative.setText(options.data || "");
 	}
 };
