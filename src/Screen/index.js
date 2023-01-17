@@ -1,4 +1,4 @@
-import { platform, webToNativeIos } from "../utills";
+import { platform, webToNative, webToNativeIos } from "../utills";
 /**
  *
  *
@@ -10,6 +10,8 @@ export const keepScreenOn = () => {
 				action: "keepScreenOn",
 				flag: true,
 			});
+
+		platform === "ANDROID_APP" && webToNative.keepScreenOn();
 	}
 };
 
@@ -24,5 +26,7 @@ export const keepScreenNormal = () => {
 				action: "keepScreenOn",
 				flag: false,
 			});
+
+		platform === "ANDROID_APP" && webToNative.keepScreenNormal();
 	}
 };
