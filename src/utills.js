@@ -40,7 +40,7 @@ if (isNativeApp) {
 			}
 		}
 	};
-	webToNative.androidAdMobCBHook = (results) => {
+	window.iOSAdMobCBHook = webToNative.androidAdMobCBHook = (results) => {
 		const responseObj = JSON.parse(results);
 		abMobCb && abMobCb(responseObj);
 	};
