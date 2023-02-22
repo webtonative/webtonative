@@ -13,6 +13,7 @@ import * as backgroundLocation from "./src/BackgroundLocation";
 import * as screen from "./src/Screen";
 import * as clipboard from "./src/Clipboard";
 import * as appReview from "./src/AppReview";
+import * as Biometric from "./src/Biometric";
 import * as ATTConsent from "./src/ATTConsent";
 import * as FirebaseAnalytics from "./src/FirebaseAnalytics";
 import * as Firebase from "./src/Firebase";
@@ -34,6 +35,7 @@ window.WTN.screen = screen;
 window.WTN.backgroundLocation = backgroundLocation;
 window.WTN.clipboard = clipboard;
 window.WTN.appReview = appReview;
+window.WTN.Biometric = Biometric;
 window.WTN.ATTConsent = ATTConsent;
 window.WTN.facebook = {
 	events: FBEvents,
