@@ -3,7 +3,7 @@ import { platform, registerCb, webToNativeIos } from "../utills";
  *
  *
  */
-export const status = (options = {}) => {
+export const checkStatus = (options = {}) => {
 	const { callback } = options;
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		registerCb((response) => {
@@ -57,7 +57,7 @@ export const deleteSecret = (options = {}) => {
 	}
 };
 
-export const show = (options = {}) => {
+export const getSecret = (options = {}) => {
 	const { callback, prompt, callbackUrl } = options;
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		registerCb((response) => {
