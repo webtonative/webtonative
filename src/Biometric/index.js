@@ -22,7 +22,7 @@ export const status = (options = {}) => {
 
 
 export const saveSecret = (options = {}) => {
-	const { callback } = options;
+	const { callback, secret } = options;
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		registerCb((response) => {
 			const { type } = response;
@@ -34,7 +34,7 @@ export const saveSecret = (options = {}) => {
 		platform === "IOS_APP" &&
 			webToNativeIos.postMessage({
 				action: "saveBiometricSecret",
-				secret: options.secret
+				secret
 			});
 	}
 };
@@ -58,7 +58,7 @@ export const deleteSecret = (options = {}) => {
 };
 
 export const show = (options = {}) => {
-	const { callback } = options;
+	const { callback, prompt, callbackUrl } = options;
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		registerCb((response) => {
 			const { type } = response;
@@ -70,8 +70,8 @@ export const show = (options = {}) => {
 		platform === "IOS_APP" &&
 			webToNativeIos.postMessage({
 				action: "showBiometric",
-				prompt: options.prompt || '',
-				callbackUrl: options.callbackUrl
+				prompt: prompt || '',
+				callbackUrl
 			});
 	}
 };
