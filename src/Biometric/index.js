@@ -58,7 +58,7 @@ export const deleteSecret = (options = {}) => {
 };
 
 export const getSecret = (options = {}) => {
-	const { callback, prompt, callbackUrl } = options;
+	const { callback, prompt } = options;
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		registerCb((response) => {
 			const { type } = response;
@@ -71,7 +71,6 @@ export const getSecret = (options = {}) => {
 			webToNativeIos.postMessage({
 				action: "showBiometric",
 				prompt: prompt || '',
-				callbackUrl
 			});
 	}
 };
