@@ -63,6 +63,10 @@ export const showInAppReview = () => {
 	isNativeApp && webToNative.showInAppReview();
 };
 
+export const isDeviceGPSEnabled = () => {
+	return isNativeApp && webToNative.isLocationServiceEnabled();
+};
+
 export const shareLink = ({ url = "" }) => {
 	if (url) {
 		isAndroidApp && webToNative.openShareIntent(url);
