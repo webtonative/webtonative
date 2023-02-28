@@ -63,8 +63,18 @@ export const showInAppReview = () => {
 	isNativeApp && webToNative.showInAppReview();
 };
 
-export const isDeviceGPSEnabled = () => {
-	return isNativeApp && webToNative.isLocationServiceEnabled();
+export const isDeviceGPSEnabled = (options = {}) => {
+	const { callback } = options;
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		registerCb((response) => {
+			const { type } = response;
+			if (type === "isDeviceGPSEnabled") {
+				callback && callback(response);
+			}
+		});
+
+		platform === "ANDROID_APP" && webToNative.isLocationServiceEnabled();
+	}
 };
 
 export const shareLink = ({ url = "" }) => {
@@ -92,4 +102,5 @@ export default {
 	shareLink,
 	platform,
 	isNativeApp,
+	isDeviceGPSEnabled
 };
