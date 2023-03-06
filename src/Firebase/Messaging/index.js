@@ -1,4 +1,4 @@
-import { platform, webToNativeIos, registerCb } from "../../utills";
+import { platform, webToNative, webToNativeIos, registerCb } from "../../utills";
 
 /**
  *
@@ -13,6 +13,8 @@ export const subscribe = (options) => {
 				action: "firebaseSubscribeToTopic",
 				topic: toTopic,
 			});
+
+		platform === "ANDROID_APP" && webToNative.subscribeToTopic(toTopic);
 	}
 };
 
@@ -29,6 +31,8 @@ export const unsubscribe = (options) => {
 				action: "firebaseUnsubscribeFromTopic",
 				topic: fromTopic,
 			});
+
+		platform === "ANDROID_APP" && webToNative.unsubscribeFromTopic(fromTopic);
 	}
 };
 
@@ -46,5 +50,7 @@ export const getFCMToken = (options) => {
 			webToNativeIos.postMessage({
 				action: "getFCMToken",
 			});
+
+		platform === "ANDROID_APP" && webToNative.getRegistrationToken();
 	}
 };
