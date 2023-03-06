@@ -42,6 +42,7 @@ export const getFCMToken = (options) => {
 		registerCb((response) => {
 			const { type } = response;
 			if (type === "getFCMToken") {
+				response.token = response.fcm_registration_token;
 				callback && callback(response);
 			}
 		});
