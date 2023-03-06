@@ -29,7 +29,7 @@ import {
     if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 
       platform === "ANDROID_APP" &&
-        webToNative.addEventToAppsFlyer(eventName,eventValues);
+        webToNative.addEventToAppsFlyer(eventName,JSON.stringify(eventValues));
   
       platform === "IOS_APP" &&
         webToNativeIos.postMessage({
