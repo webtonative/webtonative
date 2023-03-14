@@ -1,4 +1,4 @@
-import { platform, registerCb, webToNativeIos } from "../utills";
+import { platform, registerCb, webToNativeIos, webToNative } from "../utills";
 /**
  *
  *
@@ -9,5 +9,8 @@ export const prompt = (options = {}) => {
 			webToNativeIos.postMessage({
 				action: "showAppRating",
 			});
+		
+		platform === "ANDROID_APP" &&
+			webToNative.showInAppReview();
 	}
 };
