@@ -1,4 +1,4 @@
-import { platform, registerCb, webToNativeIos } from "../utills";
+import { platform, registerCb, webToNative, webToNativeIos } from "../utills";
 /**
  *
  *
@@ -12,6 +12,9 @@ export const checkStatus = (options = {}) => {
 				callback && callback(response);
 			}
 		});
+
+		platform === "ANDROID_APP" &&
+        	webToNative.checkBiometricStatus();
 
 		platform === "IOS_APP" &&
 			webToNativeIos.postMessage({
@@ -30,6 +33,9 @@ export const saveSecret = (options = {}) => {
 				callback && callback(response);
 			}
 		});
+
+		platform === "ANDROID_APP" &&
+        	webToNative.saveSecret(secret);
 
 		platform === "IOS_APP" &&
 			webToNativeIos.postMessage({
@@ -50,6 +56,9 @@ export const deleteSecret = (options = {}) => {
 			}
 		});
 
+		platform === "ANDROID_APP" &&
+        	webToNative.deleteSecret();
+
 		platform === "IOS_APP" &&
 			webToNativeIos.postMessage({
 				action: "deleteBiometricSecret",
@@ -57,7 +66,7 @@ export const deleteSecret = (options = {}) => {
 	}
 };
 
-export const getSecret = (options = {}) => {
+export const show = (options = {}) => {
 	const { callback, prompt } = options;
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		registerCb((response) => {
@@ -66,6 +75,9 @@ export const getSecret = (options = {}) => {
 				callback && callback(response);
 			}
 		});
+
+		platform === "ANDROID_APP" &&
+        	webToNative.callBiometric(prompt || "Authenticate to continue!");
 
 		platform === "IOS_APP" &&
 			webToNativeIos.postMessage({
