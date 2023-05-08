@@ -61,8 +61,13 @@ export const setTags = ({ tags }) => {
 	}
 };
 
-export const addTrigger = (key, value) => {
+export const addTrigger = (options = {}) => {
+	const { key, value } = options;
 	if (platform === "ANDROID_APP") {
+		webToNative.addTrigger(JSON.stringify({
+			key,
+			value
+		}));
 	} else if (platform === "IOS_APP") {
 		webToNativeIos.postMessage({
 			action: "addTrigger",
@@ -72,8 +77,12 @@ export const addTrigger = (key, value) => {
 	}
 };
 
-export const addTriggers = (triggers) => {
+export const addTriggers = (options = {}) => {
+	const { triggers } = options;
 	if (platform === "ANDROID_APP") {
+		webToNative.addTriggers(JSON.stringify({
+			triggers
+		}));
 	} else if (platform === "IOS_APP") {
 		webToNativeIos.postMessage({
 			action: "addTriggers",
@@ -82,8 +91,10 @@ export const addTriggers = (triggers) => {
 	}
 };
 
-export const removeTrigger = (key) => {
+export const removeTrigger = (options = {}) => {
+	const { key } = options;
 	if (platform === "ANDROID_APP") {
+		webToNative.removeTriggerForKey(key);
 	} else if (platform === "IOS_APP") {
 		webToNativeIos.postMessage({
 			action: "removeTrigger",
@@ -92,8 +103,10 @@ export const removeTrigger = (key) => {
 	}
 };
 
-export const removeTriggers = (keys) => {
+export const removeTriggers = (options = {}) => {
+	const { keys } = options;
 	if (platform === "ANDROID_APP") {
+		webToNative.removeTriggersForKeys(JSON.stringify({keys}));
 	} else if (platform === "IOS_APP") {
 		webToNativeIos.postMessage({
 			action: "removeTriggers",
@@ -102,7 +115,8 @@ export const removeTriggers = (keys) => {
 	}
 };
 
-export const getTriggerValue = (key, callback) => {
+export const getTriggerValue = (options = {}) => {
+	const { key, callback } = options;
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		registerCb((response) => {
 			const { type } = response;
@@ -112,6 +126,7 @@ export const getTriggerValue = (key, callback) => {
 		});
 
 		if (platform === "ANDROID_APP") {
+			webToNative.getTriggerValueForKey(key);
 		} else if (platform === "IOS_APP") {
 			webToNativeIos.postMessage({
 				action: "getTriggerValue",
@@ -121,7 +136,8 @@ export const getTriggerValue = (key, callback) => {
 	}
 };
 
-export const getTriggers = (callback) => {
+export const getTriggers = (options = {}) => {
+	const { callback } = options;
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		registerCb((response) => {
 			const { type } = response;
@@ -131,6 +147,7 @@ export const getTriggers = (callback) => {
 		});
 
 		if (platform === "ANDROID_APP") {
+			webToNative.getTriggers();
 		} else if (platform === "IOS_APP") {
 			webToNativeIos.postMessage({
 				action: "getTriggers",
