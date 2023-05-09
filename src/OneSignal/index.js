@@ -1,5 +1,5 @@
 import { isNativeApp, platform, webToNative, registerCb, webToNativeIos } from "../utills";
-const getPlayerId = () => {
+export const getPlayerId = () => {
 	return new Promise((resolve, reject) => {
 		registerCb(
 			(results) => {
@@ -24,7 +24,7 @@ const getPlayerId = () => {
 		}
 	});
 };
-const setExternalUserId = (userId) => {
+export const setExternalUserId = (userId) => {
 	if (userId) {
 		if (platform === "ANDROID_APP") {
 			return isNativeApp && webToNative.setExternalUserId(userId);
@@ -38,7 +38,7 @@ const setExternalUserId = (userId) => {
 		throw "userId is required";
 	}
 };
-const removeExternalUserId = () => {
+export const removeExternalUserId = () => {
 	if (platform === "ANDROID_APP") {
 		return isNativeApp && webToNative.removeExternalUserId();
 	} else if (platform === "IOS_APP") {
@@ -48,8 +48,8 @@ const removeExternalUserId = () => {
 	}
 };
 
-const setTags = ({ tags }) => {
-	if(tags){
+export const setTags = ({ tags }) => {
+	if (tags) {
 		if (platform === "ANDROID_APP") {
 			return isNativeApp && webToNative.setUserTags(JSON.stringify(tags));
 		} else if (platform === "IOS_APP") {
@@ -61,4 +61,97 @@ const setTags = ({ tags }) => {
 	}
 };
 
-export { getPlayerId, setExternalUserId, removeExternalUserId, setTags };
+export const addTrigger = (options = {}) => {
+	const { key, value } = options;
+	if (platform === "ANDROID_APP") {
+		webToNative.addTrigger(JSON.stringify({
+			key,
+			value
+		}));
+	} else if (platform === "IOS_APP") {
+		webToNativeIos.postMessage({
+			action: "addTrigger",
+			key,
+			value,
+		});
+	}
+};
+
+export const addTriggers = (options = {}) => {
+	const { triggers } = options;
+	if (platform === "ANDROID_APP") {
+		webToNative.addTriggers(JSON.stringify({
+			triggers
+		}));
+	} else if (platform === "IOS_APP") {
+		webToNativeIos.postMessage({
+			action: "addTriggers",
+			triggers,
+		});
+	}
+};
+
+export const removeTrigger = (options = {}) => {
+	const { key } = options;
+	if (platform === "ANDROID_APP") {
+		webToNative.removeTriggerForKey(key);
+	} else if (platform === "IOS_APP") {
+		webToNativeIos.postMessage({
+			action: "removeTrigger",
+			key,
+		});
+	}
+};
+
+export const removeTriggers = (options = {}) => {
+	const { keys } = options;
+	if (platform === "ANDROID_APP") {
+		webToNative.removeTriggersForKeys(JSON.stringify({keys}));
+	} else if (platform === "IOS_APP") {
+		webToNativeIos.postMessage({
+			action: "removeTriggers",
+			keys,
+		});
+	}
+};
+
+export const getTriggerValue = (options = {}) => {
+	const { key, callback } = options;
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		registerCb((response) => {
+			const { type } = response;
+			if (type === "getTriggerValue") {
+				callback && callback(response);
+			}
+		});
+
+		if (platform === "ANDROID_APP") {
+			webToNative.getTriggerValueForKey(key);
+		} else if (platform === "IOS_APP") {
+			webToNativeIos.postMessage({
+				action: "getTriggerValue",
+				key,
+			});
+		}
+	}
+};
+
+export const getTriggers = (options = {}) => {
+	const { callback } = options;
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		registerCb((response) => {
+			const { type } = response;
+			if (type === "getTriggers") {
+				callback && callback(response);
+			}
+		});
+
+		if (platform === "ANDROID_APP") {
+			webToNative.getTriggers();
+		} else if (platform === "IOS_APP") {
+			webToNativeIos.postMessage({
+				action: "getTriggers",
+			});
+		}
+	}
+};
