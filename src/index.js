@@ -90,6 +90,14 @@ export const shareLink = ({ url = "" }) => {
 	}
 };
 
+export const openUrlInBrowser = (url = "") => {
+	if (url) {
+		isAndroidApp && webToNative.openUrlInBrowser(url);
+	} else {
+		throw "url is mandatory";
+	}
+};
+
 export { platform, isNativeApp };
 
 export default {
@@ -102,5 +110,6 @@ export default {
 	shareLink,
 	platform,
 	isNativeApp,
-	isDeviceGPSEnabled
+	isDeviceGPSEnabled,
+	openUrlInBrowser
 };
