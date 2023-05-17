@@ -98,6 +98,10 @@ export const openUrlInBrowser = (url = "") => {
 	}
 };
 
+export const enablePullToRefresh = (status) => {
+	isAndroidApp && webToNative.enableSwipeRefresh(status);
+};
+
 export { platform, isNativeApp };
 
 export default {
@@ -111,5 +115,6 @@ export default {
 	platform,
 	isNativeApp,
 	isDeviceGPSEnabled,
-	openUrlInBrowser
+	openUrlInBrowser,
+	enablePullToRefresh
 };
