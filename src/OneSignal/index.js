@@ -155,3 +155,41 @@ export const getTriggers = (options = {}) => {
 		}
 	}
 };
+
+export const setEmail = (options = {}) => {
+	const { emailId } = options;
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+
+		if (platform === "ANDROID_APP") {
+			webToNative.setEmail(emailId);
+		}
+	}
+};
+
+export const setSMSNumber = (options = {}) => {
+	const { smsNumber } = options;
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+
+		if (platform === "ANDROID_APP") {
+			webToNative.setSMSNumber(smsNumber);
+		}
+	}
+};
+
+export const logoutEmail = () => {
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+
+		if (platform === "ANDROID_APP") {
+			webToNative.logoutEmail();
+		}
+	}
+};
+
+export const logoutSMSNumber = () => {
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+
+		if (platform === "ANDROID_APP") {
+			webToNative.logoutSMSNumber();
+		}
+	}
+};
