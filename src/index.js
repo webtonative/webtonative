@@ -102,6 +102,10 @@ export const enablePullToRefresh = (status) => {
 	isAndroidApp && webToNative.enableSwipeRefresh(status);
 };
 
+export const shareFile = (fileUrl = null,fileExtension = null) => {
+	isAndroidApp && webToNative.shareFile(fileUrl,fileExtension);
+};
+
 export { platform, isNativeApp };
 
 export default {
@@ -116,5 +120,6 @@ export default {
 	isNativeApp,
 	isDeviceGPSEnabled,
 	openUrlInBrowser,
-	enablePullToRefresh
+	enablePullToRefresh,
+	shareFile
 };
