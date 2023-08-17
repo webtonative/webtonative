@@ -31,6 +31,18 @@ export const statusBar = (options) => {
 	}
 };
 
+export const downloadFile = (downloadUrl) => {
+	if (isNativeApp) {
+		if (isAndroidApp) {
+		} else if (isIosApp) {
+			webToNativeIos.postMessage({
+				action: "downloadFile",
+				downloadUrl,
+			});
+		}
+	}
+};
+
 export const deviceInfo = () => {
 	return new Promise((resolve, reject) => {
 		registerCb(
@@ -103,11 +115,11 @@ export const enablePullToRefresh = (status) => {
 };
 
 export const clearAppCache = (reload) => {
-	isAndroidApp && webToNative.clearWebViewCache(JSON.stringify({reload}));
+	isAndroidApp && webToNative.clearWebViewCache(JSON.stringify({ reload }));
 };
 
-export const shareFile = (fileUrl = null,fileExtension = null) => {
-	isAndroidApp && webToNative.shareFile(fileUrl,fileExtension);
+export const shareFile = (fileUrl = null, fileExtension = null) => {
+	isAndroidApp && webToNative.shareFile(fileUrl, fileExtension);
 };
 
 export { platform, isNativeApp };
@@ -126,5 +138,5 @@ export default {
 	openUrlInBrowser,
 	enablePullToRefresh,
 	shareFile,
-	clearAppCache
+	clearAppCache,
 };
