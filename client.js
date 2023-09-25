@@ -18,6 +18,7 @@ import * as ATTConsent from "./src/ATTConsent";
 import * as FirebaseAnalytics from "./src/FirebaseAnalytics";
 import * as Firebase from "./src/Firebase";
 import * as Haptics from "./src/Haptics";
+import * as MediaPlayer from "./src/MediaPlayer";
 import { webToNativeIos } from "./src/utills";
 window.WTN = webToNative;
 
@@ -43,6 +44,7 @@ window.WTN.facebook = {
 window.WTN.firebaseAnalytics = FirebaseAnalytics;
 window.WTN.haptics = Haptics;
 window.WTN.Firebase = Firebase;
+window.WTN.MediaPlayer = MediaPlayer;
 
 if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
 	window.navigator.share = function (obj) {
