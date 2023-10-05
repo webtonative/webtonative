@@ -122,6 +122,10 @@ export const shareFile = (fileUrl = null, fileExtension = null) => {
 	isAndroidApp && webToNative.shareFile(fileUrl, fileExtension);
 };
 
+export const closeApp = () => {
+	isAndroidApp && webToNative.closeApp();
+};
+
 export { platform, isNativeApp };
 
 export default {
@@ -139,4 +143,5 @@ export default {
 	enablePullToRefresh,
 	shareFile,
 	clearAppCache,
+	closeApp
 };
