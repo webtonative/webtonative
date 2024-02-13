@@ -126,6 +126,23 @@ export const closeApp = () => {
 	isAndroidApp && webToNative.closeApp();
 };
 
+export const showDateTimePicker = (options) => {
+	if (["ANDROID_APP"].includes(platform)) {
+		const { callback, showDate, showTime } = options;
+		registerCb((response) => {
+			const { type } = response;
+			if (type === "DATE_TIME_PICKER") {
+				callback && callback(response);
+			}
+		});
+
+		isAndroidApp && webToNative.pickDateTime(JSON.stringify({
+			showDate,
+			showTime
+		}));
+	}
+};
+
 export { platform, isNativeApp };
 
 export default {
@@ -143,5 +160,6 @@ export default {
 	enablePullToRefresh,
 	shareFile,
 	clearAppCache,
-	closeApp
+	closeApp,
+	showDateTimePicker
 };
