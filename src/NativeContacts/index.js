@@ -7,12 +7,15 @@ export const getPermissionStatus = (options = {}) => {
 	const { callback } = options;
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		registerCb((response) => {
-			console.log(response);
+			//console.log(response);
 			const { type } = response;
 			if (type === "contactPermissionStatus") {
 				callback && callback(response);
 			}
 		});
+
+		platform === "ANDROID_APP" &&
+			webToNative.getPermissionStatus();
 
 		platform === "IOS_APP" &&
 			webToNativeIos.postMessage({
@@ -30,11 +33,14 @@ export const getAll = (options = {}) => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		registerCb((response) => {
 			const { type } = response;
-			console.log(response);
+			//console.log(response);
 			if (type === "contactDetails") {
 				callback && callback(response);
 			}
 		});
+
+		platform === "ANDROID_APP" &&
+			webToNative.getAll();
 
 		platform === "IOS_APP" &&
 			webToNativeIos.postMessage({
