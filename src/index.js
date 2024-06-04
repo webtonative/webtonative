@@ -143,6 +143,39 @@ export const showDateTimePicker = (options) => {
 	}
 };
 
+export const printFunction = (options) => {
+	if (["ANDROID_APP"].includes(platform)) {
+		const { type="url", url="" } = options;
+		
+		isAndroidApp && webToNative.print(JSON.stringify({
+			type,
+			url
+		}));
+	}
+};
+
+export const loadOfferCard = (options) => {
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		
+		isAndroidApp && webToNative.showOfferCard(JSON.stringify(options));
+
+		if(options.data){
+			options.data = JSON.stringify(options.data);
+		}
+		isIosApp &&
+			webToNativeIos.postMessage(options);
+	}
+};
+
+export const addToSiri = (options) => {
+	if (["IOS_APP"].includes(platform)) {
+		if(options.data)
+			options.data = JSON.stringify(options.data);
+		isIosApp &&
+			webToNativeIos.postMessage(options);
+	}
+};
+
 export { platform, isNativeApp };
 
 export default {
@@ -161,5 +194,8 @@ export default {
 	shareFile,
 	clearAppCache,
 	closeApp,
-	showDateTimePicker
+	showDateTimePicker,
+	printFunction,
+	loadOfferCard,
+	addToSiri
 };
