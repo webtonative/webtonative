@@ -118,8 +118,8 @@ export const clearAppCache = (reload) => {
 	isAndroidApp && webToNative.clearWebViewCache(JSON.stringify({ reload }));
 };
 
-export const shareFile = (fileUrl = null, fileExtension = null) => {
-	isAndroidApp && webToNative.shareFile(fileUrl, fileExtension);
+export const shareFile = (fileUrl = null, fileExtension = null, text = null) => {
+	isAndroidApp && webToNative.shareFile(fileUrl, fileExtension, text);
 };
 
 export const closeApp = () => {
