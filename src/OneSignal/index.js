@@ -176,20 +176,22 @@ export const setSMSNumber = (options = {}) => {
 	}
 };
 
-export const logoutEmail = () => {
+export const logoutEmail = (options = {}) => {
+	const { emailId } = options;
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 
 		if (platform === "ANDROID_APP") {
-			webToNative.logoutEmail();
+			webToNative.logoutEmail(emailId);
 		}
 	}
 };
 
-export const logoutSMSNumber = () => {
+export const logoutSMSNumber = (options = {}) => {
+	const { smsNumber } = options;
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 
 		if (platform === "ANDROID_APP") {
-			webToNative.logoutSMSNumber();
+			webToNative.logoutSMSNumber(smsNumber);
 		}
 	}
 };
