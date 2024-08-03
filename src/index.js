@@ -43,6 +43,16 @@ export const downloadFile = (downloadUrl) => {
 	}
 };
 
+export const downloadBlobFile = ({fileName,downloadUrl}) => {
+	if (["IOS_APP"].includes(platform)) {
+		isIosApp &&	webToNativeIos.postMessage({
+			action: "downloadBlobFile",
+			fileName,
+			url:downloadUrl,
+		});
+	}
+};
+
 export const deviceInfo = () => {
 	return new Promise((resolve, reject) => {
 		registerCb(
@@ -195,6 +205,7 @@ export default {
 	clearAppCache,
 	closeApp,
 	showDateTimePicker,
+	downloadBlobFile,
 	printFunction,
 	loadOfferCard,
 	addToSiri
