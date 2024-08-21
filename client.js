@@ -19,6 +19,7 @@ import * as FirebaseAnalytics from "./src/FirebaseAnalytics";
 import * as Firebase from "./src/Firebase";
 import * as Haptics from "./src/Haptics";
 import * as MediaPlayer from "./src/MediaPlayer";
+import * as Printing from "./src/Printing";
 import { webToNativeIos } from "./src/utills";
 window.WTN = webToNative;
 
@@ -45,6 +46,7 @@ window.WTN.firebaseAnalytics = FirebaseAnalytics;
 window.WTN.haptics = Haptics;
 window.WTN.Firebase = Firebase;
 window.WTN.MediaPlayer = MediaPlayer;
+window.WTN.Printing = Printing;
 
 if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
 	window.navigator.share = function (obj) {
