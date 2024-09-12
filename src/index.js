@@ -53,6 +53,20 @@ export const downloadBlobFile = ({fileName,downloadUrl}) => {
 	}
 };
 
+export const customFileDownload = ({downloadUrl,fileName,isBlob,mimeType,cookies,userAgent,openFileAfterDownload}) => {
+	if (["ANDROID_APP"].includes(platform)) {
+		platform === "ANDROID_APP" && webToNative.downloadFile(JSON.stringify({
+			url:downloadUrl,
+			fileName,
+			isBlob,
+			mimeType,
+			cookies,
+			userAgent,
+			openFileAfterDownload
+		}))
+	}
+}
+
 export const deviceInfo = () => {
 	return new Promise((resolve, reject) => {
 		registerCb(
@@ -206,6 +220,7 @@ export default {
 	closeApp,
 	showDateTimePicker,
 	downloadBlobFile,
+	customFileDownload,
 	printFunction,
 	loadOfferCard,
 	addToSiri
