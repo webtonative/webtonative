@@ -148,6 +148,9 @@ export const shareFile = (fileUrl = null, fileExtension = null, text = null) => 
 
 export const closeApp = () => {
 	isAndroidApp && webToNative.closeApp();
+	isIosApp && webToNativeIos.postMessage({
+		action: "closeApp",
+	});
 };
 
 export const showDateTimePicker = (options) => {
