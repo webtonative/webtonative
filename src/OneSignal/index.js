@@ -195,3 +195,23 @@ export const logoutSMSNumber = (options = {}) => {
 		}
 	}
 };
+
+export const optInUser = () => {
+	if (platform === "ANDROID_APP") {
+		webToNative.optInOneSignalPermissionDialog();
+	} else if (platform === "IOS_APP") {
+		webToNativeIos.postMessage({
+			action: "optInOneSignalPermissionDialog"
+		});
+	}
+};
+
+export const optOutUser = (options = {}) => {
+	if (platform === "ANDROID_APP") {
+		webToNative.optOutOneSignalPermissionDialog();
+	} else if (platform === "IOS_APP") {
+		webToNativeIos.postMessage({
+			action: "optOutOneSignalPermissionDialog"
+		});
+	}
+};

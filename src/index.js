@@ -203,6 +203,53 @@ export const addToSiri = (options) => {
 	}
 };
 
+export const appFirstLoad = () => {
+	return new Promise((resolve, reject) => {
+		registerCb(
+			(results) => {
+				if (results) {
+					resolve(results);
+				} else {
+					reject({
+						err: "Error getting request",
+					});
+				}
+			},
+			{
+				key: "firstCallWhenAppStarted",
+			}
+		);
+		if (platform === "ANDROID_APP") {
+			webToNative.firstCallWhenAppStarted();
+		} else if (platform === "IOS_APP") {
+			webToNativeIos.postMessage({
+				action: "firstCallWhenAppStarted",
+			});
+		} else {
+			reject("This function will work in Native App Powered By WebToNative");
+		}
+	});
+};
+
+export const showPermission = (options) => {
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		const { callback, permissionType } = options;
+		registerCb((response) => {
+			const { type, typeValue } = response;
+			if (type === "showPermission" || typeValue === "showPermission") {
+				callback && callback(response);
+			}
+		});
+
+		isAndroidApp && webToNative.showPermission(permissionType);
+
+		isIosApp && webToNativeIos.postMessage({
+			action: "showPermission",
+			type:permissionType
+		});
+	}
+};
+
 export { platform, isNativeApp };
 
 export default {
@@ -226,5 +273,7 @@ export default {
 	customFileDownload,
 	printFunction,
 	loadOfferCard,
-	addToSiri
+	appFirstLoad,
+	addToSiri,
+	showPermission
 };
