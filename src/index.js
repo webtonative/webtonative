@@ -231,6 +231,12 @@ export const appFirstLoad = () => {
 	});
 };
 
+export const forceUpdateCookies = () => {
+	if (["ANDROID_APP"].includes(platform)) {
+		isAndroidApp && webToNative.forceUpdateCookies();
+	}
+}
+
 export const showPermission = (options) => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { callback, permissionType } = options;
