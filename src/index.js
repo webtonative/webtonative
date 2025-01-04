@@ -281,5 +281,6 @@ export default {
 	loadOfferCard,
 	appFirstLoad,
 	addToSiri,
-	showPermission
+	showPermission,
+	forceUpdateCookies
 };
