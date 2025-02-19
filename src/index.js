@@ -256,6 +256,23 @@ export const showPermission = (options) => {
 	}
 };
 
+export const updateAppIcon = (options) => {
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		const { active=false, iconName=null } = options;
+
+		isAndroidApp && webToNative.updateAppIcon(JSON.stringify({
+			active,
+			iconName
+		}));
+
+		isIosApp && webToNativeIos.postMessage({
+			"action": "updateAppIcon",
+			iconName,
+			active
+		});
+	}
+};
+
 export { platform, isNativeApp };
 
 export default {
@@ -282,5 +299,6 @@ export default {
 	appFirstLoad,
 	addToSiri,
 	showPermission,
-	forceUpdateCookies
+	forceUpdateCookies,
+	updateAppIcon
 };
