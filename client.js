@@ -21,6 +21,7 @@ import * as Haptics from "./src/Haptics";
 import * as MediaPlayer from "./src/MediaPlayer";
 import * as Printing from "./src/Printing";
 import * as Notification from "./src/Notification";
+import * as Bluetooth from "./src/Bluetooth";
 import { webToNativeIos } from "./src/utills";
 window.WTN = webToNative;
 
@@ -49,6 +50,7 @@ window.WTN.Firebase = Firebase;
 window.WTN.MediaPlayer = MediaPlayer;
 window.WTN.Printing = Printing;
 window.WTN.Notification = Notification;
+window.WTN.Bluetooth = Bluetooth;
 
 if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
 	window.navigator.share = function (obj) {

@@ -53,3 +53,22 @@ export const getAllPurchases = (options) => {
 			})
 	}
 }
+
+export const getReceiptData = (options) => {
+	if (["IOS_APP"].includes(platform)) {
+
+		const { callback } = options;
+
+		registerCb((response) => {
+			const { type } = response;
+			if (type === "getReceiptData") {
+				callback && callback(response);
+			}
+		});
+
+		platform === "IOS_APP" &&
+			webToNativeIos.postMessage({
+				action: "getReceiptData"
+			});
+	}
+}
