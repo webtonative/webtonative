@@ -273,6 +273,63 @@ export const updateAppIcon = (options) => {
 	}
 };
 
+export const disableScreenshot = (options) => {
+	if (["IOS_APP"].includes(platform)) {
+		isIosApp && webToNativeIos.postMessage({
+			"action": "disableScreenshotForPage",
+			ssKey:true
+		});
+	}
+};
+
+export const getSafeArea = (options) => {
+	if (["IOS_APP"].includes(platform)) {
+		const { callback } = options;
+		registerCb((response) => {
+			const { type } = response;
+			if (type === "getSafeArea") {
+				callback && callback(response);
+			}
+		});
+
+		isIosApp && webToNativeIos.postMessage({
+			"action": "getSafeArea"
+		});
+	}
+};
+
+export const getAddOnStatus = (options) => {
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		const { callback, addOnName } = options;
+		registerCb((response) => {
+			const { type } = response;
+			if (type === "getAddOnStatus") {
+				callback && callback(response);
+			}
+		});
+
+		isAndroidApp && webToNative.getAddOnStatus(JSON.stringify({
+			addOnName
+		}));
+
+		isIosApp && webToNativeIos.postMessage({
+			"action": "getAddOnStatus",
+			addOnName
+		});
+	}
+};
+
+export const setOrientation = (options) => {
+	if (["ANDROID_APP"].includes(platform)) {
+		const { orientation, forceOrientation=false } = options;
+		
+		isAndroidApp && webToNative.setOrientation(JSON.stringify({
+			orientation,
+			forceOrientation
+		}));
+	}
+};
+
 export { platform, isNativeApp };
 
 export default {
@@ -300,5 +357,9 @@ export default {
 	addToSiri,
 	showPermission,
 	forceUpdateCookies,
-	updateAppIcon
+	updateAppIcon,
+	disableScreenshot,
+	getSafeArea,
+	getAddOnStatus,
+	setOrientation
 };
