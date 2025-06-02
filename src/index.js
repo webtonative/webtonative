@@ -181,6 +181,25 @@ export const printFunction = (options) => {
 	}
 };
 
+export const nfcSupported = (options) => {
+	if (["ANDROID_APP","IOS_APP"].includes(platform)) {
+		const { callback } = options;
+		registerCb((response) => {
+			const { type } = response;
+			if (type === "nfcSupported") {
+				callback && callback(response);
+			}
+		});
+		
+		isAndroidApp && webToNative.nfcSupported();
+
+		isIosApp &&
+			webToNativeIos.postMessage({
+				action:"nfcSupported"
+			});
+	}
+};
+
 export const loadOfferCard = (options) => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		
@@ -207,12 +226,15 @@ export const appFirstLoad = () => {
 	return new Promise((resolve, reject) => {
 		registerCb(
 			(results) => {
-				if (results) {
-					resolve(results);
-				} else {
-					reject({
-						err: "Error getting request",
-					});
+				const { type } = results;
+				if (type === "firstCallWhenAppStarted") {
+					if (results) {
+						resolve(results);
+					} else {
+						reject({
+							err: "Error getting request",
+						});
+					}
 				}
 			},
 			{
@@ -237,9 +259,28 @@ export const forceUpdateCookies = () => {
 	}
 }
 
+export const openAppSettingForPermission = (options) => {
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		const { callback, values } = options;
+		registerCb((response) => {
+			const { type, typeValue } = response;
+			if (type === "openAppSettingForPermission") {
+				callback && callback(response);
+			}
+		});
+
+		isAndroidApp && webToNative.openAppSettingForPermission(values);
+
+		isIosApp && webToNativeIos.postMessage({
+			action: "openAppSettingForPermission",
+			values
+		});
+	}
+};
+
 export const showPermission = (options) => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
-		const { callback, permissionType } = options;
+		const { callback, permission, openAppSetting=false, alertDialogStyle } = options;
 		registerCb((response) => {
 			const { type, typeValue } = response;
 			if (type === "showPermission" || typeValue === "showPermission") {
@@ -247,11 +288,17 @@ export const showPermission = (options) => {
 			}
 		});
 
-		isAndroidApp && webToNative.showPermission(permissionType);
+		isAndroidApp && webToNative.showPermission(JSON.stringify({
+			permission,
+			openAppSetting,
+			alertDialogStyle
+		}));
 
 		isIosApp && webToNativeIos.postMessage({
 			action: "showPermission",
-			type:permissionType
+			permission,
+			openAppSetting,
+			alertDialogStyle
 		});
 	}
 };
@@ -275,9 +322,10 @@ export const updateAppIcon = (options) => {
 
 export const disableScreenshot = (options) => {
 	if (["IOS_APP"].includes(platform)) {
+		const { ssKey=false } = options;
 		isIosApp && webToNativeIos.postMessage({
 			"action": "disableScreenshotForPage",
-			ssKey:true
+			ssKey
 		});
 	}
 };
@@ -315,6 +363,27 @@ export const getAddOnStatus = (options) => {
 		isIosApp && webToNativeIos.postMessage({
 			"action": "getAddOnStatus",
 			addOnName
+		});
+	}
+};
+
+export const checkPermission = (options) => {
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		const { callback, permissionName } = options;
+
+		registerCb((response) => {
+			const { type } = response;
+			alert("Callback invoked"+ response.type);
+			if (type === "checkPermission") {
+				callback && callback(response);
+			}
+		});
+		
+		isAndroidApp && webToNative.checkPermission(JSON.stringify(permissionName));
+
+		isIosApp && webToNativeIos.postMessage({
+			"action": "checkPermission",
+			permissionName
 		});
 	}
 };
@@ -361,5 +430,7 @@ export default {
 	disableScreenshot,
 	getSafeArea,
 	getAddOnStatus,
-	setOrientation
+	setOrientation,
+	checkPermission,
+	openAppSettingForPermission
 };

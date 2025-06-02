@@ -22,6 +22,7 @@ import * as MediaPlayer from "./src/MediaPlayer";
 import * as Printing from "./src/Printing";
 import * as Notification from "./src/Notification";
 import * as Bluetooth from "./src/Bluetooth";
+import * as Stripe from "./src/Stripe";
 import { webToNativeIos } from "./src/utills";
 window.WTN = webToNative;
 
@@ -52,6 +53,7 @@ window.WTN.MediaPlayer = MediaPlayer;
 window.WTN.Printing = Printing;
 window.WTN.Notification = Notification;
 window.WTN.Bluetooth = Bluetooth;
+window.WTN.Stripe = Stripe;
 
 if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
 	window.navigator.share = function (obj) {
