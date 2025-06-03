@@ -373,7 +373,6 @@ export const checkPermission = (options) => {
 
 		registerCb((response) => {
 			const { type } = response;
-			alert("Callback invoked"+ response.type);
 			if (type === "checkPermission") {
 				callback && callback(response);
 			}
