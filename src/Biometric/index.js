@@ -86,3 +86,22 @@ export const show = (options = {}) => {
 			});
 	}
 };
+
+export const biometricAuthWithDismissOnCancel = (options = {}) => {
+	const { callback, prompt, isAuthenticationOptional=false } = options;
+	if (["ANDROID_APP"].includes(platform)) {
+		registerCb((response) => {
+			const { type } = response;
+			if (type === "biometricAuthWithDismissOnCancel") {
+				callback && callback(response);
+			}
+		});
+
+		platform === "ANDROID_APP" &&
+        	webToNative.biometricAuthWithDismissOnCancel(JSON.stringify({
+				prompt:prompt || "Authenticate to continue!",
+				isAuthenticationOptional
+			}));
+
+	}
+};

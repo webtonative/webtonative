@@ -330,6 +330,13 @@ export const disableScreenshot = (options) => {
 	}
 };
 
+export const customBackHandling = (options) => {
+	if (["ANDROID_APP"].includes(platform)) {
+		const { enable=false } = options;
+		isAndroidApp && webToNative.customBackHandling(JSON.stringify({enable}));
+	}
+};
+
 export const getSafeArea = (options) => {
 	if (["IOS_APP"].includes(platform)) {
 		const { callback } = options;
@@ -431,5 +438,6 @@ export default {
 	getAddOnStatus,
 	setOrientation,
 	checkPermission,
-	openAppSettingForPermission
+	openAppSettingForPermission,
+	customBackHandling
 };
