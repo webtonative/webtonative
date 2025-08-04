@@ -24,6 +24,8 @@ import * as Notification from "./src/Notification";
 import * as Bluetooth from "./src/Bluetooth";
 import * as Stripe from "./src/Stripe";
 import * as InAppUpdate from "./src/InAppUpdate";
+import * as Siri from "./src/Siri";
+import * as Beacon from "./src/Beacon";
 import { webToNativeIos } from "./src/utills";
 window.WTN = webToNative;
 
@@ -56,6 +58,8 @@ window.WTN.Notification = Notification;
 window.WTN.Bluetooth = Bluetooth;
 window.WTN.Stripe = Stripe;
 window.WTN.InAppUpdate = InAppUpdate;
+window.WTN.Siri = Siri;
+window.WTN.Beacon = Beacon;
 
 if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
 	window.navigator.share = function (obj) {
