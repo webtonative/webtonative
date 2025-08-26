@@ -2,10 +2,11 @@
 	"name": "webtonative",
 	"version": "1.0.74",
 	"description": "",
-	"main": "index.js",
+	"main": "build/src/index.js",
+	"types": "index.d.ts",
 	"private": true,
 	"scripts": {
-		"build": "rimraf build && babel src --presets @babel/preset-env,minify --out-dir build && node buildScript.js && npm run dist",
+		"build": "rimraf build && tsc && ts-node buildScript.ts && npm run dist",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"dist": "NODE_ENV=production webpack --config webpack.config.js"
 	},
@@ -24,9 +25,13 @@
 		"@babel/cli": "^7.14.5",
 		"@babel/core": "^7.14.6",
 		"@babel/preset-env": "^7.14.7",
+		"@types/node": "^18.11.18",
 		"babel-loader": "^8.2.2",
 		"babel-preset-minify": "^0.5.1",
 		"rimraf": "^3.0.2",
+		"ts-loader": "^9.4.2",
+		"ts-node": "^10.9.1",
+		"typescript": "^4.9.4",
 		"webpack": "^5.40.0",
 		"webpack-cli": "^4.7.2"
 	}
