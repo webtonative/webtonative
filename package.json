@@ -3,7 +3,7 @@
 	"version": "1.0.74",
 	"description": "",
 	"main": "build/src/index.js",
-	"types": "index.d.ts",
+	"types": "build/src/index.d.ts",
 	"private": true,
 	"scripts": {
 		"build": "rimraf build && tsc && ts-node buildScript.ts && npm run dist",
