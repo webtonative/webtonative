@@ -331,9 +331,13 @@ export const disableScreenshot = (options) => {
 };
 
 export const customBackHandling = (options) => {
-	if (["ANDROID_APP"].includes(platform)) {
+	if (["ANDROID_APP","IOS_APP"].includes(platform)) {
 		const { enable=false } = options;
 		isAndroidApp && webToNative.customBackHandling(JSON.stringify({enable}));
+		isIosApp && webToNativeIos.postMessage({
+			"action": "customBackHandling",
+			enable
+		});
 	}
 };
 
