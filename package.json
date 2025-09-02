@@ -2,8 +2,8 @@
 	"name": "webtonative",
 	"version": "1.0.74",
 	"description": "",
-	"main": "build/src/index.js",
-	"types": "build/src/index.d.ts",
+	"main": "build/index.js",
+	"types": "build/index.d.ts",
 	"private": true,
 	"scripts": {
 		"build": "rimraf build && tsc && ts-node buildScript.ts && npm run dist",
