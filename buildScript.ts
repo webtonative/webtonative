@@ -12,8 +12,8 @@ const buildPath = path.resolve("build");
 
 const exportsMap = {
 	".": {
-		import: "./build/index.js",
-		types: "./build/index.d.ts",
+		import: "./index.js",
+		types: "./index.d.ts",
 	},
 };
 
@@ -23,8 +23,8 @@ for (const entry of entries) {
 	if (entry.isDirectory()) {
 		const name = entry.name;
 		exportsMap[`./${name}`] = {
-			import: `./build/${name}/index.js`,
-			types: `./build/${name}/index.d.ts`,
+			import: `./${name}/index.js`,
+			types: `./${name}/index.d.ts`,
 		};
 	}
 }
