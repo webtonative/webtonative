@@ -1,6 +1,14 @@
 import { isNativeApp, platform, webToNative, registerCb, webToNativeIos } from "../utills";
 import { Platform, RegisterCallbackOptions } from "../types";
-import { PlayerIdResponse, OneSignalIosMessage, TagsOptions, TriggerOptions, TriggerResponse, EmailOptions, SMSOptions } from "./types";
+import {
+	PlayerIdResponse,
+	OneSignalIosMessage,
+	TagsOptions,
+	TriggerOptions,
+	TriggerResponse,
+	EmailOptions,
+	SMSOptions,
+} from "./types";
 
 export const getPlayerId = (): Promise<string> => {
 	return new Promise<string>((resolve, reject) => {
@@ -226,7 +234,7 @@ export const optInUser = (): void => {
 		webToNative.optInOneSignalPermissionDialog();
 	} else if (platform === "IOS_APP" && webToNativeIos) {
 		webToNativeIos.postMessage({
-			action: "optInOneSignalPermissionDialog"
+			action: "optInOneSignalPermissionDialog",
 		} as OneSignalIosMessage);
 	}
 };
@@ -236,7 +244,7 @@ export const optOutUser = (): void => {
 		webToNative.optOutOneSignalPermissionDialog();
 	} else if (platform === "IOS_APP" && webToNativeIos) {
 		webToNativeIos.postMessage({
-			action: "optOutOneSignalPermissionDialog"
+			action: "optOutOneSignalPermissionDialog",
 		} as OneSignalIosMessage);
 	}
 };
