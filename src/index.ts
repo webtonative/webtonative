@@ -586,8 +586,8 @@ export const showNativeComponents = (options?: NativeComponentsOptions): void =>
 		const { components } = options || {};
 
 		isAndroidApp &&
-			webToNative.checkPermission &&
-			webToNative.checkPermission(JSON.stringify(options));
+			webToNative.showNativeComponents &&
+			webToNative.showNativeComponents(JSON.stringify(options));
 		isIosApp &&
 			webToNativeIos &&
 			webToNativeIos.postMessage({
