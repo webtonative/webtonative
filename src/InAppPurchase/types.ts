@@ -1,5 +1,9 @@
 export interface InAppPurchaseResponse {
 	type: string;
+	isSuccess?: boolean;
+	transactionId?: string;
+	status?: string;
+	receiptData?: any;
 	[key: string]: any;
 }
 
