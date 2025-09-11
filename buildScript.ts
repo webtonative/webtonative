@@ -42,4 +42,4 @@ function addExports(dir, prefix = "") {
 addExports(buildPath);
 
 packageJson.exports = exportsMap;
-fs.writeFileSync(path.join(buildPath, "package.json"), JSON.stringify(packageJson, null, 2));
+fs.writeFileSync(path.join(buildPath, "package.json"), JSON.stringify(packageJson, null, 4));
