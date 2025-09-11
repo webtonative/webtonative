@@ -1,7 +1,6 @@
 const fs = require("fs");
-import path from "path";
+const path = require("path");
 
-// Copy README.md to build folder
 fs.copyFileSync("README.md", "build/README.md");
 
 // Read package.json, remove private flag, and write to build folder
@@ -17,19 +16,30 @@ const exportsMap = {
 	},
 };
 
-const entries = fs.readdirSync(buildPath, { withFileTypes: true });
+function addExports(dir, prefix = "") {
+	const entries = fs.readdirSync(dir, { withFileTypes: true });
 
-for (const entry of entries) {
-	if (entry.isDirectory()) {
-		const name = entry.name;
-		exportsMap[`./${name}`] = {
-			import: `./${name}/index.js`,
-			types: `./${name}/index.d.ts`,
-		};
+	for (const entry of entries) {
+		if (entry.isDirectory()) {
+			const folderName = entry.name;
+			const rel = prefix ? `${prefix}/${folderName}` : folderName;
+
+			const indexJs = path.join(dir, folderName, "index.js");
+			const indexDts = path.join(dir, folderName, "index.d.ts");
+
+			if (fs.existsSync(indexJs)) {
+				exportsMap[`./${rel}`] = {
+					import: `./${rel}/index.js`,
+					types: `./${rel}/index.d.ts`,
+				};
+			}
+
+			addExports(path.join(dir, folderName), rel);
+		}
 	}
 }
 
-packageJson.exports = exportsMap;
+addExports(buildPath);
 
-// Write the modified package.json to build folder
-fs.writeFileSync("build/package.json", JSON.stringify(packageJson, null, 4));
+packageJson.exports = exportsMap;
+fs.writeFileSync(path.join(buildPath, "package.json"), JSON.stringify(packageJson, null, 2));
