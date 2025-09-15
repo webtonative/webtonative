@@ -514,7 +514,7 @@ export const getAddOnStatus = (options: GetAddOnStatusOptions): void => {
 
 interface CheckPermissionOptions {
 	callback?: (response: BaseResponse) => void;
-	permissionName?: string;
+	permissionName?: string[];
 }
 
 export const checkPermission = (options: CheckPermissionOptions): void => {
