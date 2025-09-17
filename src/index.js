@@ -152,6 +152,21 @@ export const enablePullToRefresh = (status) => {
 
 export const clearAppCache = (reload) => {
 	isAndroidApp && webToNative.clearWebViewCache(JSON.stringify({ reload }));
+	isIosApp &&
+		webToNativeIos.postMessage({
+			action: "clearAppCache",
+			cacheOnly: true,
+			reload,
+		});
+};
+
+export const clearAppData = (reload) => {
+	isIosApp &&
+		webToNativeIos.postMessage({
+			action: "clearAppCache",
+			cacheOnly: false,
+			reload,
+		});
 };
 
 export const shareFile = (fileUrl = null, fileExtension = null, text = null) => {
