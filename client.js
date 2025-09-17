@@ -26,7 +26,9 @@ import * as Stripe from "./src/Stripe";
 import * as InAppUpdate from "./src/InAppUpdate";
 import * as Siri from "./src/Siri";
 import * as Beacon from "./src/Beacon";
+import * as Passcode from "./src/Passcode";
 import { webToNativeIos } from "./src/utills";
+
 window.WTN = webToNative;
 
 window.WTN.OneSignal = OneSignal;
@@ -60,6 +62,7 @@ window.WTN.Stripe = Stripe;
 window.WTN.InAppUpdate = InAppUpdate;
 window.WTN.Siri = Siri;
 window.WTN.Beacon = Beacon;
+window.WTN.Passcode = Passcode;
 
 if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
 	window.navigator.share = function (obj) {
