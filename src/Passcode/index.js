@@ -1,3 +1,4 @@
+import { webToNativeIos } from "../utills";
 import { isIosApp } from "./../index";
 
 export const setPasscode = () => {
