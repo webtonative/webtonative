@@ -27,6 +27,7 @@ import * as InAppUpdate from "./src/InAppUpdate";
 import * as Siri from "./src/Siri";
 import * as Beacon from "./src/Beacon";
 import * as Passcode from "./src/Passcode";
+import * as RevenueCat from "./src/RevenueCat";
 import { webToNativeIos } from "./src/utills";
 
 window.WTN = webToNative;
@@ -63,6 +64,7 @@ window.WTN.InAppUpdate = InAppUpdate;
 window.WTN.Siri = Siri;
 window.WTN.Beacon = Beacon;
 window.WTN.Passcode = Passcode;
+window.WTN.RevenueCat = RevenueCat;
 
 if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
 	window.navigator.share = function (obj) {
