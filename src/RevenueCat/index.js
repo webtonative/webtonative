@@ -1,3 +1,4 @@
+import { isIosApp, isAndroidApp } from "./../index";
 import { webToNative, webToNativeIos } from "../utills";
 
 export const configure = (options) => {
