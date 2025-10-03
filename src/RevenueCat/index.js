@@ -76,7 +76,6 @@ export const getCustomerInfo = (options) => {
 	} else if (isIosApp) {
 		webToNativeIos.postMessage({
 			action: "getCustomerInfo",
-			userId,
 		});
 	}
 };
