@@ -33,7 +33,7 @@ export const isInitialized = (options) => {
 	});
 
 	if (isAndroidApp) {
-		webToNative.isInitialized(JSON.stringify());
+		webToNative.isInitialized();
 	} else if (isIosApp) {
 		webToNativeIos.postMessage({
 			action: "isInitialized",
@@ -72,7 +72,7 @@ export const getCustomerInfo = (options) => {
 	});
 
 	if (isAndroidApp) {
-		webToNative.getCustomerInfo(JSON.stringify());
+		webToNative.getCustomerInfo();
 	} else if (isIosApp) {
 		webToNativeIos.postMessage({
 			action: "getCustomerInfo",
@@ -131,7 +131,7 @@ export const restorePurchase = (options) => {
 	});
 
 	if (isAndroidApp) {
-		webToNative.restorePurchase(JSON.stringify());
+		webToNative.restorePurchase();
 	} else if (isIosApp) {
 		webToNativeIos.postMessage({
 			action: "restorePurchase",
