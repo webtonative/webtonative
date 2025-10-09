@@ -29,6 +29,7 @@ import * as Beacon from "./src/Beacon";
 import * as Passcode from "./src/Passcode";
 import * as RevenueCat from "./src/RevenueCat";
 import * as OrufyConnect from "./src/OrufyConnect";
+import * as NativeDatastore from "./src/NativeDatastore";
 import { webToNativeIos } from "./src/utills";
 
 window.WTN = webToNative;
@@ -67,6 +68,7 @@ window.WTN.Beacon = Beacon;
 window.WTN.Passcode = Passcode;
 window.WTN.RevenueCat = RevenueCat;
 window.WTN.OrufyConnect = OrufyConnect;
+window.WTN.NativeDatastore = NativeDatastore;
 
 if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
 	window.navigator.share = function (obj) {

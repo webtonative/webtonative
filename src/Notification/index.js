@@ -3,7 +3,7 @@ import { platform, registerCb, webToNative, webToNativeIos } from "../utills";
  *
  *
  */
-export const checkNotificationPermission = (options = {}) => {
+/* export const checkNotificationPermission = (options = {}) => {
 	const { callback } = options;
 	if (["ANDROID_APP","IOS_APP"].includes(platform)) {
 		registerCb((response) => {
@@ -21,7 +21,7 @@ export const checkNotificationPermission = (options = {}) => {
 				action: "checkNotificationPermission",
 			});
 	}
-};
+}; */
 
 /**
  *
