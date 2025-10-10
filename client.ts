@@ -30,41 +30,42 @@ import { webToNativeIos } from "./src/utills";
 
 // Define the window interface to add WTN property
 declare global {
-  interface Window {
-    WTN: typeof webToNative & {
-      OneSignal: typeof OneSignal;
-      VoiceSearch: typeof VoiceSearch;
-      Barcode: typeof Barcode;
-      AdMob: typeof AdMob;
-      socialLogin: typeof socialLogin;
-      inAppPurchase: typeof inAppPurchase;
-      getAllPurchases: typeof getAllPurchases;
-      getReceiptData: typeof getReceiptData;
-      appsflyer: typeof AppsFlyer;
-      bottomNavigation: typeof BottomNavigation;
-      contacts: typeof contacts;
-      screen: typeof screen;
-      backgroundLocation: typeof backgroundLocation;
-      clipboard: typeof clipboard;
-      appReview: typeof appReview;
-      Biometric: typeof Biometric;
-      ATTConsent: typeof ATTConsent;
-      facebook: {
-        events: typeof FBEvents;
-      };
-      FirebaseAnalytics: typeof FirebaseAnalytics;
-      Firebase: typeof Firebase;
-      Haptics: typeof Haptics;
-      MediaPlayer: typeof MediaPlayer;
-      Printing: typeof Printing;
-      Notification: typeof Notification;
-      Bluetooth: typeof Bluetooth;
-      Stripe: typeof Stripe;
-      InAppUpdate: typeof InAppUpdate;
-      Siri: typeof Siri;
-      Beacon: typeof Beacon;
-    };
-  }
+	interface Window {
+		WTN: typeof webToNative & {
+			OneSignal: typeof OneSignal;
+			VoiceSearch: typeof VoiceSearch;
+			Barcode: typeof Barcode;
+			AdMob: typeof AdMob;
+			socialLogin: typeof socialLogin;
+			inAppPurchase: typeof inAppPurchase;
+			getAllPurchases: typeof getAllPurchases;
+			getReceiptData: typeof getReceiptData;
+			appsflyer: typeof AppsFlyer;
+			bottomNavigation: typeof BottomNavigation;
+			contacts: typeof contacts;
+			screen: typeof screen;
+			backgroundLocation: typeof backgroundLocation;
+			clipboard: typeof clipboard;
+			appReview: typeof appReview;
+			Biometric: typeof Biometric;
+			ATTConsent: typeof ATTConsent;
+			facebook: {
+				events: typeof FBEvents;
+			};
+			firebaseAnalytics: typeof FirebaseAnalytics;
+			Firebase: typeof Firebase;
+			haptics: typeof Haptics;
+			MediaPlayer: typeof MediaPlayer;
+			Printing: typeof Printing;
+			Notification: typeof Notification;
+			Bluetooth: typeof Bluetooth;
+			Stripe: typeof Stripe;
+			InAppUpdate: typeof InAppUpdate;
+			Siri: typeof Siri;
+			Beacon: typeof Beacon;
+		};
+		WebToNativeInterface: any;
+	}
 }
 
 // Assign to window.WTN
@@ -88,11 +89,11 @@ window.WTN.appReview = appReview;
 window.WTN.Biometric = Biometric;
 window.WTN.ATTConsent = ATTConsent;
 window.WTN.facebook = {
-  events: FBEvents,
+	events: FBEvents,
 };
-window.WTN.FirebaseAnalytics = FirebaseAnalytics;
+window.WTN.firebaseAnalytics = FirebaseAnalytics;
 window.WTN.Firebase = Firebase;
-window.WTN.Haptics = Haptics;
+window.WTN.haptics = Haptics;
 window.WTN.MediaPlayer = MediaPlayer;
 window.WTN.Printing = Printing;
 window.WTN.Notification = Notification;
@@ -101,6 +102,26 @@ window.WTN.Stripe = Stripe;
 window.WTN.InAppUpdate = InAppUpdate;
 window.WTN.Siri = Siri;
 window.WTN.Beacon = Beacon;
+
+if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
+	window.navigator.share = function (obj: any) {
+		return new Promise((resolve, reject) => {
+			window.WebToNativeInterface.openShareIntent(obj.url);
+			resolve();
+		});
+	};
+} else if (window.WTN.isIosApp) {
+	window.navigator.share = function (obj: any) {
+		return new Promise((resolve, reject) => {
+			webToNativeIos &&
+				webToNativeIos?.postMessage({
+					action: "share",
+					url: obj.url,
+				});
+			resolve();
+		});
+	};
+}
 
 // Export the WTN object as default
 export default window.WTN;
