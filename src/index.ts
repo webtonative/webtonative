@@ -450,11 +450,17 @@ interface CustomBackHandlingOptions {
 }
 
 export const customBackHandling = (options: CustomBackHandlingOptions): void => {
-	if (["ANDROID_APP"].includes(platform)) {
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { enable = false } = options;
 		isAndroidApp &&
 			webToNative.customBackHandling &&
 			webToNative.customBackHandling(JSON.stringify({ enable }));
+		isIosApp &&
+			webToNativeIos &&
+			webToNativeIos?.postMessage({
+				action: "customBackHandling",
+				enable,
+			});
 	}
 };
 

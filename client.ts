@@ -26,6 +26,7 @@ import * as Stripe from "./src/Stripe";
 import * as InAppUpdate from "./src/InAppUpdate";
 import * as Siri from "./src/Siri";
 import * as Beacon from "./src/Beacon";
+import * as NativeDatastore from "./src/NativeDatastore";
 import { webToNativeIos } from "./src/utills";
 
 // Define the window interface to add WTN property
@@ -63,6 +64,7 @@ declare global {
 			InAppUpdate: typeof InAppUpdate;
 			Siri: typeof Siri;
 			Beacon: typeof Beacon;
+			NativeDatastore: typeof NativeDatastore;
 		};
 		WebToNativeInterface: any;
 	}
@@ -102,6 +104,7 @@ window.WTN.Stripe = Stripe;
 window.WTN.InAppUpdate = InAppUpdate;
 window.WTN.Siri = Siri;
 window.WTN.Beacon = Beacon;
+window.WTN.NativeDatastore = NativeDatastore;
 
 if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
 	window.navigator.share = function (obj: any) {
