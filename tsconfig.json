@@ -6,8 +6,8 @@
     "allowJs": true,
     "checkJs": false,
     "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
+    "declarationMap": false,
+    "sourceMap": false,
     "outDir": "./build",
     "rootDir": "src",
     "strict": false,
@@ -20,7 +20,7 @@
     "alwaysStrict": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "build", "**/*.d.ts"]
