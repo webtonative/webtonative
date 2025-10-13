@@ -1,5 +1,10 @@
-import { platform, registerCb, webToNative, webToNativeIos } from "../utills";
-import { SocialLoginOptions, FacebookLoginResponse, FacebookLogoutResponse, FacebookIosMessage } from "./types";
+import { platform, registerCb, webToNative, webToNativeIos } from "../../utills";
+import {
+	SocialLoginOptions,
+	FacebookLoginResponse,
+	FacebookLogoutResponse,
+	FacebookIosMessage,
+} from "../types";
 
 /**
  * This function handles native facebook login

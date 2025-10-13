@@ -1,5 +1,5 @@
-import { platform, registerCb, webToNativeIos } from "../utills";
-import { SocialLoginOptions, AppleLoginResponse, AppleIosMessage } from "./types";
+import { platform, registerCb, webToNativeIos } from "../../utills";
+import { SocialLoginOptions, AppleLoginResponse, AppleIosMessage } from "../types";
 
 /**
  * This function handles native Apple login
@@ -20,7 +20,7 @@ export const login = (options: SocialLoginOptions): void => {
 				callback && callback(response);
 			}
 		});
-		
+
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({
 				action: "appleSignIn",

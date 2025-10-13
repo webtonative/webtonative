@@ -1,5 +1,10 @@
-import { platform, registerCb, webToNative, webToNativeIos } from "../utills";
-import { SocialLoginOptions, GoogleLoginResponse, GoogleLogoutResponse, GoogleIosMessage } from "./types";
+import { platform, registerCb, webToNative, webToNativeIos } from "../../utills";
+import {
+	SocialLoginOptions,
+	GoogleLoginResponse,
+	GoogleLogoutResponse,
+	GoogleIosMessage,
+} from "../types";
 
 /**
  * This function handles native Google login
