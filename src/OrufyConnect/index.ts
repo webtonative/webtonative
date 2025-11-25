@@ -22,6 +22,25 @@ export const onUnreadChatCountsChange = (options?: ICb) => {
 	}
 };
 
+export const openConnectWidget = (options?: ICb) => {
+	const { callback } = options || {};
+
+	registerCb((response) => {
+		const { type } = response;
+		if (type === "openConnectWidget") {
+			callback && callback(response);
+		}
+	});
+
+	if (isAndroidApp) {
+		webToNative.openConnectWidget();
+	} else if (isIosApp && webToNativeIos) {
+		webToNativeIos.postMessage({
+			action: "openConnectWidget",
+		});
+	}
+};
+
 export const widgetLogin = (data?: Record<string, any>) => {
 	if (isAndroidApp) {
 		webToNative.widgetLogin(JSON.stringify(data));
