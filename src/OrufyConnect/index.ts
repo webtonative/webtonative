@@ -22,8 +22,8 @@ export const onUnreadChatCountsChange = (options?: ICb) => {
 	}
 };
 
-export const openConnectWidget = (options?: ICb & { chatId?: string }) => {
-	const { callback } = options || {};
+export const openConnectWidget = (data?: ICb & { chatId?: string }) => {
+	const { callback } = data || {};
 
 	registerCb((response) => {
 		const { type } = response;
@@ -33,18 +33,18 @@ export const openConnectWidget = (options?: ICb & { chatId?: string }) => {
 	});
 
 	if (isAndroidApp) {
-		webToNative.openConnectWidget(JSON.stringify(options));
+		webToNative.openConnectWidget(JSON.stringify({ data }));
 	} else if (isIosApp && webToNativeIos) {
 		webToNativeIos.postMessage({
 			action: "openConnectWidget",
-			data: options,
+			data,
 		});
 	}
 };
 
 export const widgetLogin = (data?: Record<string, any>) => {
 	if (isAndroidApp) {
-		webToNative.widgetLogin(JSON.stringify(data));
+		webToNative.widgetLogin(JSON.stringify({ data }));
 	} else if (isIosApp && webToNativeIos) {
 		webToNativeIos.postMessage({
 			action: "widgetLogin",
@@ -55,7 +55,7 @@ export const widgetLogin = (data?: Record<string, any>) => {
 
 export const setUserDetails = (data?: Record<string, any>) => {
 	if (isAndroidApp) {
-		webToNative.setUserDetails(JSON.stringify(data));
+		webToNative.setUserDetails(JSON.stringify({ data }));
 	} else if (isIosApp && webToNativeIos) {
 		webToNativeIos.postMessage({
 			action: "setUserDetails",
@@ -102,7 +102,7 @@ export const setAppId = (options: ICb & { appId: string }) => {
 	});
 
 	if (isAndroidApp) {
-		webToNative.setAppId(JSON.stringify(appId));
+		webToNative.setAppId(JSON.stringify({ data: { appId } }));
 	} else if (isIosApp && webToNativeIos) {
 		webToNativeIos.postMessage({
 			action: "setAppId",
@@ -121,7 +121,7 @@ export const setExternalUserid = (options: ICb & { externalUserId: string }) => 
 	});
 
 	if (isAndroidApp) {
-		webToNative.setExternalUserid(JSON.stringify(externalUserId));
+		webToNative.setExternalUserid(JSON.stringify({ data: { externalUserId } }));
 	} else if (isIosApp && webToNativeIos) {
 		webToNativeIos.postMessage({
 			action: "setExternalUserid",
@@ -166,13 +166,13 @@ export const getUser = (options: ICb) => {
 	}
 };
 
-export const setWidgetConfig = (options: Record<string, any>) => {
+export const setWidgetConfig = (data: Record<string, any>) => {
 	if (isAndroidApp) {
-		webToNative.setWidgetConfig(JSON.stringify(options));
+		webToNative.setWidgetConfig(JSON.stringify({ data }));
 	} else if (isIosApp && webToNativeIos) {
 		webToNativeIos.postMessage({
 			action: "setWidgetConfig",
-			data: options,
+			data,
 		});
 	}
 };
@@ -195,8 +195,8 @@ export const getUnreadChatsCount = (options: ICb) => {
 	}
 };
 
-export const sendChatMessage = (options: ICb) => {
-	const { callback } = options || {};
+export const sendChatMessage = (data: ICb) => {
+	const { callback } = data || {};
 	registerCb((response) => {
 		const { type } = response;
 		if (type === "sendChatMessage") {
@@ -205,11 +205,11 @@ export const sendChatMessage = (options: ICb) => {
 	});
 
 	if (isAndroidApp) {
-		webToNative.sendChatMessage(JSON.stringify(options));
+		webToNative.sendChatMessage(JSON.stringify({ data }));
 	} else if (isIosApp && webToNativeIos) {
 		webToNativeIos.postMessage({
 			action: "sendChatMessage",
-			data: options,
+			data,
 		});
 	}
 };
