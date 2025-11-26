@@ -33,10 +33,11 @@ export const openConnectWidget = (options?: ICb) => {
 	});
 
 	if (isAndroidApp) {
-		webToNative.openConnectWidget();
+		webToNative.openConnectWidget(JSON.stringify(options));
 	} else if (isIosApp && webToNativeIos) {
 		webToNativeIos.postMessage({
 			action: "openConnectWidget",
+			data: options,
 		});
 	}
 };
