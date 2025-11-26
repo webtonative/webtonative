@@ -22,7 +22,7 @@ export const onUnreadChatCountsChange = (options?: ICb) => {
 	}
 };
 
-export const openConnectWidget = (options?: ICb) => {
+export const openConnectWidget = (options?: ICb & { chatId?: string }) => {
 	const { callback } = options || {};
 
 	registerCb((response) => {
