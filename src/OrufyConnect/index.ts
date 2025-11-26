@@ -102,7 +102,7 @@ export const setAppId = (options: ICb & { appId: string }) => {
 	});
 
 	if (isAndroidApp) {
-		webToNative.setAppId(JSON.stringify({ data: { appId } }));
+		webToNative.setAppId(JSON.stringify({ data: appId }));
 	} else if (isIosApp && webToNativeIos) {
 		webToNativeIos.postMessage({
 			action: "setAppId",
@@ -121,7 +121,7 @@ export const setExternalUserid = (options: ICb & { externalUserId: string }) => 
 	});
 
 	if (isAndroidApp) {
-		webToNative.setExternalUserid(JSON.stringify({ data: { externalUserId } }));
+		webToNative.setExternalUserid(JSON.stringify({ data: externalUserId }));
 	} else if (isIosApp && webToNativeIos) {
 		webToNativeIos.postMessage({
 			action: "setExternalUserid",
