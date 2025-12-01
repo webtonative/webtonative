@@ -28,6 +28,7 @@ import * as Siri from "./src/Siri";
 import * as Beacon from "./src/Beacon";
 import * as NativeDatastore from "./src/NativeDatastore";
 import * as OrufyConnect from "./src/OrufyConnect";
+import * as RevenueCat from "./src/RevenueCat";
 import { webToNativeIos } from "./src/utills";
 
 // Define the window interface to add WTN property
@@ -67,6 +68,7 @@ declare global {
 			Beacon: typeof Beacon;
 			NativeDatastore: typeof NativeDatastore;
 			OrufyConnect: typeof OrufyConnect;
+			RevenueCat: typeof RevenueCat;
 		};
 		WebToNativeInterface: any;
 	}
@@ -108,6 +110,7 @@ window.WTN.Siri = Siri;
 window.WTN.Beacon = Beacon;
 window.WTN.NativeDatastore = NativeDatastore;
 window.WTN.OrufyConnect = OrufyConnect;
+window.WTN.RevenueCat = RevenueCat;
 
 if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
 	window.navigator.share = function (obj: any) {
