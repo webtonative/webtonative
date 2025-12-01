@@ -213,3 +213,23 @@ export const sendChatMessage = (data: ICb) => {
 		});
 	}
 };
+
+export const getRestoreID = (options: ICb): void => {
+	const { callback } = options || {};
+	registerCb((response) => {
+		const { type } = response;
+		if (type === "getRestoreID") {
+			callback && callback(response);
+		}
+	});
+
+	if (isAndroidApp) {
+		webToNative.getRestoreID(JSON.stringify(options));
+	} else if (isIosApp && webToNativeIos) {
+		const message = {
+			action: "getRestoreID",
+			data: options,
+		};
+		webToNativeIos.postMessage(message);
+	}
+};
