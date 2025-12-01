@@ -224,7 +224,7 @@ export const getRestoreID = (options: ICb): void => {
 	});
 
 	if (isAndroidApp) {
-		webToNative.getRestoreID(JSON.stringify(options));
+		webToNative.getRestoreID();
 	} else if (isIosApp && webToNativeIos) {
 		const message = {
 			action: "getRestoreID",
