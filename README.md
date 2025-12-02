@@ -15,14 +15,11 @@ This package includes TypeScript type definitions. You can use it in your TypeSc
 ```typescript
 import webtonative from 'webtonative';
 
-// Initialize the SDK
-const wtn = webtonative();
-
 // Use with TypeScript type checking
-wtn.statusBar({ color: '#FFFFFF', style: 'dark' });
+webtonative.statusBar({ color: '#FFFFFF', style: 'dark' });
 
 // Access device information with typed response
-wtn.deviceInfo().then(info => {
+webtonative.deviceInfo().then(info => {
   console.log(info);
 });
 ```
