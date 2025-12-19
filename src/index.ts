@@ -437,7 +437,7 @@ export const disableScreenshot = (options: DisableScreenshotOptions): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { ssKey } = options;
 
-		isAndroidApp && webToNative.disableScreenshotForPage?.(JSON.stringify(ssKey));
+		isAndroidApp && webToNative.disableScreenshotForPage?.(ssKey);
 
 		isIosApp &&
 			webToNativeIos &&
