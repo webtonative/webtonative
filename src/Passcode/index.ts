@@ -2,7 +2,7 @@ import { webToNative, webToNativeIos } from "../utills";
 import { isAndroidApp, isIosApp } from "../index";
 
 interface ISetPasscodeOptions {
-	reauthanticate?: boolean;
+	reauthenticate?: boolean;
 }
 
 interface IResetPasscodeOptions {
@@ -10,14 +10,14 @@ interface IResetPasscodeOptions {
 }
 
 export const setPasscode = (options?: ISetPasscodeOptions) => {
-	const { reauthanticate = true } = options || {};
+	const { reauthenticate = true } = options || {};
 
 	if (isAndroidApp) {
-		webToNative.setPasscode(reauthanticate);
+		webToNative.setPasscode(reauthenticate);
 	} else if (isIosApp && webToNativeIos) {
 		webToNativeIos.postMessage({
 			action: "setPasscode",
-			reauthanticate,
+			reauthenticate,
 		});
 	}
 };
