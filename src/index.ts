@@ -646,6 +646,23 @@ export const setNavigationBarColor = (options: IOptions = {}): void => {
 	}
 };
 
+interface IPinchToZoom {
+	state?: boolean;
+}
+export const pinchToZoom = (options: IPinchToZoom = {}): void => {
+	const { state = false } = options;
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		platform === "ANDROID_APP" && webToNative.pinchToZoom(state);
+
+		if (platform === "IOS_APP" && webToNativeIos) {
+			webToNativeIos.postMessage({
+				action: "pinchToZoom",
+				state,
+			});
+		}
+	}
+};
+
 export { platform, isNativeApp };
 
 export default {
@@ -685,4 +702,5 @@ export default {
 	showNativeComponents,
 	registerNotification,
 	setNavigationBarColor,
+	pinchToZoom,
 };
