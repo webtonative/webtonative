@@ -1,7 +1,10 @@
 import { isIosApp, isAndroidApp } from "../index";
 import { registerCb, webToNative, webToNativeIos } from "../utills";
 
-type ICb = { callback?: (response: { type: string } & Record<string, any>) => void };
+type ICb = { callback?: (response: { type: string } & Record<string, any>) => void } & Record<
+	string,
+	any
+>;
 
 export const onUnreadChatCountsChange = (options?: ICb) => {
 	const { callback } = options || {};
