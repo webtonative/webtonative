@@ -26,7 +26,7 @@ export const onUnreadChatCountsChange = (options?: ICb) => {
 };
 
 export const openConnectWidget = (data?: ICb & { chatId?: string }) => {
-	const { callback } = data || {};
+	const { callback, ...rest } = data || {};
 
 	registerCb((response) => {
 		const { type } = response;
@@ -36,11 +36,11 @@ export const openConnectWidget = (data?: ICb & { chatId?: string }) => {
 	});
 
 	if (isAndroidApp) {
-		webToNative.openConnectWidget(JSON.stringify({ data }));
+		webToNative.openConnectWidget(JSON.stringify({ data: rest }));
 	} else if (isIosApp && webToNativeIos) {
 		webToNativeIos.postMessage({
 			action: "openConnectWidget",
-			data,
+			data: rest,
 		});
 	}
 };
@@ -199,7 +199,7 @@ export const getUnreadChatsCount = (options: ICb) => {
 };
 
 export const sendChatMessage = (data: ICb) => {
-	const { callback } = data || {};
+	const { callback, ...rest } = data || {};
 	registerCb((response) => {
 		const { type } = response;
 		if (type === "sendChatMessage") {
@@ -208,11 +208,11 @@ export const sendChatMessage = (data: ICb) => {
 	});
 
 	if (isAndroidApp) {
-		webToNative.sendChatMessage(JSON.stringify({ data }));
+		webToNative.sendChatMessage(JSON.stringify({ data: rest }));
 	} else if (isIosApp && webToNativeIos) {
 		webToNativeIos.postMessage({
 			action: "sendChatMessage",
-			data,
+			data: rest,
 		});
 	}
 };
