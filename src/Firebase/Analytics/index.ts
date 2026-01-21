@@ -1,12 +1,12 @@
 import { platform, webToNative, webToNativeIos } from "../../utills";
-import { 
+import {
 	FirebaseAnalyticsCollectionOptions,
 	FirebaseUserIdOptions,
 	FirebaseUserPropertyOptions,
 	FirebaseDefaultParametersOptions,
 	FirebaseEventOptions,
 	FirebaseScreenOptions,
-	FirebaseAnalyticsIosMessage
+	FirebaseAnalyticsIosMessage,
 } from "../types";
 
 /**
@@ -82,7 +82,7 @@ export const setDefaultEventParameters = (options: FirebaseDefaultParametersOpti
 			} as FirebaseAnalyticsIosMessage);
 		}
 
-		platform === "ANDROID_APP" && webToNative.setFirebaseDefaultParam(parameters);
+		platform === "ANDROID_APP" && webToNative.setFirebaseDefaultParam(JSON.stringify(parameters));
 	}
 };
 
@@ -102,7 +102,8 @@ export const logEvent = (options: FirebaseEventOptions): void => {
 			} as FirebaseAnalyticsIosMessage);
 		}
 
-		platform === "ANDROID_APP" && webToNative.logFirebaseEvent(eventName, parameters);
+		platform === "ANDROID_APP" &&
+			webToNative.logFirebaseEvent(eventName, JSON.stringify(parameters));
 	}
 };
 

@@ -9,7 +9,7 @@ export const send = (options: FacebookEventOptions): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { event, valueToSum, parameters } = options;
 
-		platform === "ANDROID_APP" && webToNative.addFbEvents(event, parameters);
+		platform === "ANDROID_APP" && webToNative.addFbEvents(event, JSON.stringify(parameters));
 
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({
@@ -31,7 +31,8 @@ export const sendPurchase = (options: FacebookPurchaseOptions): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { amount, currency, parameters } = options;
 
-		platform === "ANDROID_APP" && webToNative.addFbPurchaseEvent(amount, currency, parameters);
+		platform === "ANDROID_APP" &&
+			webToNative.addFbPurchaseEvent(amount, currency, JSON.stringify(parameters));
 
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({

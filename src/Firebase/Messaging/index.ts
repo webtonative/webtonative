@@ -1,10 +1,10 @@
 import { platform, webToNative, webToNativeIos, registerCb } from "../../utills";
-import { 
+import {
 	FirebaseTopicSubscriptionOptions,
 	FirebaseTopicUnsubscriptionOptions,
 	FirebaseFCMTokenOptions,
 	FirebaseFCMTokenResponse,
-	FirebaseMessagingIosMessage
+	FirebaseMessagingIosMessage,
 } from "../types";
 
 /**
