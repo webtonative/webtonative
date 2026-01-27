@@ -1,4 +1,4 @@
-import { platform, registerCb, webToNative } from "../utills";
+import { platform, registerCb, webToNative, webToNativeIos } from "../utills";
 import { CheckUpdateOptions, UpdateApplicationOptions, InAppUpdateResponse } from "./types";
 
 /**
@@ -6,7 +6,7 @@ import { CheckUpdateOptions, UpdateApplicationOptions, InAppUpdateResponse } fro
  * @param options - Options for checking app update
  */
 export const checkIfAppUpdateAvailable = (options: CheckUpdateOptions): void => {
-	if (["ANDROID_APP"].includes(platform)) {
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { callback } = options;
 
 		registerCb((response: InAppUpdateResponse) => {
@@ -17,6 +17,12 @@ export const checkIfAppUpdateAvailable = (options: CheckUpdateOptions): void => 
 		});
 
 		platform === "ANDROID_APP" && webToNative.checkIfAppUpdateAvailable();
+
+		if (platform === "IOS_APP" && webToNativeIos) {
+			webToNativeIos.postMessage({
+				action: "checkIfAppUpdateAvailable",
+			});
+		}
 	}
 };
 
@@ -36,5 +42,26 @@ export const updateApplication = (options: UpdateApplicationOptions): void => {
 		});
 
 		platform === "ANDROID_APP" && webToNative.updateApplication(updateType);
+	}
+};
+
+export const showInAppUpdateUI = (options: CheckUpdateOptions): void => {
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		const { callback } = options;
+
+		registerCb((response: InAppUpdateResponse) => {
+			const { type } = response;
+			if (type === "showInAppUpdateUI") {
+				callback && callback(response);
+			}
+		});
+
+		platform === "ANDROID_APP" && webToNative.showInAppUpdateUI();
+
+		if (platform === "IOS_APP" && webToNativeIos) {
+			webToNativeIos.postMessage({
+				action: "showInAppUpdateUI",
+			});
+		}
 	}
 };
