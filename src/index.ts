@@ -54,7 +54,11 @@ export const downloadFile = (downloadUrl: string): void => {
 	}
 };
 
-export const downloadBlobFile = ({ fileName, downloadUrl }: DownloadBlobFileOptions): void => {
+export const downloadBlobFile = ({
+	fileName,
+	downloadUrl,
+	shareFileAfterDownload = false,
+}: DownloadBlobFileOptions): void => {
 	if (["IOS_APP"].includes(platform)) {
 		isIosApp &&
 			webToNativeIos &&
@@ -62,6 +66,7 @@ export const downloadBlobFile = ({ fileName, downloadUrl }: DownloadBlobFileOpti
 				action: "downloadBlobFile",
 				fileName,
 				url: downloadUrl,
+				shareFileAfterDownload,
 			});
 	}
 };

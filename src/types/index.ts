@@ -34,6 +34,7 @@ export interface StatusBarOptions {
 export interface DownloadBlobFileOptions {
 	fileName: string;
 	downloadUrl: string;
+	shareFileAfterDownload?: boolean;
 }
 
 // Custom file download options
