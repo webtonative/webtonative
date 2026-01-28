@@ -23,7 +23,7 @@ export const setPasscode = (options?: ISetPasscodeOptions) => {
 };
 
 export const resetPasscode = (options?: IResetPasscodeOptions) => {
-	const { resetAppData = true } = options || {};
+	const { resetAppData = false } = options || {};
 
 	if (isAndroidApp) {
 		webToNative.resetPasscode(resetAppData);
