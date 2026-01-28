@@ -57,7 +57,7 @@ export const downloadFile = (downloadUrl: string): void => {
 export const downloadBlobFile = ({
 	fileName,
 	downloadUrl,
-	shareFileAfterDownload = false,
+	shareFileAfterDownload = true,
 }: DownloadBlobFileOptions): void => {
 	if (["IOS_APP"].includes(platform)) {
 		isIosApp &&
