@@ -35,6 +35,7 @@ export interface DownloadBlobFileOptions {
 	fileName: string;
 	downloadUrl: string;
 	shareFileAfterDownload?: boolean;
+	openFileAfterDownload?: boolean;
 }
 
 // Custom file download options

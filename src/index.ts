@@ -58,6 +58,7 @@ export const downloadBlobFile = ({
 	fileName,
 	downloadUrl,
 	shareFileAfterDownload = true,
+	openFileAfterDownload = false,
 }: DownloadBlobFileOptions): void => {
 	if (["IOS_APP"].includes(platform)) {
 		isIosApp &&
@@ -67,6 +68,7 @@ export const downloadBlobFile = ({
 				fileName,
 				url: downloadUrl,
 				shareFileAfterDownload,
+				openFileAfterDownload,
 			});
 	}
 };
