@@ -678,9 +678,7 @@ interface IShareMediaShare {
 	imageUrl?: string;
 }
 export const socialMediaShare = (options: IShareMediaShare = {}): void => {
-	if (["ANDROID_APP"].includes(platform)) {
-		platform === "ANDROID_APP" && webToNative.socialMediaShare(JSON.stringify(options));
-	}
+	platform === "ANDROID_APP" && webToNative.socialMediaShare(JSON.stringify(options));
 };
 
 export { platform, isNativeApp };
