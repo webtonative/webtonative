@@ -670,6 +670,19 @@ export const pinchToZoom = (options: IPinchToZoom = {}): void => {
 	}
 };
 
+interface IShareMediaShare {
+	platform?: string;
+	type?: string;
+	extension?: string;
+	text?: string;
+	imageUrl?: string;
+}
+export const socialMediaShare = (options: IShareMediaShare = {}): void => {
+	if (["ANDROID_APP"].includes(platform)) {
+		platform === "ANDROID_APP" && webToNative.socialMediaShare(JSON.stringify(options));
+	}
+};
+
 export { platform, isNativeApp };
 
 export default {
@@ -710,4 +723,5 @@ export default {
 	registerNotification,
 	setNavigationBarColor,
 	pinchToZoom,
+	socialMediaShare,
 };
