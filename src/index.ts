@@ -681,32 +681,6 @@ export const socialMediaShare = (options: IShareMediaShare = {}): void => {
 	platform === "ANDROID_APP" && webToNative.socialMediaShare(JSON.stringify(options));
 };
 
-interface IAppInstalledOnDevice {
-	callback?: (response: BaseResponse) => void;
-	platform?: string;
-}
-
-export const isAppInstalledOnDevice = (options: IAppInstalledOnDevice = {}): void => {
-	if (isAndroidORIosApp) {
-		const { callback, platform } = options || {};
-
-		registerCb((response: BaseResponse) => {
-			const { type } = response;
-			if (type === "isAppInstalledOnDevice") {
-				callback && callback(response);
-			}
-		});
-
-		isAndroidApp && webToNative.isAppInstalledOnDevice(platform);
-		isIosApp &&
-			webToNativeIos &&
-			webToNativeIos.postMessage({
-				action: "isAppInstalledOnDevice",
-				platform,
-			});
-	}
-};
-
 export { platform, isNativeApp };
 
 export default {
@@ -748,5 +722,4 @@ export default {
 	setNavigationBarColor,
 	pinchToZoom,
 	socialMediaShare,
-	isAppInstalledOnDevice,
 };
