@@ -1,4 +1,4 @@
-import { isIosApp, isAndroidApp } from "./../index";
+import { isIosApp, isAndroidApp } from "../index";
 import { registerCb, webToNative, webToNativeIos } from "../utills";
 import { BaseResponse } from "../types";
 
