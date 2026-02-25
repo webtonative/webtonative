@@ -5,15 +5,16 @@ import {
 	deRegisterForAbMobCb,
 	platform,
 	webToNativeIos,
+	registerCb,
 } from "../utills";
-import { Platform } from "../types";
+import { CallbackFunction, Platform } from "../types";
 import {
 	AdMobResponse,
 	AdMobCallback,
 	BannerAdOptions,
 	FullScreenAdOptions,
 	RewardsAdOptions,
-	AdMobIosMessage
+	AdMobIosMessage,
 } from "./types";
 
 let adMobCb: AdMobCallback | null = null;
@@ -74,6 +75,47 @@ const fullScreenAd = (options: FullScreenAdOptions = {}): any => {
 	}
 };
 
+const requestAdmobConsent = (options: { callback: CallbackFunction }): any => {
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		const { callback } = options || {};
+
+		registerCb((response) => {
+			const { type } = response || {};
+			if (type === "requestAdmobConsent") {
+				callback && callback(response);
+			}
+		});
+
+		if (platform === "IOS_APP" && webToNativeIos) {
+			webToNativeIos.postMessage({
+				action: "requestAdmobConsent",
+			});
+		}
+		platform === "ANDROID_APP" && webToNative.requestAdmobConsent();
+	}
+};
+
+const checkAdmobConsentStatus = (options: { callback: CallbackFunction }): any => {
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		const { callback } = options || {};
+
+		registerCb((response) => {
+			const { type } = response || {};
+			if (type === "checkAdmobConsentStatus") {
+				callback && callback(response);
+			}
+		});
+
+		if (platform === "IOS_APP" && webToNativeIos) {
+			webToNativeIos.postMessage({
+				action: "checkAdmobConsentStatus",
+			});
+		}
+
+		platform === "ANDROID_APP" && webToNative.checkAdmobConsentStatus();
+	}
+};
+
 /**
  * This function shows rewards ad
  * @param options - Rewards ad options
@@ -110,4 +152,4 @@ const rewardsAd = (options: RewardsAdOptions = {}): any => {
 	}
 };
 
-export { bannerAd, fullScreenAd, rewardsAd };
+export { bannerAd, fullScreenAd, rewardsAd, requestAdmobConsent, checkAdmobConsentStatus };
