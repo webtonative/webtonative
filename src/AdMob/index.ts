@@ -79,10 +79,14 @@ const requestAdmobConsent = (options: { callback: CallbackFunction }): any => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { callback } = options || {};
 
-		registerCb((response) => {
-			const { type } = response || {};
-			if (type === "requestAdmobConsent") {
-				callback && callback(response);
+		registerForAbMobCb((response: AdMobResponse) => {
+			const { status } = response;
+			adMobCb && adMobCb(response);
+			if (status === "adDismissed") {
+				adMobCb = null;
+			}
+			if (["adDismissed", "adLoadError", "adError"].indexOf(status) > -1) {
+				deRegisterForAbMobCb();
 			}
 		});
 
@@ -92,6 +96,10 @@ const requestAdmobConsent = (options: { callback: CallbackFunction }): any => {
 			});
 		}
 		platform === "ANDROID_APP" && webToNative.requestAdmobConsent();
+		if (typeof callback === "function") {
+			adMobCb = callback;
+		}
+		return this;
 	}
 };
 
@@ -99,10 +107,14 @@ const checkAdmobConsentStatus = (options: { callback: CallbackFunction }): any =
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { callback } = options || {};
 
-		registerCb((response) => {
-			const { type } = response || {};
-			if (type === "checkAdmobConsentStatus") {
-				callback && callback(response);
+		registerForAbMobCb((response: AdMobResponse) => {
+			const { status } = response;
+			adMobCb && adMobCb(response);
+			if (status === "adDismissed") {
+				adMobCb = null;
+			}
+			if (["adDismissed", "adLoadError", "adError"].indexOf(status) > -1) {
+				deRegisterForAbMobCb();
 			}
 		});
 
@@ -113,6 +125,10 @@ const checkAdmobConsentStatus = (options: { callback: CallbackFunction }): any =
 		}
 
 		platform === "ANDROID_APP" && webToNative.checkAdmobConsentStatus();
+		if (typeof callback === "function") {
+			adMobCb = callback;
+		}
+		return this;
 	}
 };
 
