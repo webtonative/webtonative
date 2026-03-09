@@ -31,6 +31,7 @@ import * as OrufyConnect from "./src/OrufyConnect";
 import * as RevenueCat from "./src/RevenueCat";
 import * as Passcode from "./src/Passcode";
 import * as MetaAds from "./src/MetaAds";
+import * as SafeArea from "./src/SafeArea";
 import { webToNativeIos } from "./src/utills";
 
 // Define the window interface to add WTN property
@@ -73,6 +74,7 @@ declare global {
 			RevenueCat: typeof RevenueCat;
 			Passcode: typeof Passcode;
 			MetaAds: typeof MetaAds;
+			SafeArea: typeof SafeArea;
 		};
 		WebToNativeInterface: any;
 	}
@@ -117,6 +119,7 @@ window.WTN.OrufyConnect = OrufyConnect;
 window.WTN.RevenueCat = RevenueCat;
 window.WTN.Passcode = Passcode;
 window.WTN.MetaAds = MetaAds;
+window.WTN.SafeArea = SafeArea;
 
 if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
 	window.navigator.share = function (obj: any) {
