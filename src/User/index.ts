@@ -2,7 +2,7 @@ import { BaseResponse } from "../types";
 import { platform, registerCb, webToNative, webToNativeIos } from "../utills";
 
 export const login = (options: Record<string, any>): void => {
-	const { callback } = options || {};
+	const { callback, ...rest } = options || {};
 
 	registerCb((response: BaseResponse) => {
 		const { type } = response;
@@ -17,13 +17,13 @@ export const login = (options: Record<string, any>): void => {
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({
 				action: "unifiedLogin",
-				data: options,
+				data: rest,
 			});
 		}
 	}
 };
 export const setUserInfo = (options: Record<string, any>): void => {
-	const { callback } = options || {};
+	const { callback, ...rest } = options || {};
 
 	registerCb((response: BaseResponse) => {
 		const { type } = response;
@@ -38,7 +38,7 @@ export const setUserInfo = (options: Record<string, any>): void => {
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({
 				action: "setUnifiedUserInfo",
-				data: options,
+				data: rest,
 			});
 		}
 	}
