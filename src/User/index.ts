@@ -1,30 +1,58 @@
-import { platform, webToNative, webToNativeIos } from "../utills";
+import { BaseResponse } from "../types";
+import { platform, registerCb, webToNative, webToNativeIos } from "../utills";
 
 export const login = (options: Record<string, any>): void => {
+	const { callback } = options || {};
+
+	registerCb((response: BaseResponse) => {
+		const { type } = response;
+		if (type === "unifiedLogin") {
+			callback && callback(response);
+		}
+	});
+
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		platform === "ANDROID_APP" && webToNative.unifiedLogin(JSON.stringify(options));
 
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({
 				action: "unifiedLogin",
-				...options,
+				data: options,
 			});
 		}
 	}
 };
 export const setUserInfo = (options: Record<string, any>): void => {
+	const { callback } = options || {};
+
+	registerCb((response: BaseResponse) => {
+		const { type } = response;
+		if (type === "setUnifiedUserInfo") {
+			callback && callback(response);
+		}
+	});
+
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		platform === "ANDROID_APP" && webToNative.setUnifiedUserInfo(JSON.stringify(options));
 
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({
 				action: "setUnifiedUserInfo",
-				...options,
+				data: options,
 			});
 		}
 	}
 };
-export const getUserInfo = (): void => {
+export const getUserInfo = (options: Record<string, any>): void => {
+	const { callback } = options || {};
+
+	registerCb((response: BaseResponse) => {
+		const { type } = response;
+		if (type === "getUnifiedUserInfo") {
+			callback && callback(response);
+		}
+	});
+
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		platform === "ANDROID_APP" && webToNative.getUnifiedUserInfo();
 
