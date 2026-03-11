@@ -32,6 +32,7 @@ import * as RevenueCat from "./src/RevenueCat";
 import * as Passcode from "./src/Passcode";
 import * as MetaAds from "./src/MetaAds";
 import * as SafeArea from "./src/SafeArea";
+import * as Splash from "./src/Splash";
 import { webToNativeIos } from "./src/utills";
 
 // Define the window interface to add WTN property
@@ -75,6 +76,7 @@ declare global {
 			Passcode: typeof Passcode;
 			MetaAds: typeof MetaAds;
 			SafeArea: typeof SafeArea;
+			Splash: typeof Splash;
 		};
 		WebToNativeInterface: any;
 	}
@@ -120,6 +122,7 @@ window.WTN.RevenueCat = RevenueCat;
 window.WTN.Passcode = Passcode;
 window.WTN.MetaAds = MetaAds;
 window.WTN.SafeArea = SafeArea;
+window.WTN.Splash = Splash;
 
 if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
 	window.navigator.share = function (obj: any) {
