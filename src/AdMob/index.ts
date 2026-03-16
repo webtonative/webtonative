@@ -168,4 +168,63 @@ const rewardsAd = (options: RewardsAdOptions = {}): any => {
 	}
 };
 
-export { bannerAd, fullScreenAd, rewardsAd, requestAdmobConsent, checkAdmobConsentStatus };
+const checkAdmobPrivacyFormRequired = (options: { callback: (val: any) => any }): any => {
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		const { callback } = options || {};
+		registerForAbMobCb((response: AdMobResponse) => {
+			const { status } = response;
+			adMobCb && adMobCb(response);
+			if (status === "adDismissed") {
+				adMobCb = null;
+			}
+			if (["adDismissed", "adLoadError", "adError"].indexOf(status) > -1) {
+				deRegisterForAbMobCb();
+			}
+		});
+		if (platform === "IOS_APP" && webToNativeIos) {
+			webToNativeIos.postMessage({
+				action: "checkAdmobPrivacyFormRequired",
+			} as AdMobIosMessage);
+		}
+		platform === "ANDROID_APP" && webToNative.checkAdmobPrivacyFormRequired();
+		if (typeof callback === "function") {
+			adMobCb = callback;
+		}
+		return this;
+	}
+};
+const requestAdmobPrivacyForm = (options: { callback: (val: any) => any }): any => {
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		const { callback } = options || {};
+		registerForAbMobCb((response: AdMobResponse) => {
+			const { status } = response;
+			adMobCb && adMobCb(response);
+			if (status === "adDismissed") {
+				adMobCb = null;
+			}
+			if (["adDismissed", "adLoadError", "adError"].indexOf(status) > -1) {
+				deRegisterForAbMobCb();
+			}
+		});
+		if (platform === "IOS_APP" && webToNativeIos) {
+			webToNativeIos.postMessage({
+				action: "requestAdmobPrivacyForm",
+			} as AdMobIosMessage);
+		}
+		platform === "ANDROID_APP" && webToNative.requestAdmobPrivacyForm();
+		if (typeof callback === "function") {
+			adMobCb = callback;
+		}
+		return this;
+	}
+};
+
+export {
+	bannerAd,
+	fullScreenAd,
+	rewardsAd,
+	requestAdmobConsent,
+	checkAdmobConsentStatus,
+	requestAdmobPrivacyForm,
+	checkAdmobPrivacyFormRequired,
+};
