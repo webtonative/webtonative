@@ -15,13 +15,12 @@ export const initBeaconData = (options: BeaconOptions = {}): void => {
 			}
 		});
 
-		platform === "ANDROID_APP" &&
-        	webToNative.initBeaconData(JSON.stringify(beaconData));
+		platform === "ANDROID_APP" && webToNative.initBeaconData(JSON.stringify(beaconData));
 
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({
 				action: "initBeaconData",
-				data: beaconData
+				data: beaconData,
 			} as BeaconIosMessage);
 		}
 	}
