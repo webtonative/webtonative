@@ -1,8 +1,5 @@
-import {
-    platform,
-    webToNative,
-    webToNativeIos,
-  } from "../utills";
+import { BaseResponse } from "../types";
+import { platform, registerCb, webToNative, webToNativeIos } from "../utills";
 import { AppsFlyerEventValues, AppsFlyerIosMessage } from "./types";
 
 /**
@@ -11,17 +8,16 @@ import { AppsFlyerEventValues, AppsFlyerIosMessage } from "./types";
  * @example wtn.appsflyer.setCustomerUserId("1234");
  */
 export const setCustomerUserId = (userId: string): void => {
-  if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
-    platform === "ANDROID_APP" &&
-      webToNative.setAppsFlyerUserId(userId);
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		platform === "ANDROID_APP" && webToNative.setAppsFlyerUserId(userId);
 
-    if (platform === "IOS_APP" && webToNativeIos) {
-      webToNativeIos.postMessage({
-        action: "setAppsFlyerUserId",
-        userId
-      } as AppsFlyerIosMessage);
-    }
-  }
+		if (platform === "IOS_APP" && webToNativeIos) {
+			webToNativeIos.postMessage({
+				action: "setAppsFlyerUserId",
+				userId,
+			} as AppsFlyerIosMessage);
+		}
+	}
 };
 
 /**
@@ -31,16 +27,38 @@ export const setCustomerUserId = (userId: string): void => {
  * @example wtn.appsflyer.logEvent("ADD_TO_CART",{name:"Cadburry",quantity:1});
  */
 export const logEvent = (eventName: string, eventValues: AppsFlyerEventValues): void => {
-  if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
-    platform === "ANDROID_APP" &&
-      webToNative.addEventToAppsFlyer(eventName, JSON.stringify(eventValues));
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		platform === "ANDROID_APP" &&
+			webToNative.addEventToAppsFlyer(eventName, JSON.stringify(eventValues));
 
-    if (platform === "IOS_APP" && webToNativeIos) {
-      webToNativeIos.postMessage({
-        action: "addEventToAppsFlyer",
-        eventName,
-        eventValues
-      } as AppsFlyerIosMessage);
-    }
-  }
+		if (platform === "IOS_APP" && webToNativeIos) {
+			webToNativeIos.postMessage({
+				action: "addEventToAppsFlyer",
+				eventName,
+				eventValues,
+			} as AppsFlyerIosMessage);
+		}
+	}
+};
+
+export const getAppsFlyerAppId = (options: {
+	callback?: (response: BaseResponse) => void;
+}): void => {
+	const { callback } = options || {};
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		registerCb((response) => {
+			const { type } = response;
+			if (type === "getAppsFlyerAppId") {
+				callback && callback(response);
+			}
+		});
+
+		platform === "ANDROID_APP" && webToNative.getAppsFlyerAppId();
+
+		if (platform === "IOS_APP" && webToNativeIos) {
+			webToNativeIos.postMessage({
+				action: "getAppsFlyerAppId",
+			} as AppsFlyerIosMessage);
+		}
+	}
 };
