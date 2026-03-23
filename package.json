@@ -1,6 +1,6 @@
 {
 	"name": "webtonative",
-	"version": "1.0.93",
+	"version": "1.0.94",
 	"description": "",
 	"main": "build/index.js",
 	"types": "build/index.d.ts",
