@@ -34,6 +34,7 @@ import * as MetaAds from "./src/MetaAds";
 import * as SafeArea from "./src/SafeArea";
 import * as Splash from "./src/Splash";
 import * as User from "./src/User";
+import * as SendBird from "./src/SendBird";
 import { webToNativeIos } from "./src/utills";
 
 // Define the window interface to add WTN property
@@ -79,6 +80,7 @@ declare global {
 			SafeArea: typeof SafeArea;
 			Splash: typeof Splash;
 			User: typeof User;
+			SendBird: typeof SendBird;
 		};
 		WebToNativeInterface: any;
 	}
@@ -126,6 +128,7 @@ window.WTN.MetaAds = MetaAds;
 window.WTN.SafeArea = SafeArea;
 window.WTN.Splash = Splash;
 window.WTN.User = User;
+window.WTN.SendBird = SendBird;
 
 if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
 	window.navigator.share = function (obj: any) {
