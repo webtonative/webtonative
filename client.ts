@@ -1,5 +1,6 @@
 import * as webToNative from "./src/index";
 import * as OneSignal from "./src/OneSignal";
+import * as OneSignalExtended from "./src/OneSignal/extended";
 import VoiceSearch from "./src/VoiceSearch";
 import * as Barcode from "./src/barcode";
 import * as AdMob from "./src/AdMob";
@@ -36,6 +37,7 @@ import * as Splash from "./src/Splash";
 import * as User from "./src/User";
 import * as SendBird from "./src/SendBird";
 import { webToNativeIos } from "./src/utills";
+import { initOneSignalOverride } from "./src/OneSignalOverride";
 
 // Define the window interface to add WTN property
 declare global {
@@ -89,7 +91,7 @@ declare global {
 // Assign to window.WTN
 window.WTN = webToNative as any;
 
-window.WTN.OneSignal = OneSignal;
+window.WTN.OneSignal = { ...OneSignal, ...OneSignalExtended };
 window.WTN.VoiceSearch = VoiceSearch;
 window.WTN.Barcode = Barcode;
 window.WTN.AdMob = AdMob;
@@ -149,6 +151,9 @@ if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndr
 		});
 	};
 }
+
+// Activate OneSignal override — must run after window.WTN is fully assembled
+initOneSignalOverride();
 
 // Export the WTN object as default
 export default window.WTN;

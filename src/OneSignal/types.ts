@@ -42,6 +42,23 @@ export interface SMSOptions {
 	smsNumber?: string;
 }
 
+// Response from getPermissionStatus
+export interface PermissionStatusResponse {
+	status: "granted" | "denied" | "default";
+}
+
+// Response from requestPermission
+export interface RequestPermissionResponse {
+	accepted: boolean;
+}
+
+// Response from getSubscriptionStatus
+export interface SubscriptionStatusResponse {
+	isOptedIn: boolean;
+	pushToken?: string;
+	playerId?: string;
+}
+
 // Message structure for iOS
 export interface OneSignalIosMessage {
 	action: string;

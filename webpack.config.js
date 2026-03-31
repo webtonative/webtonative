@@ -8,6 +8,7 @@ module.exports = {
 	...(!production && { devtool: "source-map" }),
 	entry: {
 		webtonative: "./client.ts",
+		"onesignal-bridge": "./onesignal-bridge.ts",
 	},
 	output: {
 		path: path.resolve("./build"),
