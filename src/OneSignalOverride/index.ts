@@ -63,7 +63,9 @@ function getFCMTokenAsPromise(): Promise<string> {
 // ─── Main init ────────────────────────────────────────────────────────────────
 
 export function initOneSignalOverride(): void {
-	if (typeof window === "undefined" || !window.WTN) return;
+	console.log("window.WTN?.isNativeApp",window.WTN?.isNativeApp)
+
+	if (typeof window === "undefined" || !window.WTN?.isNativeApp) return;
 
 	const wtn = window.WTN;
 
@@ -161,10 +163,10 @@ export function initOneSignalOverride(): void {
 		{
 			requestPermission: () => {
 				log("Notifications.requestPermission() → WTN.OneSignal.requestPermission");
-				return wtn.OneSignal.requestPermission();
+				return wtn.registerNotification();
 			},
 			get permission() {
-				return wtn.OneSignal.getPermissionStatus();
+				return wtn.checkPermission();
 			},
 			addEventListener: (event: string, fn: Function) => on("Notifications", event, fn),
 			removeEventListener: (event: string, fn: Function) => off("Notifications", event, fn),

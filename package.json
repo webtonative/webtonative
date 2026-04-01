@@ -8,7 +8,8 @@
 	"scripts": {
 		"build": "rimraf build && tsc && ts-node buildScript.ts && npm run dist",
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"dist": "NODE_ENV=production webpack --config webpack.config.js"
+		"dist": "NODE_ENV=production webpack --config webpack.config.js",
+		"serve": "npx http-server ./build --cors -p 8080"
 	},
 	"repository": {
 		"type": "git",
