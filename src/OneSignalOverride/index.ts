@@ -135,6 +135,22 @@ export function initOneSignalOverride(): void {
 				log(`User.removeSms("${number}") → WTN.OneSignal.logoutSMSNumber`);
 				return wtn.OneSignal.logoutSMSNumber({ smsNumber: number });
 			},
+			addTrigger: (key: string, value: any) => {
+				log(`User.addTrigger("${key}") → WTN.OneSignal.addTrigger`);
+				return wtn.OneSignal.addTrigger({ key, value });
+			},
+			addTriggers: (triggers: Record<string, any>) => {
+				log("User.addTriggers() → WTN.OneSignal.addTriggers");
+				return wtn.OneSignal.addTriggers({ triggers });
+			},
+			removeTrigger: (key: string) => {
+				log(`User.removeTrigger("${key}") → WTN.OneSignal.removeTrigger`);
+				return wtn.OneSignal.removeTrigger({ key });
+			},
+			removeTriggers: (keys: string[]) => {
+				log("User.removeTriggers() → WTN.OneSignal.removeTriggers");
+				return wtn.OneSignal.removeTriggers({ keys });
+			},
 		},
 		"User"
 	);
@@ -210,8 +226,9 @@ export function initOneSignalOverride(): void {
 		? window.OneSignalDeferred
 		: [];
 
-	// Replace array with object whose .push() runs callbacks immediately
-	window.OneSignalDeferred = {
+	// Replace array with object whose .push() runs callbacks immediately.
+	// Locked via defineProperty so the real SDK cannot reclaim this namespace.
+	const deferredShim = {
 		push: (fn: Function) => {
 			try {
 				fn(shimOneSignal);
@@ -220,6 +237,11 @@ export function initOneSignalOverride(): void {
 			}
 		},
 	};
+	Object.defineProperty(window, "OneSignalDeferred", {
+		get: () => deferredShim,
+		set: () => { /* intentionally blocked */ },
+		configurable: false,
+	});
 
 	// Drain any callbacks that were queued before our script loaded
 	existingQueue.forEach((fn) => {
@@ -227,9 +249,14 @@ export function initOneSignalOverride(): void {
 	});
 
 	// ── Claim window.OneSignal ────────────────────────────────────────────────
-	// The real OneSignal SDK checks this on load; if set, it backs off.
+	// Use Object.defineProperty so the real OneSignal SDK cannot overwrite our
+	// shim when it loads — it checks window.OneSignal, sees it's set, and backs off.
 
-	window.OneSignal = shimOneSignal;
+	Object.defineProperty(window, "OneSignal", {
+		get: () => shimOneSignal,
+		set: () => { /* intentionally blocked */ },
+		configurable: false,
+	});
 
 	log("Override active — all OneSignal calls routed through WTN native bridge");
 }
