@@ -8,6 +8,8 @@ const warn = (msg: string) => console.warn(`${PREFIX} ${msg}`);
 
 const listeners: Record<string, Record<string, Function[]>> = {};
 
+console.log("curr listeners",listeners)
+
 function on(namespace: string, event: string, fn: Function): void {
 	if (!listeners[namespace]) listeners[namespace] = {};
 	if (!listeners[namespace][event]) listeners[namespace][event] = [];
