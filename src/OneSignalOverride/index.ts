@@ -45,6 +45,7 @@ function makeProxy(target: Record<string, any>, path: string): any {
 	});
 }
 
+
 // ─── FCM token helper ─────────────────────────────────────────────────────────
 // Wraps the callback-based WTN.Firebase.Messaging.getFCMToken into a Promise.
 
