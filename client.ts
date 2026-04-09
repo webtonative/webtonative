@@ -36,6 +36,7 @@ import * as Splash from "./src/Splash";
 import * as User from "./src/User";
 import * as SendBird from "./src/SendBird";
 import * as Auth0 from "./src/Auth0";
+import * as Share from "./src/Share";
 import { webToNativeIos } from "./src/utills";
 
 // Define the window interface to add WTN property
@@ -83,6 +84,7 @@ declare global {
 			User: typeof User;
 			SendBird: typeof SendBird;
 			Auth0: typeof Auth0;
+			Share: typeof Share;
 		};
 		WebToNativeInterface: any;
 	}
@@ -132,6 +134,7 @@ window.WTN.Splash = Splash;
 window.WTN.User = User;
 window.WTN.SendBird = SendBird;
 window.WTN.Auth0 = Auth0;
+window.WTN.Share = Share;
 
 if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
 	window.navigator.share = function (obj: any) {
