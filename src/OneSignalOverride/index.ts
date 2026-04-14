@@ -8,6 +8,14 @@ const warn = (msg: string) => console.warn(`${PREFIX} ${msg}`);
 
 const listeners: Record<string, Record<string, Function[]>> = {};
 
+interface InitOptions {
+  appId: string;
+  allowLocalhostAsSecureOrigin?: boolean;
+  notifyButton?: {
+    enable: boolean;
+  };
+}
+
 console.log("curr listeners",listeners)
 
 function on(namespace: string, event: string, fn: Function): void {
@@ -97,6 +105,11 @@ export function initOneSignalOverride(): void {
 			get token() {
 				return getFCMTokenAsPromise();
 			},
+			get optedIn() {
+				return wtn.OneSignal.getSubscriptionStatus()
+					.then((res: any) => !!res?.isOptedIn)
+					.catch(() => false);
+			},
 			addEventListener: (event: string, fn: Function) => on("User.PushSubscription", event, fn),
 			removeEventListener: (event: string, fn: Function) => off("User.PushSubscription", event, fn),
 		},
@@ -156,6 +169,9 @@ export function initOneSignalOverride(): void {
 				log("User.removeTriggers() → WTN.OneSignal.removeTriggers");
 				return wtn.OneSignal.removeTriggers({ keys });
 			},
+			getTags:() => {
+				return wtn.OneSignal.getTags();
+			}
 		},
 		"User"
 	);
@@ -169,7 +185,14 @@ export function initOneSignalOverride(): void {
 				return wtn.registerNotification();
 			},
 			get permission() {
-				return wtn.checkPermission();
+				return wtn.OneSignal.getPermissionStatus()
+					.then((res: any) => res?.status === "granted")
+					.catch(() => false);
+			},
+			get permissionNative() {
+				return wtn.OneSignal.getPermissionStatus()
+					.then((res: any) => res?.status)
+					.catch(() => "default");
 			},
 			addEventListener: (event: string, fn: Function) => on("Notifications", event, fn),
 			removeEventListener: (event: string, fn: Function) => off("Notifications", event, fn),
@@ -199,7 +222,7 @@ export function initOneSignalOverride(): void {
 
 	const shimOneSignal = new Proxy(
 		{
-			init: (options: any) => {
+			init: (options?: InitOptions) => {
 				log(`init(appId: ${options?.appId}) → no-op (native SDK pre-configured)`);
 				return Promise.resolve();
 			},
