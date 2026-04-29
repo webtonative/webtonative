@@ -36,6 +36,7 @@ if (isNativeApp) {
 				}
 			} else {
 				// No reqType in response — all pending callbacks are fired and deleted. Call functions sequentially to avoid losing callbacks.
+				// to fix pass key on every registerCB , then check type===key only then rm key from the obj
 				cb(response);
 				if (!ignoreDelete) {
 					delete cbObj[key];
