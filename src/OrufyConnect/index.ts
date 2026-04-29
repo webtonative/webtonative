@@ -8,13 +8,12 @@ type ICb = { callback?: (response: { type: string } & Record<string, any>) => vo
 
 export const onUnreadChatCountsChange = (options?: ICb) => {
 	const { callback } = options || {};
-
 	registerCb((response) => {
 		const { type } = response;
 		if (type === "onUnreadChatCountsChange") {
 			callback && callback(response);
 		}
-	});
+	},{ignoreDelete:true});
 
 	if (isAndroidApp) {
 		webToNative.onUnreadChatCountsChange();
@@ -182,6 +181,7 @@ export const setWidgetConfig = (data: Record<string, any>) => {
 
 export const getUnreadChatsCount = (options: ICb) => {
 	const { callback } = options || {};
+
 	registerCb((response) => {
 		const { type } = response;
 		if (type === "getUnreadChatsCount") {
