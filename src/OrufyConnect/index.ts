@@ -187,7 +187,7 @@ export const getUnreadChatsCount = (options: ICb) => {
 		if (type === "getUnreadChatsCount") {
 			callback && callback(response);
 		}
-	});
+	},{ignoreDelete:true});
 
 	if (isAndroidApp) {
 		webToNative.getUnreadChatsCount();
