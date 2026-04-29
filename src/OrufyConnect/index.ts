@@ -14,7 +14,7 @@ export const onUnreadChatCountsChange = (options?: ICb) => {
 		if (type === "onUnreadChatCountsChange") {
 			callback && callback(response);
 		}
-	});
+	},{ignoreDelete:true});
 
 	if (isAndroidApp) {
 		webToNative.onUnreadChatCountsChange();
