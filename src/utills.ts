@@ -35,6 +35,7 @@ if (isNativeApp) {
 					}
 				}
 			} else {
+				// No reqType in response — all pending callbacks are fired and deleted. Call functions sequentially to avoid losing callbacks.
 				cb(response);
 				if (!ignoreDelete) {
 					delete cbObj[key];
