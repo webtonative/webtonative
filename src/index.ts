@@ -336,6 +336,36 @@ export const appFirstLoad = (): Promise<any> => {
 	});
 };
 
+interface GetAppStatusOptions {
+	keys?: ("app" | "layout" | "components" | "features" | "permissions" | "webView")[];
+	callback?: (response: BaseResponse) => void;
+}
+
+export const getAppStatus = (options: GetAppStatusOptions = {}): void => {
+	if (isAndroidORIosApp) {
+		const { keys, callback } = options;
+
+		registerCb(
+			(response: BaseResponse) => {
+				const { type } = response;
+				if (type === "getAppStatus") {
+					callback && callback(response);
+				}
+			},
+			{ key: "getAppStatus" }
+		);
+
+		if (platform === "ANDROID_APP") {
+			const keysJson = keys && keys.length > 0 ? JSON.stringify({ keys }) : null;
+			webToNative.getAppStatus && webToNative.getAppStatus(keysJson);
+		} else if (platform === "IOS_APP") {
+			const payload: Record<string, any> = { action: "getAppStatus" };
+			if (keys && keys.length > 0) payload.keys = keys;
+			webToNativeIos && webToNativeIos.postMessage(payload);
+		}
+	}
+};
+
 export const forceUpdateCookies = (): void => {
 	if (["ANDROID_APP"].includes(platform)) {
 		isAndroidApp && webToNative.forceUpdateCookies && webToNative.forceUpdateCookies();
@@ -694,6 +724,7 @@ export default {
 	printFunction,
 	loadOfferCard,
 	appFirstLoad,
+	getAppStatus,
 	addToSiri,
 	showPermission,
 	forceUpdateCookies,
