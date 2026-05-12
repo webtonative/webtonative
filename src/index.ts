@@ -670,6 +670,29 @@ export const pinchToZoom = (options: IPinchToZoom = {}): void => {
 	}
 };
 
+export const removeAllNotifications = (options?: {
+	callback?: (response: BaseResponse) => void;
+}): void => {
+	if (isAndroidORIosApp) {
+		const { callback } = options || {};
+
+		registerCb((response: BaseResponse) => {
+			const { type } = response;
+			if (type === "removeAllNotifications") {
+				callback && callback(response);
+			}
+		});
+
+		isAndroidApp && webToNative.removeAllNotifications();
+
+		isIosApp &&
+			webToNativeIos &&
+			webToNativeIos.postMessage({
+				action: "removeAllNotifications",
+			});
+	}
+};
+
 export { platform, isNativeApp };
 
 export default {
