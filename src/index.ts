@@ -733,4 +733,5 @@ export default {
 	registerNotification,
 	setNavigationBarColor,
 	pinchToZoom,
+	removeAllNotifications
 };
