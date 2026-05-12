@@ -724,7 +724,7 @@ export default {
 	printFunction,
 	loadOfferCard,
 	appFirstLoad,
-	getAppStatus,
+	getComponentStatus,
 	addToSiri,
 	showPermission,
 	forceUpdateCookies,
