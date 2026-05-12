@@ -341,25 +341,25 @@ interface GetAppStatusOptions {
 	callback?: (response: BaseResponse) => void;
 }
 
-export const getAppStatus = (options: GetAppStatusOptions = {}): void => {
+export const getComponentStatus = (options: GetAppStatusOptions = {}): void => {
 	if (isAndroidORIosApp) {
 		const { keys, callback } = options;
 
 		registerCb(
 			(response: BaseResponse) => {
 				const { type } = response;
-				if (type === "getAppStatus") {
+				if (type === "getComponentStatus") {
 					callback && callback(response);
 				}
 			},
-			{ key: "getAppStatus" }
+			{ key: "getComponentStatus" }
 		);
 
 		if (platform === "ANDROID_APP") {
 			const keysJson = keys && keys.length > 0 ? JSON.stringify({ keys }) : null;
-			webToNative.getAppStatus && webToNative.getAppStatus(keysJson);
+			webToNative.getComponentStatus && webToNative.getComponentStatus(keysJson);
 		} else if (platform === "IOS_APP") {
-			const payload: Record<string, any> = { action: "getAppStatus" };
+			const payload: Record<string, any> = { action: "getComponentStatus" };
 			if (keys && keys.length > 0) payload.keys = keys;
 			webToNativeIos && webToNativeIos.postMessage(payload);
 		}
