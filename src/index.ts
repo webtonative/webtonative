@@ -693,6 +693,29 @@ export const removeAllNotifications = (options?: {
 	}
 };
 
+export const getDevicePhoneNumber = (options?: {
+	callback?: (response: BaseResponse) => void;
+}): void => {
+	if (isAndroidORIosApp) {
+		const { callback } = options || {};
+
+		registerCb((response: BaseResponse) => {
+			const { type } = response;
+			if (type === "getDevicePhoneNumber") {
+				callback && callback(response);
+			}
+		});
+
+		isAndroidApp && webToNative.getDevicePhoneNumber();
+
+		isIosApp &&
+			webToNativeIos &&
+			webToNativeIos.postMessage({
+				action: "getDevicePhoneNumber",
+			});
+	}
+};
+
 export { platform, isNativeApp };
 
 export default {
@@ -733,5 +756,6 @@ export default {
 	registerNotification,
 	setNavigationBarColor,
 	pinchToZoom,
-	removeAllNotifications
+	removeAllNotifications,
+	getDevicePhoneNumber
 };
