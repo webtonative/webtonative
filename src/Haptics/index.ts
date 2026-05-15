@@ -1,4 +1,4 @@
-import { platform, webToNativeIos } from "../utills";
+import { platform, webToNative, webToNativeIos } from "../utills";
 import { HapticsOptions, HapticsIosMessage } from "./types";
 
 /**
@@ -7,11 +7,14 @@ import { HapticsOptions, HapticsIosMessage } from "./types";
  */
 export const trigger = (options: HapticsOptions = {}): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
-		if (platform === "IOS_APP" && webToNativeIos) {
+			platform === "ANDROID_APP" && webToNative.haptikEffect(JSON.stringify(options));
+			if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({
 				action: "haptikEffect",
 				effect: options.effect,
 			} as HapticsIosMessage);
+
 		}
+	
 	}
 };
