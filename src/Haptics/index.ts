@@ -24,7 +24,7 @@ interface IsHapticSupportedOptions {
 
 export const isHapticSupported = (options: IsHapticSupportedOptions = {}): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
-		const { callback } = options;
+		const { callback } = options || {};
 
 		registerCb((response: BaseResponse) => {
 			if (response && response.type === "isHapticSupported") {
