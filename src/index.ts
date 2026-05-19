@@ -182,10 +182,18 @@ export const enablePullToRefresh = (status: boolean): void => {
 	isAndroidApp && webToNative.enableSwipeRefresh && webToNative.enableSwipeRefresh(status);
 };
 
-export const clearAppCache = (reload: boolean): void => {
+export const clearAppCache = ({cacheOnly=true,reload=true}: {reload?: boolean, cacheOnly?: boolean}): void => {
 	isAndroidApp &&
 		webToNative.clearWebViewCache &&
-		webToNative.clearWebViewCache(JSON.stringify({ reload }));
+		webToNative.clearWebViewCache(JSON.stringify({cacheOnly,reload}));
+
+	isIosApp &&
+		webToNativeIos &&
+		webToNativeIos.postMessage({
+			action: "clearAppCache",
+			cacheOnly,
+			reload
+		});
 };
 
 export const shareFile = (
