@@ -182,18 +182,26 @@ export const enablePullToRefresh = (status: boolean): void => {
 	isAndroidApp && webToNative.enableSwipeRefresh && webToNative.enableSwipeRefresh(status);
 };
 
-export const clearAppCache = ({cacheOnly=true,reload=true}: {reload?: boolean, cacheOnly?: boolean}): void => {
+const clear = ({cacheOnly, reload}: {cacheOnly: boolean, reload: boolean}): void => {
 	isAndroidApp &&
 		webToNative.clearWebViewCache &&
-		webToNative.clearWebViewCache(JSON.stringify({cacheOnly,reload}));
+		webToNative.clearWebViewCache(JSON.stringify({ cacheOnly, reload }));
 
 	isIosApp &&
 		webToNativeIos &&
 		webToNativeIos.postMessage({
 			action: "clearAppCache",
 			cacheOnly,
-			reload
+			reload,
 		});
+}
+
+export const clearAppCache = (cacheOnly: boolean = true): void => {
+	clear({cacheOnly, reload: false});
+};
+
+export const clearAppData = (reload: boolean=true): void => {
+	clear({cacheOnly: false, reload});
 };
 
 export const shareFile = (
@@ -741,5 +749,6 @@ export default {
 	registerNotification,
 	setNavigationBarColor,
 	pinchToZoom,
-	removeAllNotifications
+	removeAllNotifications,
+	clearAppData
 };
