@@ -196,8 +196,8 @@ const clear = ({cacheOnly, reload}: {cacheOnly: boolean, reload: boolean}): void
 		});
 }
 
-export const clearAppCache = (cacheOnly: boolean = true): void => {
-	clear({cacheOnly, reload: false});
+export const clearAppCache = (reload: boolean = true): void => {
+	clear({cacheOnly:true, reload});
 };
 
 export const clearAppData = (reload: boolean=true): void => {
