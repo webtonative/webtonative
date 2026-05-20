@@ -182,7 +182,7 @@ export const enablePullToRefresh = (status: boolean): void => {
 	isAndroidApp && webToNative.enableSwipeRefresh && webToNative.enableSwipeRefresh(status);
 };
 
-const clear = ({cacheOnly, reload}: {cacheOnly: boolean, reload: boolean}): void => {
+const clear = ({ cacheOnly, reload }: { cacheOnly: boolean; reload: boolean }): void => {
 	isAndroidApp &&
 		webToNative.clearWebViewCache &&
 		webToNative.clearWebViewCache(JSON.stringify({ cacheOnly, reload }));
@@ -194,14 +194,14 @@ const clear = ({cacheOnly, reload}: {cacheOnly: boolean, reload: boolean}): void
 			cacheOnly,
 			reload,
 		});
-}
-
-export const clearAppCache = (reload: boolean = true): void => {
-	clear({cacheOnly:true, reload});
 };
 
-export const clearAppData = (reload: boolean=true): void => {
-	clear({cacheOnly: false, reload});
+export const clearAppCache = (reload: boolean = true): void => {
+	clear({ cacheOnly: true, reload });
+};
+
+export const clearAppData = (reload: boolean = true): void => {
+	clear({ cacheOnly: false, reload });
 };
 
 export const shareFile = (
@@ -709,6 +709,29 @@ export const removeAllNotifications = (options?: {
 	}
 };
 
+export const getDevicePhoneNumber = (options?: {
+	callback?: (response: BaseResponse) => void;
+}): void => {
+	if (isAndroidORIosApp) {
+		const { callback } = options || {};
+
+		registerCb((response: BaseResponse) => {
+			const { type } = response;
+			if (type === "getDevicePhoneNumber") {
+				callback && callback(response);
+			}
+		});
+
+		isAndroidApp && webToNative.getDevicePhoneNumber();
+
+		isIosApp &&
+			webToNativeIos &&
+			webToNativeIos.postMessage({
+				action: "getDevicePhoneNumber",
+			});
+	}
+};
+
 export { platform, isNativeApp };
 
 export default {
@@ -750,5 +773,6 @@ export default {
 	setNavigationBarColor,
 	pinchToZoom,
 	removeAllNotifications,
-	clearAppData
+	clearAppData,
+	getDevicePhoneNumber,
 };
