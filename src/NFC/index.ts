@@ -1,7 +1,7 @@
 import { platform, registerCb, webToNative, webToNativeIos } from "../utills";
 import { NFCResponse, NFCCallback, NFCIosMessage, NFCScanTagOptions, NFCWriteTagOptions } from "./types";
 
-export const getStatus = (callback?: NFCCallback): void => {
+export const status = (callback?: NFCCallback): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		registerCb((response: NFCResponse) => {
 			const { type } = response;
@@ -20,7 +20,7 @@ export const getStatus = (callback?: NFCCallback): void => {
 	}
 };
 
-export const scanTag = (options: NFCScanTagOptions = {}): void => {
+export const read = (options: NFCScanTagOptions = {}): void => {
 	const { message, openUrl = false, callback } = options;
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		registerCb((response: NFCResponse) => {
@@ -43,7 +43,7 @@ export const scanTag = (options: NFCScanTagOptions = {}): void => {
 	}
 };
 
-export const writeTag = (options: NFCWriteTagOptions): void => {
+export const write = (options: NFCWriteTagOptions): void => {
 	const { type, content,message, callback } = options||{};
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		registerCb((response: NFCResponse) => {
@@ -67,4 +67,4 @@ export const writeTag = (options: NFCWriteTagOptions): void => {
 	}
 };
 
-export default { getStatus, scanTag, writeTag };
+export default { status, read, write };
