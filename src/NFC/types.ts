@@ -11,6 +11,7 @@ export interface NFCCallback {
 export interface NFCScanTagOptions {
 	message?: string;
 	openUrl?:boolean
+	continuous?:boolean
 	callback?: NFCCallback;
 }
 

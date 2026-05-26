@@ -1,5 +1,11 @@
 import { platform, registerCb, webToNative, webToNativeIos } from "../utills";
-import { NFCResponse, NFCCallback, NFCIosMessage, NFCScanTagOptions, NFCWriteTagOptions } from "./types";
+import {
+	NFCResponse,
+	NFCCallback,
+	NFCIosMessage,
+	NFCScanTagOptions,
+	NFCWriteTagOptions,
+} from "./types";
 
 export const status = (callback?: NFCCallback): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
@@ -21,17 +27,19 @@ export const status = (callback?: NFCCallback): void => {
 };
 
 export const read = (options: NFCScanTagOptions = {}): void => {
-	const { message, openUrl = false, callback } = options;
+	const { message, openUrl = false, continuous = false, callback } = options;
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
-		registerCb((response: NFCResponse) => {
-			const { type } = response;
-			if (type === "nfcScanTag") {
-				callback && callback(response);
-			}
-		});
+		registerCb(
+			(response: NFCResponse) => {
+				const { type } = response;
+				if (type === "nfcScanTag") {
+					callback && callback(response);
+				}
+			},
+			{ ignoreDelete: continuous }
+		);
 
-		platform === "ANDROID_APP" &&
-			webToNative.nfcScanTag(JSON.stringify({ message, openUrl }));
+		platform === "ANDROID_APP" && webToNative.nfcScanTag(JSON.stringify({ message, openUrl }));
 
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({
@@ -44,7 +52,7 @@ export const read = (options: NFCScanTagOptions = {}): void => {
 };
 
 export const write = (options: NFCWriteTagOptions): void => {
-	const { type, content,message, callback } = options||{};
+	const { type, content, message, callback } = options || {};
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		registerCb((response: NFCResponse) => {
 			const { type: responseType } = response;
@@ -53,15 +61,14 @@ export const write = (options: NFCWriteTagOptions): void => {
 			}
 		});
 
-		platform === "ANDROID_APP" &&
-			webToNative.nfcWriteTag(JSON.stringify(options));
+		platform === "ANDROID_APP" && webToNative.nfcWriteTag(JSON.stringify(options));
 
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({
 				action: "nfcWriteTag",
 				type,
 				content,
-				message
+				message,
 			} as NFCIosMessage);
 		}
 	}
