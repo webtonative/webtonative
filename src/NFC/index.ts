@@ -39,13 +39,14 @@ export const read = (options: NFCScanTagOptions = {}): void => {
 			{ ignoreDelete: continuous }
 		);
 
-		platform === "ANDROID_APP" && webToNative.nfcScanTag(JSON.stringify({ message, openUrl }));
+		platform === "ANDROID_APP" && webToNative.nfcScanTag(JSON.stringify(options));
 
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({
 				action: "nfcScanTag",
 				message,
 				openUrl,
+				continuous
 			} as NFCIosMessage);
 		}
 	}
