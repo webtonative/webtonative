@@ -6,6 +6,7 @@
  * const wtn = webtonative();
  */
 import { isNativeApp, webToNative, platform, webToNativeIos, registerCb } from "./utills";
+export { on, off, once } from "./EventEmitter";
 import {
 	StatusBarOptions,
 	DownloadBlobFileOptions,
