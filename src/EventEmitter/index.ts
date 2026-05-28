@@ -1,8 +1,8 @@
 type EventHandler = (data: any) => void;
 
 interface ListenerEntry {
-	handler: EventHandler;   // original, used for off() matching
-	callable: EventHandler;  // actual invoked fn (wrapped for once())
+	handler: EventHandler;
+	callable: EventHandler;
 	namespace: string;
 }
 
@@ -25,25 +25,17 @@ function eachEvent(events: string, fn: (name: string, namespace: string) => void
 		});
 }
 
-// on("event", handler)
-// on("event.namespace", handler)
-// on("event1 event2", handler)
 export const on = (events: string, handler: EventHandler): void => {
 	eachEvent(events, (name, namespace) => {
 		if (!listeners[name]) listeners[name] = [];
 		listeners[name].push({ handler, callable: handler, namespace });
 	});
+	console.log({ listeners });
 };
 
-// off("event")               — remove all handlers for event
-// off("event", handler)      — remove specific handler
-// off("event.namespace")     — remove all handlers in namespace for event
-// off(".namespace")          — remove all handlers in namespace across all events
-// off("event1 event2")       — remove across multiple events
 export const off = (events: string, handler?: EventHandler): void => {
 	eachEvent(events, (name, namespace) => {
 		if (!name) {
-			// namespace-only: ".ns" → remove across everything
 			Object.keys(listeners).forEach((key) => {
 				listeners[key] = listeners[key].filter(
 					(e) => !(e.namespace === namespace && (!handler || e.handler === handler))
@@ -65,9 +57,6 @@ export const off = (events: string, handler?: EventHandler): void => {
 	});
 };
 
-// once("event", handler)
-// once("event.namespace", handler)
-// once("event1 event2", handler)
 export const once = (events: string, handler: EventHandler): void => {
 	eachEvent(events, (name, namespace) => {
 		const callable: EventHandler = (data: any) => {
@@ -83,16 +72,25 @@ export const once = (events: string, handler: EventHandler): void => {
 };
 
 export const emit = (event: string, data?: any): void => {
+	console.log({ event, data, listeners });
 	const { name } = parseEvent(event);
-	if (!listeners[name]) return;
-	listeners[name].slice().forEach((e) => e.callable(data));
+	if (listeners[name]) {
+		listeners[name].slice().forEach((e) => e.callable({ type: name, data: data }));
+	}
+	if (listeners["*"]) {
+		listeners["*"].slice().forEach((e) => e.callable({ type: name, data: data }));
+	}
 };
 
-// Called by native (Android/iOS) to push events into JS:
-//   window.wtnDispatchEvent("share-received", "{...json...}")
+export const WTN = { on, off, once, emit };
+
+export const wtnDispatchEvent = (eventName: string, dataJson: string | object): void => {
+	const data = typeof dataJson === "string" ? JSON.parse(dataJson) : dataJson;
+	emit(eventName, data);
+};
+
 if (typeof window !== "undefined") {
-	(window as any).wtnDispatchEvent = (eventName: string, dataJson: string | object) => {
-		const data = typeof dataJson === "string" ? JSON.parse(dataJson) : dataJson;
-		emit(eventName, data);
-	};
+	(window as any).WTN = WTN;
+	// Called by native (Android/iOS) to push events into JS
+	(window as any).wtnDispatchEvent = wtnDispatchEvent;
 }
