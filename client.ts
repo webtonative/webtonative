@@ -38,6 +38,7 @@ import * as SendBird from "./src/SendBird";
 import * as Auth0 from "./src/Auth0";
 import * as Truecaller from "./src/Truecaller";
 import * as NFC from "./src/NFC";
+import * as SmartNotification from "./src/SmartNotification";
 import { webToNativeIos } from "./src/utills";
 
 // Define the window interface to add WTN property
@@ -87,6 +88,7 @@ declare global {
 			Auth0: typeof Auth0;
 			Truecaller: typeof Truecaller;
 			NFC: typeof NFC;
+			SmartNotification: typeof SmartNotification;
 		};
 		WebToNativeInterface: any;
 	}
@@ -138,6 +140,7 @@ window.WTN.SendBird = SendBird;
 window.WTN.Auth0 = Auth0;
 window.WTN.Truecaller = Truecaller;
 window.WTN.NFC = NFC;
+window.WTN.SmartNotification = SmartNotification;
 
 if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
 	window.navigator.share = function (obj: any) {
