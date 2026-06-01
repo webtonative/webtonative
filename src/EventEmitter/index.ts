@@ -84,13 +84,13 @@ export const emit = (event: string, data?: any): void => {
 
 export const WTN = { on, off, once, emit };
 
-export const wtnDispatchEvent = (eventName: string, dataJson: string | object): void => {
-	const data = typeof dataJson === "string" ? JSON.parse(dataJson) : dataJson;
-	emit(eventName, data);
+export const wtnDispatchEvent = (eventJson: string | { type: string; data: any }): void => {
+	const event = typeof eventJson === "string" ? JSON.parse(eventJson) : eventJson;
+	emit(event.type, event.data);
 };
 
 if (typeof window !== "undefined") {
 	(window as any).WTN = WTN;
 	// Called by native (Android/iOS) to push events into JS
-	(window as any).wtnDispatchEvent = wtnDispatchEvent;
+	(window as any).nativeEventCB = wtnDispatchEvent;
 }
