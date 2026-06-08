@@ -20,7 +20,7 @@ import {
  */
 export const inAppPurchase = (options: InAppPurchaseOptions): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
-		const { callback, productId, productType, isConsumable = false } = options;
+		const { callback, productId, productType, isConsumable = false, accountToken } = options||{};
 
 		registerCb((response: InAppPurchaseResponse) => {
 			const { type } = response;
@@ -33,6 +33,7 @@ export const inAppPurchase = (options: InAppPurchaseOptions): void => {
 			webToNativeIos.postMessage({
 				action: "inAppPurchase",
 				productId,
+				accountToken
 			} as InAppPurchaseIosMessage);
 		}
 
@@ -41,7 +42,8 @@ export const inAppPurchase = (options: InAppPurchaseOptions): void => {
 				action: "inAppPurchase",
 				productId,
 				productType,
-				isConsumable
+				isConsumable,
+				accountToken
 			} as InAppPurchaseAndroidParams));
 	}
 };
