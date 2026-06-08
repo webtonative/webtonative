@@ -49,7 +49,14 @@ export const getAgeSignals = (options: GetAgeSignalsOptions): void => {
  */
 export const notifySignificantChange = (options: NotifySignificantChangeOptions): void => {
 	if (["IOS_APP"].includes(platform)) {
-		const { topicString } = options;
+		const { topicString, callback } = options;
+
+		registerCb((response: AgeSafetyResponse) => {
+			const { type } = response;
+			if (type === "notifySignificantChange") {
+				callback && callback(response);
+			}
+		});
 
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({

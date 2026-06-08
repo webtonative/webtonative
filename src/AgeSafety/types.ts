@@ -13,7 +13,8 @@ export interface GetAgeSignalsOptions {
 }
 
 export interface NotifySignificantChangeOptions {
-	topicString: string;
+	topicString?: string;
+	callback?: AgeSafetyCallback;
 }
 
 export interface AgeSafetyIosMessage {
