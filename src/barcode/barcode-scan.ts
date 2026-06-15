@@ -11,6 +11,7 @@ import Format from "./formats";
 interface BarcodeScanOptions {
   onBarcodeSearch?: (value: string) => void;
   format?: number;
+  callback?: (response: BarcodeScanResponse) => void;
 }
 
 interface BarcodeScanResponse {
@@ -30,12 +31,13 @@ interface BarcodeScanResponse {
  */
 const BarcodeScan = (options: BarcodeScanOptions): void => {
   if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
-    const { onBarcodeSearch, format } = options;
+    const { onBarcodeSearch, format, callback } = options;
 
     registerCb((response: BarcodeScanResponse) => {
       const { type, value } = response;
       if (type === "BARCODE_SCAN") {
         onBarcodeSearch && onBarcodeSearch(value);
+        callback && callback(response);
       }
     });
     
