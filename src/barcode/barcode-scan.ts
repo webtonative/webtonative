@@ -52,7 +52,7 @@ const BarcodeScan = (options: BarcodeScanOptions): void => {
     if (platform === "IOS_APP" && webToNativeIos) {
       webToNativeIos.postMessage({
         action: "barcodeScan",
-        barcodeFormat: format ? String(format) : String(Format.ALL_FORMATS),
+        formats: format ? [format] : [Format.ALL_FORMATS],
       });
     }
   }
