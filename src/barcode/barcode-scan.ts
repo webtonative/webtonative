@@ -12,6 +12,9 @@ interface BarcodeScanOptions {
   onBarcodeSearch?: (value: string) => void;
   format?: number;
   callback?: (response: BarcodeScanResponse) => void;
+  multiScan?: boolean;
+  maxCount?: number;
+  allowDuplicates?: boolean;
 }
 
 interface BarcodeScanResponse {
@@ -31,7 +34,7 @@ interface BarcodeScanResponse {
  */
 const BarcodeScan = (options: BarcodeScanOptions): void => {
   if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
-    const { onBarcodeSearch, format, callback } = options;
+    const { onBarcodeSearch, format, callback ,...rest} = options;
 
     registerCb((response: BarcodeScanResponse) => {
       const { type, value } = response;
@@ -45,6 +48,7 @@ const BarcodeScan = (options: BarcodeScanOptions): void => {
       webToNative.startScanner(
         JSON.stringify({
           formats: format ? [format] : [],
+          ...rest
         })
       );
     }
@@ -53,6 +57,7 @@ const BarcodeScan = (options: BarcodeScanOptions): void => {
       webToNativeIos.postMessage({
         action: "barcodeScan",
         formats: format ? [format] : [Format.ALL_FORMATS],
+        ...rest
       });
     }
   }
