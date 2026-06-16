@@ -66,7 +66,8 @@ export const open = (options?: {
 	});
 
 	if (platform === "ANDROID_APP") {
-		webToNative.openSettings && webToNative.openSettings(JSON.stringify({ permission }));
+		webToNative.openSettings &&
+			webToNative.openSettings(JSON.stringify({ permission, alertDialogStyle }));
 	} else if (platform === "IOS_APP") {
 		webToNativeIos &&
 			webToNativeIos.postMessage({ action: "openSettings", permission, alertDialogStyle });
