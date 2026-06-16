@@ -25,8 +25,7 @@ export interface PermissionOptions {
 	callback?: (response: PermissionResponse) => void;
 }
 export interface PermissionOptionsRequest {
-	permissions?:PermissionType[]
+	permission?:PermissionType
 	callback?: (response: PermissionResponse) => void;
-	openAppSetting?: boolean;
-	alertDialogStyle?: any;
+
 }
