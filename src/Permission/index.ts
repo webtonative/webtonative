@@ -1,11 +1,16 @@
 import { BaseResponse } from "../types";
 import { platform, registerCb, webToNative, webToNativeIos } from "../utills";
-import { PermissionType, PermissionResponse, PermissionOptions, PermissionOptionsRequest } from "./types";
+import {
+	PermissionType,
+	PermissionResponse,
+	PermissionOptions,
+	PermissionOptionsRequest,
+} from "./types";
 
-export const check = ( options: PermissionOptions = {}): void => {
+export const check = (options: PermissionOptions = {}): void => {
 	if (!["ANDROID_APP", "IOS_APP"].includes(platform)) return;
 
-	const { callback,permissions } = options;
+	const { callback, permissions } = options;
 
 	registerCb(
 		(response: PermissionResponse) => {
@@ -17,14 +22,11 @@ export const check = ( options: PermissionOptions = {}): void => {
 	);
 
 	if (platform === "ANDROID_APP") {
-		webToNative.checkPermission &&
-			webToNative.checkPermission(JSON.stringify({ permissions}));
+		webToNative.checkPermission && webToNative.checkPermission(JSON.stringify({ permissions }));
 	} else if (platform === "IOS_APP") {
-		webToNativeIos &&
-			webToNativeIos.postMessage({ action: "checkPermission", permissions });
+		webToNativeIos && webToNativeIos.postMessage({ action: "checkPermission", permissions });
 	}
 };
-
 
 export const request = (options: PermissionOptionsRequest = {}): void => {
 	if (!["ANDROID_APP", "IOS_APP"].includes(platform)) return;
@@ -41,33 +43,32 @@ export const request = (options: PermissionOptionsRequest = {}): void => {
 	);
 
 	if (platform === "ANDROID_APP") {
-		webToNative.requestPermission &&
-			webToNative.requestPermission(JSON.stringify({ permission }));
+		webToNative.requestPermission && webToNative.requestPermission(JSON.stringify({ permission }));
 	} else if (platform === "IOS_APP") {
-		webToNativeIos &&
-			webToNativeIos.postMessage({ action: "requestPermission", permission });
+		webToNativeIos && webToNativeIos.postMessage({ action: "requestPermission", permission });
 	}
 };
 
-export const open = (options?:{permission: PermissionType,callback?: (response: BaseResponse) => void} ): void => {
+export const open = (options?: {
+	permission: PermissionType;
+	callback?: (response: BaseResponse) => void;
+	alertDialogStyle?: Object;
+}): void => {
 	if (!["ANDROID_APP", "IOS_APP"].includes(platform)) return;
 
+	const { permission, callback, alertDialogStyle } = options || {};
 
-	const { permission , callback } = options || {};
-
-		registerCb((response: BaseResponse) => {
-				const { type } = response;
-				if (type === "openSettings") {
-					callback && callback(response);
-				}
-			});
-	
+	registerCb((response: BaseResponse) => {
+		const { type } = response;
+		if (type === "openSettings") {
+			callback && callback(response);
+		}
+	});
 
 	if (platform === "ANDROID_APP") {
-		webToNative.openSettings &&
-			webToNative.openSettings(JSON.stringify({ permission }));
+		webToNative.openSettings && webToNative.openSettings(JSON.stringify({ permission }));
 	} else if (platform === "IOS_APP") {
 		webToNativeIos &&
-			webToNativeIos.postMessage({ action: "openSettings", permission });
+			webToNativeIos.postMessage({ action: "openSettings", permission, alertDialogStyle });
 	}
 };
