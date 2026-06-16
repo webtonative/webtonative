@@ -393,6 +393,11 @@ interface OpenAppSettingForPermissionOptions {
 	values?: any;
 }
 
+/**
+ * @deprecated This function is deprecated and will be removed in a future release.
+ * Use {@link Permission.open} instead.
+ */
+
 export const openAppSettingForPermission = (options: OpenAppSettingForPermissionOptions): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { callback, values } = options;
@@ -425,7 +430,7 @@ interface ShowPermissionOptions {
 
 /**
  * @deprecated This function is deprecated and will be removed in a future release.
- * Use {@link openAppSettingForPermission} instead.
+ * Use {@link Permission.request} instead.
  */
 export const showPermission = (options: ShowPermissionOptions): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
@@ -584,6 +589,11 @@ interface CheckPermissionOptions {
 	callback?: (response: BaseResponse) => void;
 	permissionName?: string[];
 }
+
+/**
+ * @deprecated This function is deprecated and will be removed in a future release.
+ * Use {@link Permission.check} instead.
+ */
 
 export const checkPermission = (options: CheckPermissionOptions): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
