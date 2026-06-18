@@ -20,7 +20,9 @@ if (isNativeApp) {
 	webToNative.androidCBHook = (results: string) => {
 		var response: any = results;
 		try {
-			response = JSON.parse(results);
+			if (typeof results == "string") {
+		     response = JSON.parse(results);
+	        }
 		} catch (e) {
 			console.log(e);
 		}
@@ -50,7 +52,9 @@ if (isNativeApp) {
 	(window as any).iosCBHook = (results: string) => {
 		var response: any = results;
 		try {
-			response = JSON.parse(results);
+			if (typeof results == "string") {
+		     response = JSON.parse(results);
+	        }
 		} catch (e) {
 			console.log(e);
 		}
