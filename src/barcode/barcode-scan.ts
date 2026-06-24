@@ -38,7 +38,7 @@ const BarcodeScan = (options: BarcodeScanOptions): void => {
 
     registerCb((response: BarcodeScanResponse) => {
       const { type, value } = response;
-      if (type === "barcodeScan") {
+      if (type === "BARCODE_SCAN") {
         onBarcodeSearch && onBarcodeSearch(value);
         callback && callback(response);
       }
