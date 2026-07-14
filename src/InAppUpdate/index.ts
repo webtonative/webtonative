@@ -65,3 +65,22 @@ export const showInAppUpdateUI = (options: CheckUpdateOptions): void => {
 		}
 	}
 };
+
+export const redirectToAppStore = (options: CheckUpdateOptions): void => {
+	if (["IOS_APP"].includes(platform)) {
+		const { callback } = options;
+
+		registerCb((response: InAppUpdateResponse) => {
+			const { type } = response;
+			if (type === "redirectToAppStore") {
+				callback && callback(response);
+			}
+		});
+
+		if (platform === "IOS_APP" && webToNativeIos) {
+			webToNativeIos.postMessage({
+				action: "redirectToAppStore",
+			});
+		}
+	}
+};
