@@ -31,7 +31,7 @@ export const checkIfAppUpdateAvailable = (options: CheckUpdateOptions): void => 
  * @param options - Options for updating the application
  */
 export const updateApplication = (options: UpdateApplicationOptions): void => {
-	if (["ANDROID_APP"].includes(platform)) {
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { updateType = "immediate", callback } = options;
 
 		registerCb((response: InAppUpdateResponse) => {
@@ -42,6 +42,12 @@ export const updateApplication = (options: UpdateApplicationOptions): void => {
 		});
 
 		platform === "ANDROID_APP" && webToNative.updateApplication(updateType);
+
+		if (platform === "IOS_APP" && webToNativeIos) {
+			webToNativeIos.postMessage({
+				action: "updateApplication",
+			});
+		}
 	}
 };
 
@@ -61,25 +67,6 @@ export const showInAppUpdateUI = (options: CheckUpdateOptions): void => {
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({
 				action: "showInAppUpdateUI",
-			});
-		}
-	}
-};
-
-export const redirectToAppStore = (options: CheckUpdateOptions): void => {
-	if (["IOS_APP"].includes(platform)) {
-		const { callback } = options;
-
-		registerCb((response: InAppUpdateResponse) => {
-			const { type } = response;
-			if (type === "redirectToAppStore") {
-				callback && callback(response);
-			}
-		});
-
-		if (platform === "IOS_APP" && webToNativeIos) {
-			webToNativeIos.postMessage({
-				action: "redirectToAppStore",
 			});
 		}
 	}
