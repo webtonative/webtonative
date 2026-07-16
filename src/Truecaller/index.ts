@@ -24,7 +24,7 @@ export const truecallerLogin = (options: TruecallerLoginOptions = {}): void => {
 			if (type === "truecallerLogin") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "truecallerLogin" });
 
 		if (platform === "ANDROID_APP") {
 			webToNative.truecallerLogin && webToNative.truecallerLogin(JSON.stringify(rest));

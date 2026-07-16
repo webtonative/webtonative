@@ -19,7 +19,7 @@ export const login = (options: SocialLoginOptions): void => {
 			if (type === "appleLoginToken") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "appleLoginToken" });
 
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({

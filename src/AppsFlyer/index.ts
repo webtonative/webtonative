@@ -51,7 +51,7 @@ export const getAppsFlyerAppId = (options: {
 			if (type === "getAppsFlyerAppId") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "getAppsFlyerAppId" });
 
 		platform === "ANDROID_APP" && webToNative.getAppsFlyerAppId();
 

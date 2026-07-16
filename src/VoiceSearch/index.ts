@@ -21,7 +21,7 @@ const openVoiceSearch = (options: VoiceSearchOptions = {}): any => {
       voiceSearchCb && voiceSearchCb(results);
       voiceSearchCb = null;
     }
-  });
+  }, { key: "VOICE_SEARCH_RESULT" });
   
   if (isNativeApp) {
     webToNative.openVoiceSearch();

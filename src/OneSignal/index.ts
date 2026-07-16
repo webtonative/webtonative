@@ -140,7 +140,7 @@ export const getTriggerValue = (options: TriggerOptions = {}): void => {
 			if (type === "getTriggerValue") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "getTriggerValue" });
 
 		if (platform === "ANDROID_APP") {
 			webToNative.getTriggerValueForKey(key);
@@ -161,7 +161,7 @@ export const getTriggers = (options: TriggerOptions = {}): void => {
 			if (type === "getTriggers") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "getTriggers" });
 
 		if (platform === "ANDROID_APP") {
 			webToNative.getTriggers();

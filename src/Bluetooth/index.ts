@@ -20,7 +20,7 @@ export const startBluetoothScan = (options: BluetoothScanOptions = {}): void => 
 			if (type === "startBluetoothScan") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "startBluetoothScan" });
 
 		platform === "ANDROID_APP" &&
         	webToNative.startBluetoothScan();
@@ -39,7 +39,7 @@ export const pairDevice = (options: BluetoothPairOptions = {}): void => {
 			if (type === "pairWithDevice") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "pairWithDevice" });
 
 		platform === "ANDROID_APP" &&
         	webToNative.pairWithDevice(JSON.stringify({
@@ -61,7 +61,7 @@ export const unpairDevice = (options: BluetoothUnpairOptions = {}): void => {
 			if (type === "unpairDevice") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "unpairDevice" });
 
 		platform === "ANDROID_APP" &&
         	webToNative.unpairDevice(JSON.stringify({

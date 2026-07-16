@@ -24,7 +24,7 @@ export const login = (options: SocialLoginOptions): void => {
 			if (type === "fbLoginToken") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "fbLoginToken" });
 
 		platform === "ANDROID_APP" && webToNative.loginWithFacebook();
 
@@ -55,7 +55,7 @@ export const logout = (options: SocialLoginOptions): void => {
 			if (type === "fbLogOut") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "fbLogOut" });
 
 		platform === "ANDROID_APP" && webToNative.logoutWithFacebook();
 

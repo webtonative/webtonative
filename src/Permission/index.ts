@@ -63,7 +63,7 @@ export const open = (options?: {
 		if (type === "openSettings") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "openSettings" });
 
 	if (platform === "ANDROID_APP") {
 		webToNative.openSettings &&

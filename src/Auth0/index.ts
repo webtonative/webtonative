@@ -16,7 +16,7 @@ export const login = (options: ILogin) => {
 		if (type === "auth0Login") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "auth0Login" });
 
 	if (isAndroidApp) {
 		webToNative.auth0Login(JSON.stringify(options));
@@ -36,7 +36,7 @@ export const logout = (options: { callback?: ILogin["callback"] }) => {
 		if (type === "auth0Logout") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "auth0Logout" });
 
 	if (isAndroidApp) {
 		webToNative.auth0Logout();
@@ -55,7 +55,7 @@ export const getStatus = (options: { callback?: ILogin["callback"] }) => {
 		if (type === "auth0Status") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "auth0Status" });
 
 	if (isAndroidApp) {
 		webToNative.auth0Status();
@@ -74,7 +74,7 @@ export const getCredentials = (options: { callback?: ILogin["callback"] }) => {
 		if (type === "auth0GetCredentials") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "auth0GetCredentials" });
 
 	if (isAndroidApp) {
 		webToNative.auth0GetCredentials();
@@ -92,7 +92,7 @@ export const renew = (options: { refreshToken: string; callback?: ILogin["callba
 		if (type === "auth0Renew") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "auth0Renew" });
 
 	if (isAndroidApp) {
 		webToNative.auth0Renew(JSON.stringify(rest));

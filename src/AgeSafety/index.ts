@@ -25,7 +25,7 @@ export const getAgeSignals = (options: GetAgeSignalsOptions): void => {
 			if (type === "getAgeSignals") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "getAgeSignals" });
 
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({
@@ -56,7 +56,7 @@ export const notifySignificantChange = (options: NotifySignificantChangeOptions)
 			if (type === "notifySignificantChange") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "notifySignificantChange" });
 
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({

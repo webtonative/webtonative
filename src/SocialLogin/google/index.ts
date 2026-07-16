@@ -24,7 +24,7 @@ export const login = (options: SocialLoginOptions): void => {
 			if (type === "googleLoginToken") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "googleLoginToken" });
 
 		platform === "ANDROID_APP" && webToNative.signInWithGoogle();
 
@@ -55,7 +55,7 @@ export const logout = (options: SocialLoginOptions): void => {
 			if (type === "googleLogOut") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "googleLogOut" });
 
 		platform === "ANDROID_APP" && webToNative.signOutWithGoogle();
 

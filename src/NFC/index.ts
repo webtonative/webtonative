@@ -14,7 +14,7 @@ export const status = (callback?: NFCCallback): void => {
 			if (type === "nfcGetStatus") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "nfcGetStatus" });
 
 		platform === "ANDROID_APP" && webToNative.nfcGetStatus();
 
@@ -36,7 +36,7 @@ export const read = (options: NFCScanTagOptions = {}): void => {
 					callback && callback(response);
 				}
 			},
-			{ ignoreDelete: continuous }
+			{ ignoreDelete: continuous, key: "nfcScanTag" }
 		);
 
 		platform === "ANDROID_APP" && webToNative.nfcScanTag(JSON.stringify(options));
@@ -60,7 +60,7 @@ export const write = (options: NFCWriteTagOptions): void => {
 			if (responseType === "nfcWriteTag") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "nfcWriteTag" });
 
 		platform === "ANDROID_APP" && webToNative.nfcWriteTag(JSON.stringify(options));
 

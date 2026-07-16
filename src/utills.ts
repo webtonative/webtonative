@@ -28,27 +28,23 @@ const handleNativeCallback = (results: string) => {
 			console.log(e);
 		}
 	}
-	if (response && response.reqType) {
-		const key = response.reqType;
+	const fireCb = (key: string | number) => {
 		const entry = cbObj[key];
-		if (entry) {
-			if (!entry.ignoreDelete) {
-				delete cbObj[key];
-			}
-			entry.cb(response);
+		if (!entry) {
+			return;
 		}
-	} else if (parsed) {
-		// No reqType in response — all pending callbacks are fired and deleted.
-		// Snapshot keys so callbacks registered during the loop aren't fired with this response.
+		if (!entry.ignoreDelete) {
+			delete cbObj[key];
+		}
+		entry.cb(response);
+	};
+	if (response && response.reqType) {
+		fireCb(response.reqType);
+	} else if (parsed && response && typeof response.type === "string" && cbObj[response.type]) {
+		fireCb(response.type);
+	} else if (parsed && response) {
 		for (const key of Object.keys(cbObj)) {
-			const entry = cbObj[key];
-			if (!entry) {
-				continue;
-			}
-			if (!entry.ignoreDelete) {
-				delete cbObj[key];
-			}
-			entry.cb(response);
+			fireCb(key);
 		}
 	}
 };

@@ -27,7 +27,7 @@ export const inAppPurchase = (options: InAppPurchaseOptions): void => {
 			if (type === "inAppPurchase") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "inAppPurchase" });
 
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({
@@ -61,7 +61,7 @@ export const getAllPurchases = (options: GetAllPurchasesOptions): void => {
 			if (type === "purchaseList") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "purchaseList" });
 
 		platform === "ANDROID_APP" &&
 			webToNative.getAllPurchases({
@@ -83,7 +83,7 @@ export const getReceiptData = (options: GetReceiptDataOptions): void => {
 			if (type === "getReceiptData") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "getReceiptData" });
 
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({

@@ -14,7 +14,7 @@ export const onUnreadChatCountsChange = (options?: ICb) => {
 		if (type === "onUnreadChatCountsChange") {
 			callback && callback(response);
 		}
-	},{ignoreDelete:true});
+	},{ignoreDelete:true,key:"onUnreadChatCountsChange"});
 
 	if (isAndroidApp) {
 		webToNative.onUnreadChatCountsChange();
@@ -33,7 +33,7 @@ export const openConnectWidget = (data?: ICb & { chatId?: string }) => {
 		if (type === "openConnectWidget") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "openConnectWidget" });
 
 	if (isAndroidApp) {
 		webToNative.openConnectWidget(JSON.stringify({ data: rest }));
@@ -84,7 +84,7 @@ export const isInitializationDone = (options?: ICb) => {
 		if (type === "isInitializationDone") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "isInitializationDone" });
 
 	if (isAndroidApp) {
 		webToNative.isInitializationDone();
@@ -102,7 +102,7 @@ export const setAppId = (options: ICb & { appId: string }) => {
 		if (type === "setAppId") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "setAppId" });
 
 	if (isAndroidApp) {
 		webToNative.setAppId(JSON.stringify({ data: appId }));
@@ -121,7 +121,7 @@ export const setExternalUserid = (options: ICb & { externalUserId: string }) => 
 		if (type === "setExternalUserid") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "setExternalUserid" });
 
 	if (isAndroidApp) {
 		webToNative.setExternalUserid(JSON.stringify({ data: externalUserId }));
@@ -140,7 +140,7 @@ export const isUserLoggedIn = (options: ICb) => {
 		if (type === "isUserLoggedIn") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "isUserLoggedIn" });
 
 	if (isAndroidApp) {
 		webToNative.isUserLoggedIn();
@@ -158,7 +158,7 @@ export const getUser = (options: ICb) => {
 		if (type === "getUser") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "getUser" });
 
 	if (isAndroidApp) {
 		webToNative.getUser();
@@ -187,7 +187,7 @@ export const getUnreadChatsCount = (options: ICb) => {
 		if (type === "getUnreadChatsCount") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "getUnreadChatsCount" });
 
 	if (isAndroidApp) {
 		webToNative.getUnreadChatsCount();
@@ -205,7 +205,7 @@ export const sendChatMessage = (data: ICb) => {
 		if (type === "sendChatMessage") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "sendChatMessage" });
 
 	if (isAndroidApp) {
 		webToNative.sendChatMessage(JSON.stringify({ data: rest }));
@@ -224,7 +224,7 @@ export const getRestoreID = (options: ICb): void => {
 		if (type === "getRestoreID") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "getRestoreID" });
 
 	if (isAndroidApp) {
 		webToNative.getRestoreID();

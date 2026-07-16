@@ -144,7 +144,7 @@ export const isDeviceGPSEnabled = (options: GPSEnabledOptions = {}): void => {
 			if (type === "isDeviceGPSEnabled") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "isDeviceGPSEnabled" });
 
 		platform === "ANDROID_APP" &&
 			webToNative.isLocationServiceEnabled &&
@@ -235,7 +235,7 @@ export const showDateTimePicker = (options: DateTimePickerOptions): void => {
 			if (type === "DATE_TIME_PICKER") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "DATE_TIME_PICKER" });
 
 		isAndroidApp &&
 			webToNative.pickDateTime &&
@@ -280,7 +280,7 @@ export const nfcSupported = (options: NFCSupportedOptions): void => {
 			if (type === "nfcSupported") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "nfcSupported" });
 
 		isAndroidApp && webToNative.nfcSupported && webToNative.nfcSupported();
 
@@ -406,7 +406,7 @@ export const openAppSettingForPermission = (options: OpenAppSettingForPermission
 			if (type === "openAppSettingForPermission") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "openAppSettingForPermission" });
 
 		isAndroidApp &&
 			webToNative.openAppSettingForPermission &&
@@ -566,7 +566,7 @@ export const getAddOnStatus = (options: GetAddOnStatusOptions): void => {
 			if (type === "getAddOnStatus") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "getAddOnStatus" });
 
 		isAndroidApp &&
 			webToNative.getAddOnStatus &&
@@ -688,7 +688,7 @@ export const registerNotification = (options?: RegisterNotificationOptions): voi
 			if (type === "registerNotification") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "registerNotification" });
 
 		isAndroidApp && webToNative.registerNotification && webToNative.registerNotification();
 		isIosApp &&
@@ -743,7 +743,7 @@ export const removeAllNotifications = (options?: {
 			if (type === "removeAllNotifications") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "removeAllNotifications" });
 
 		isAndroidApp && webToNative.removeAllNotifications();
 
@@ -766,7 +766,7 @@ export const getDevicePhoneNumber = (options?: {
 			if (type === "getDevicePhoneNumber") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "getDevicePhoneNumber" });
 
 		isAndroidApp && webToNative.getDevicePhoneNumber();
 

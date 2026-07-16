@@ -20,7 +20,7 @@ export const makeTapToPay = (options: StripeOptions): void => {
             if (type === "makeTapToPayStripePayment") {
                 callback && callback(response);
             }
-        });
+        }, { key: "makeTapToPayStripePayment" });
 
         let paymentData: StripePaymentData = {
             secretToken: connectionToken,

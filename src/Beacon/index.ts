@@ -13,7 +13,7 @@ export const initBeaconData = (options: BeaconOptions = {}): void => {
 			if (type === "initBeaconData") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "initBeaconData" });
 
 		platform === "ANDROID_APP" && webToNative.initBeaconData(JSON.stringify(beaconData));
 

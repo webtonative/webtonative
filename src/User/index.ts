@@ -9,7 +9,7 @@ export const login = (options: Record<string, any>): void => {
 		if (type === "unifiedLogin") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "unifiedLogin" });
 
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		platform === "ANDROID_APP" && webToNative.unifiedLogin(JSON.stringify(options));
@@ -30,7 +30,7 @@ export const setUserInfo = (options: Record<string, any>): void => {
 		if (type === "setUnifiedUserInfo") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "setUnifiedUserInfo" });
 
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		platform === "ANDROID_APP" && webToNative.setUnifiedUserInfo(JSON.stringify(options));
@@ -51,7 +51,7 @@ export const getUserInfo = (options: Record<string, any>): void => {
 		if (type === "getUnifiedUserInfo") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "getUnifiedUserInfo" });
 
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		platform === "ANDROID_APP" && webToNative.getUnifiedUserInfo();

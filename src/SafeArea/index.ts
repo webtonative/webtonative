@@ -10,7 +10,7 @@ export const getSafeArea = (options: { callback?: CallbackFunction }) => {
 		if (type === "getSafeArea") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "getSafeArea" });
 
 	if (isAndroidApp) {
 		webToNative.getSafeArea();

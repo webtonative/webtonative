@@ -30,7 +30,7 @@ export const isHapticSupported = (options: IsHapticSupportedOptions = {}): void 
 			if (response && response.type === "isHapticSupported") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "isHapticSupported" });
 
 		if (platform === "ANDROID_APP") {
 			webToNative.isHapticSupported && webToNative.isHapticSupported();

@@ -14,7 +14,7 @@ export const checkIfAppUpdateAvailable = (options: CheckUpdateOptions): void => 
 			if (type === "checkIfAppUpdateAvailable") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "checkIfAppUpdateAvailable" });
 
 		platform === "ANDROID_APP" && webToNative.checkIfAppUpdateAvailable();
 
@@ -39,7 +39,7 @@ export const updateApplication = (options: UpdateApplicationOptions): void => {
 			if (type === "updateApplication") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "updateApplication" });
 
 		platform === "ANDROID_APP" && webToNative.updateApplication(updateType);
 
@@ -60,7 +60,7 @@ export const showInAppUpdateUI = (options: CheckUpdateOptions): void => {
 			if (type === "showInAppUpdateUI") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "showInAppUpdateUI" });
 
 		platform === "ANDROID_APP" && webToNative.showInAppUpdateUI();
 

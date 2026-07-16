@@ -60,7 +60,7 @@ export const getFCMToken = (options: FirebaseFCMTokenOptions): void => {
 				}
 				callback && callback(response);
 			}
-		});
+		}, { key: "getFCMToken" });
 
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({

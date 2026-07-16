@@ -18,7 +18,7 @@ export const request = (options: ATTConsentOptions = {}): void => {
 			if (type === "requestTrackingConsent") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "requestTrackingConsent" });
 
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({
@@ -40,7 +40,7 @@ export const status = (options: ATTConsentOptions = {}): void => {
 			if (type === "trackingConsentStatus") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "trackingConsentStatus" });
 
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({
