@@ -15,6 +15,7 @@ interface BarcodeScanOptions {
   multiScan?: boolean;
   maxCount?: number;
   allowDuplicates?: boolean;
+  style?:Object
 }
 
 interface BarcodeScanResponse {
