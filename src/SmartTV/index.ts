@@ -14,8 +14,7 @@ import {
  * @param options - Options containing an optional callback
  */
 export const isSupported = (options: IsSupportedOptions = {}): void => {
-	const { callback } = options;
-	if (platform === "ANDROID_APP") {
+		const { callback } = options||{};
 		registerCb(
 			(response: SmartTvResponse) => {
 				const { type } = response;
@@ -25,7 +24,7 @@ export const isSupported = (options: IsSupportedOptions = {}): void => {
 			},
 			{ key: "smartTvIsSupported" }
 		);
-
+	if (platform === "ANDROID_APP") {
 		webToNative.smartTvIsSupported && webToNative.smartTvIsSupported();
 	}
 };
@@ -36,8 +35,7 @@ export const isSupported = (options: IsSupportedOptions = {}): void => {
  */
 export const watchNextUpsert = (options: WatchNextUpsertOptions): void => {
 	const { callback, ...payload } = options || ({} as WatchNextUpsertOptions);
-	if (platform === "ANDROID_APP") {
-		registerCb(
+			registerCb(
 			(response: SmartTvResponse) => {
 				const { type } = response;
 				if (type === "smartTvWatchNextUpsert") {
@@ -46,7 +44,7 @@ export const watchNextUpsert = (options: WatchNextUpsertOptions): void => {
 			},
 			{ key: "smartTvWatchNextUpsert" }
 		);
-
+	if (platform === "ANDROID_APP") {
 		webToNative.smartTvWatchNextUpsert &&
 			webToNative.smartTvWatchNextUpsert(JSON.stringify(payload));
 	}
@@ -58,7 +56,6 @@ export const watchNextUpsert = (options: WatchNextUpsertOptions): void => {
  */
 export const watchNextRemove = (options: WatchNextRemoveOptions): void => {
 	const { contentId, callback } = options || ({} as WatchNextRemoveOptions);
-	if (platform === "ANDROID_APP") {
 		registerCb(
 			(response: SmartTvResponse) => {
 				const { type } = response;
@@ -68,7 +65,8 @@ export const watchNextRemove = (options: WatchNextRemoveOptions): void => {
 			},
 			{ key: "smartTvWatchNextRemove" }
 		);
-
+	if (platform === "ANDROID_APP") {
+	
 		webToNative.smartTvWatchNextRemove && webToNative.smartTvWatchNextRemove(contentId);
 	}
 };
