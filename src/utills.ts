@@ -28,23 +28,27 @@ const handleNativeCallback = (results: string) => {
 			console.log(e);
 		}
 	}
-	const fireCb = (key: string | number) => {
+	// `routed` means the response identified this callback by key, so the call it
+	// belongs to is finished and the callback can be dropped. An unrouted broadcast
+	// must never drop anything: the callback is still waiting on its own response,
+	// and deleting it here would leave that response with nowhere to go.
+	const fireCb = (key: string | number, routed: boolean) => {
 		const entry = cbObj[key];
 		if (!entry) {
 			return;
 		}
-		if (!entry.ignoreDelete) {
+		if (routed && !entry.ignoreDelete) {
 			delete cbObj[key];
 		}
 		entry.cb(response);
 	};
 	if (response && response.reqType) {
-		fireCb(response.reqType);
+		fireCb(response.reqType, true);
 	} else if (parsed && response && typeof response.type === "string" && cbObj[response.type]) {
-		fireCb(response.type);
+		fireCb(response.type, true);
 	} else if (parsed && response) {
 		for (const key of Object.keys(cbObj)) {
-			fireCb(key);
+			fireCb(key, false);
 		}
 	}
 };
