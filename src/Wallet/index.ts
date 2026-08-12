@@ -19,12 +19,15 @@ export const isSupported = (options: WalletSupportedOptions = {}): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { callback } = options;
 
-		registerCb((response: WalletResponse) => {
-			const { type } = response;
-			if (type === "isWalletSupported") {
-				callback && callback(response);
-			}
-		});
+		registerCb(
+			(response: WalletResponse) => {
+				const { type } = response;
+				if (type === "isWalletSupported") {
+					callback && callback(response);
+				}
+			},
+			{ key: "isWalletSupported" }
+		);
 
 		platform === "ANDROID_APP" &&
 			webToNative.isWalletSupported &&
@@ -46,12 +49,15 @@ export const getName = (options: WalletNameOptions = {}): void => {
 	if (["ANDROID_APP"].includes(platform)) {
 		const { callback } = options;
 
-		registerCb((response: WalletResponse) => {
-			const { type } = response;
-			if (type === "getWalletName") {
-				callback && callback(response);
-			}
-		});
+		registerCb(
+			(response: WalletResponse) => {
+				const { type } = response;
+				if (type === "getWalletName") {
+					callback && callback(response);
+				}
+			},
+			{ key: "getWalletName" }
+		);
 
 		platform === "ANDROID_APP" && webToNative.getWalletName && webToNative.getWalletName();
 	}
@@ -66,12 +72,15 @@ export const addPasses = (options: WalletAddPassesOptions): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { base64s, urls, passes, callback } = options || {};
 
-		registerCb((response: WalletResponse) => {
-			const { type } = response;
-			if (type === "addWalletPasses") {
-				callback && callback(response);
-			}
-		});
+		registerCb(
+			(response: WalletResponse) => {
+				const { type } = response;
+				if (type === "addWalletPasses") {
+					callback && callback(response);
+				}
+			},
+			{ key: "addWalletPasses" }
+		);
 
 		if (platform === "ANDROID_APP") {
 			const androidPasses = passes || [...(urls || []), ...(base64s || [])];
