@@ -180,6 +180,13 @@ export const openUrlInBrowser = (url: string = ""): void => {
 
 export const enablePullToRefresh = (status: boolean): void => {
 	isAndroidApp && webToNative.enableSwipeRefresh && webToNative.enableSwipeRefresh(status);
+
+	isIosApp &&
+		webToNativeIos &&
+		webToNativeIos.postMessage({
+			action: "setPullToRefresh",
+			enable:status,
+		});
 };
 
 const clear = ({ cacheOnly, reload }: { cacheOnly: boolean; reload: boolean }): void => {
