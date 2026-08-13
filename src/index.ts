@@ -307,6 +307,25 @@ export const openPDF = (options: OpenPDFOptions): void => {
 	}
 };
 
+export const showMultiPurposeModal = (modalId: string = ""): void => {
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		if (!modalId) {
+			throw "modalId is mandatory";
+		}
+
+		isAndroidApp &&
+			webToNative.showMultiPurposeModal &&
+			webToNative.showMultiPurposeModal(modalId);
+
+		isIosApp &&
+			webToNativeIos &&
+			webToNativeIos.postMessage({
+				action: "showMultiPurposeModal",
+				modalId,
+			});
+	}
+};
+
 interface NFCSupportedOptions {
 	callback?: (response: BaseResponse) => void;
 }
@@ -840,6 +859,7 @@ export default {
 	customFileDownload,
 	printFunction,
 	openPDF,
+	showMultiPurposeModal,
 	loadOfferCard,
 	appFirstLoad,
 	getComponentStatus,
