@@ -817,6 +817,34 @@ export const getDevicePhoneNumber = (options?: {
 	}
 };
 
+interface GetInstallationSourceOptions {
+	callback?: (response: BaseResponse) => void;
+}
+
+export const getInstallationSource = (options?: GetInstallationSourceOptions): void => {
+	if (isAndroidORIosApp) {
+		const { callback } = options || {};
+
+		registerCb(
+			(response: BaseResponse) => {
+				const { type } = response;
+				if (type === "getInstallationSource") {
+					callback && callback(response);
+				}
+			},
+			{ key: "getInstallationSource" }
+		);
+
+		isAndroidApp && webToNative.getInstallationSource && webToNative.getInstallationSource();
+
+		isIosApp &&
+			webToNativeIos &&
+			webToNativeIos.postMessage({
+				action: "getInstallationSource",
+			});
+	}
+};
+
 export { platform, isNativeApp };
 
 export default {
@@ -862,4 +890,5 @@ export default {
 	removeAllNotifications,
 	clearAppData,
 	getDevicePhoneNumber,
+	getInstallationSource,
 };
