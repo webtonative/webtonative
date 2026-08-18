@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /Users/venkateshmohta/Documents/W2N/Live/webtonative -type f \\\\\\(-name *.swift -o -name *.kt -o -name *.java -o -name *.m -o -name *.mm -o -name *.h \\\\\\))",
+      "Bash(grep -E \"\\\\.\\(ts|tsx|js|jsx|html\\)$\")",
+      "Bash(grep -r \"SendBird\\\\|sendbird\" /Users/venkateshmohta/Documents/W2N/Live/webtonative --include=\"*.json\" --include=\"*.md\" --include=\"*.xml\" --include=\"*.plist\" ! -path \"*/node_modules/*\")",
+      "Bash(find /Users/venkateshmohta/Documents/W2N/Live/webtonative -type f -name *send* -o -name *bird*)",
+      "Bash(git -C /Users/venkateshmohta/Documents/W2N/Live/webtonative branch -a)",
+      "Read(//Users/venkateshmohta/Documents/W2N/Live/**)",
+      "Bash(find /Users/venkateshmohta/Documents/W2N/Live -type d -name *android*)",
+      "Bash(find /Users/venkateshmohta/Documents/W2N/Live -type f \\\\\\(-name *.html -o -name *.htm \\\\\\) ! -path */node_modules/* ! -path */.git/*)",
+      "Bash(find /Users/venkateshmohta/Documents/W2N/Live/android-app-webtonative -type f -path */sendbird/*)",
+      "Bash(grep -r \"sendbird\\\\|Sendbird\\\\|SendBird\" /Users/venkateshmohta/Documents/W2N/Live/android-app-webtonative --include=*.kt --include=*.java)",
+      "Bash(find /Users/venkateshmohta/Documents/W2N/Live -type f -name *.md -o -name *.txt)",
+      "Bash(find /Users/venkateshmohta/Documents/W2N/Live -type f -name *.plist -o -name *.gradle -o -name *.properties)",
+      "WebFetch(domain:docs.webtonative.com)",
+      "Bash(grep -E \"\\\\.swift$\")",
+      "Bash(grep -r \"deleteUser\\\\|setUserImage\\\\|getUserImage\" /Users/venkateshmohta/Documents/W2N/Live/ios-app --include=*.swift)",
+      "Bash(git fetch:*)",
+      "Read(//Users/venkateshmohta/Downloads/**)"
+    ],
+    "additionalDirectories": [
+      "/Users/venkateshmohta/Downloads"
+    ]
+  }
+}
