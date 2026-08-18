@@ -6,7 +6,7 @@ Functions to trigger haptic feedback effects on the device and to check whether 
 
 ## Trigger
 
-Triggers a haptic feedback effect on the device. If `effect` is omitted or an invalid value is provided, a default effect is applied.
+Triggers a haptic feedback effect on the device. If `effect` is omitted or an invalid value is provided, a default effect is applied. Optionally, pass `soundName` to also play a custom sound (uploaded via the Dashboard) at the same time — see [OS Notification Sound](os-notification-sound.md) for how to upload a sound file and the full rules for this parameter.
 
 {% tabs %}
 {% tab title="Plain Javascript" %}
@@ -14,6 +14,7 @@ Triggers a haptic feedback effect on the device. If `effect` is omitted or an in
 ```javascript
 window.WTN.Haptics.trigger({
   effect: "impactMedium",
+  soundName: "your_sound_name", // optional — see OS Notification Sound
 });
 ```
 
@@ -26,6 +27,7 @@ import { trigger } from "webtonative/Haptics";
 
 trigger({
   effect: "impactMedium",
+  soundName: "your_sound_name", // optional — see OS Notification Sound
 });
 ```
 
@@ -37,6 +39,7 @@ trigger({
 | Key      | Type     | Required | Description                                                  |
 | -------- | -------- | -------- | ------------------------------------------------------------ |
 | `effect` | `String` | No       | The vibration pattern to play. See the supported values below. |
+| `soundName` | `String` | No | Name of an uploaded sound file to play alongside the haptic effect. See [OS Notification Sound](os-notification-sound.md#javascript-api-reference) for upload rules and behavior — omit it to trigger the haptic effect only. |
 
 **Supported `effect` values:**
 
