@@ -41,6 +41,7 @@ import * as NFC from "./src/NFC";
 import * as AgeSafety from "./src/AgeSafety";
 import * as Permission from "./src/Permission";
 import * as Sound from "./src/Sound";
+import * as Geofencing from "./src/Geofencing";
 import { webToNativeIos } from "./src/utills";
 
 // Define the window interface to add WTN property
@@ -93,6 +94,7 @@ declare global {
 			AgeSafety: typeof AgeSafety;
 			Permission: typeof Permission;
 			Sound: typeof Sound;
+			Geofencing: typeof Geofencing;
 		};
 		WebToNativeInterface: any;
 	}
@@ -147,6 +149,7 @@ window.WTN.NFC = NFC;
 window.WTN.AgeSafety = AgeSafety;
 window.WTN.Permission = Permission;
 window.WTN.Sound = Sound;
+window.WTN.Geofencing = Geofencing;
 
 
 if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
