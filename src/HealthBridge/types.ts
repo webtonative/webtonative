@@ -82,7 +82,6 @@ export interface HealthBridgeIosMessage {
 	startDate?: string;
 	endDate?: string;
 	pageToken?: string;
-	value?: number;
-	unit?: string;
+	records?: HealthRecord[];
 	recordIds?: string[];
 }

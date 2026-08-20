@@ -307,13 +307,6 @@ write({
 | `type` | `String` | Always `"writeHealthBridge"`. |
 | `success` | `Boolean` | `true` when the record was stored. |
 
-{% hint style="warning" %}
-**iOS writes one record per native call.** Android stores the whole `records` array in a single
-call and fires the callback once; on iOS the SDK sends one message per record, so a batch of three
-records invokes your callback three times — once per record. Keep batches small, or write a single
-record per call if per-record bookkeeping matters to you.
-{% endhint %}
-
 ***
 
 ### deleteRecords

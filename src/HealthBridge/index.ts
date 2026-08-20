@@ -1,4 +1,4 @@
-import { deRegisterCbByKey, platform, registerCb, webToNative, webToNativeIos } from "../utills";
+import { platform, registerCb, webToNative, webToNativeIos } from "../utills";
 import {
 	HealthBridgeDeleteOptions,
 	HealthBridgeIosMessage,
@@ -124,10 +124,8 @@ export const read = (options: HealthBridgeReadOptions): void => {
 };
 
 /**
- * Writes one or more health records.
- *
- * Android accepts the whole batch in a single native call. iOS accepts a single record per
- * call, so on iOS one native message is sent per record and the callback fires once per record.
+ * Writes one or more health records. The whole batch goes out in a single native call on both
+ * platforms and the callback fires once.
  * @example
  * wtn.HealthBridge.write({
  *   records: [
@@ -153,49 +151,24 @@ export const write = (options: HealthBridgeWriteOptions): void => {
 		};
 	});
 
-	if (platform === "ANDROID_APP") {
-		registerCb(
-			(response: HealthBridgeResponse) => {
-				const { type } = response;
-				if (type === "writeHealthBridge") {
-					callback && callback(response);
-				}
-			},
-			{ key: "writeHealthBridge" }
-		);
+	registerCb(
+		(response: HealthBridgeResponse) => {
+			const { type } = response;
+			if (type === "writeHealthBridge") {
+				callback && callback(response);
+			}
+		},
+		{ key: "writeHealthBridge" }
+	);
 
+	if (platform === "ANDROID_APP") {
 		webToNative.writeHealthBridge &&
 			webToNative.writeHealthBridge(JSON.stringify({ records: normalized }));
 	} else if (webToNativeIos) {
-		// iOS writes a single record per native call, so the callback stays registered
-		// until every record in the batch has responded.
-		let pending = normalized.length;
-
-		registerCb(
-			(response: HealthBridgeResponse) => {
-				const { type } = response;
-				if (type === "writeHealthBridge") {
-					callback && callback(response);
-					pending -= 1;
-					if (pending <= 0) {
-						deRegisterCbByKey("writeHealthBridge");
-					}
-				}
-			},
-			{ key: "writeHealthBridge", ignoreDelete: true }
-		);
-
-		normalized.forEach(({ dataType, value, unit, start, end }) => {
-			webToNativeIos &&
-				webToNativeIos.postMessage({
-					action: "writeHealthBridge",
-					dataType,
-					value,
-					unit,
-					startDate: start,
-					endDate: end,
-				} as HealthBridgeIosMessage);
-		});
+		webToNativeIos.postMessage({
+			action: "writeHealthBridge",
+			records: normalized,
+		} as HealthBridgeIosMessage);
 	}
 };
 
