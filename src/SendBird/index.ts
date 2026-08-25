@@ -185,6 +185,31 @@ export const sendbirdShowChannelUI = (options?: {
 	}
 };
 
+export const sendbirdShowFeedNotificationChannel = (options?: {
+	callback?: (
+		response: BaseResponse & { success?: boolean; status?: string; channelUrl?: string }
+	) => void;
+	url?: string;
+}) => {
+	const { callback, ...rest } = options || {};
+
+	registerCb((response) => {
+		const { type } = response;
+		if (type === "sendbirdShowFeedNotificationChannel") {
+			callback && callback(response);
+		}
+	},{key: "sendbirdShowFeedNotificationChannel"});
+
+	if (isAndroidApp) {
+		webToNative.sendbirdShowFeedNotificationChannel(JSON.stringify(rest));
+	} else if (isIosApp && webToNativeIos) {
+		webToNativeIos.postMessage({
+			action: "sendbirdShowFeedNotificationChannel",
+			...rest,
+		});
+	}
+};
+
 export const sendbirdDisconnect = (options?: {
 	callback?: (response: BaseResponse & { success?: boolean }) => void;
 }) => {
