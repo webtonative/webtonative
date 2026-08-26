@@ -43,6 +43,7 @@ import * as Permission from "./src/Permission";
 import * as Sound from "./src/Sound";
 import * as SmartTV from "./src/SmartTV";
 import * as Wallet from "./src/Wallet";
+import * as Singular from "./src/Singular";
 import { webToNativeIos } from "./src/utills";
 
 // Define the window interface to add WTN property
@@ -97,6 +98,7 @@ declare global {
 			Sound: typeof Sound;
 			SmartTV: typeof SmartTV;
 			Wallet: typeof Wallet;
+			Singular: typeof Singular;
 		};
 		WebToNativeInterface: any;
 	}
@@ -153,6 +155,7 @@ window.WTN.Permission = Permission;
 window.WTN.Sound = Sound;
 window.WTN.SmartTV = SmartTV;
 window.WTN.Wallet = Wallet;
+window.WTN.Singular = Singular;
 
 if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
 	window.navigator.share = function (obj: any) {
