@@ -479,7 +479,7 @@ export const showPermission = (options: ShowPermissionOptions): void => {
 			if (type === "showPermission" || typeValue === "showPermission") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "showPermission" });
 
 		isAndroidApp &&
 			webToNative.showPermission &&
@@ -582,7 +582,7 @@ export const getSafeArea = (options: GetSafeAreaOptions): void => {
 			if (type === "getSafeArea") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "getSafeArea" });
 
 		isIosApp &&
 			webToNativeIos &&
@@ -643,7 +643,7 @@ export const checkPermission = (options: CheckPermissionOptions): void => {
 			if (type === "checkPermission") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "checkPermission" });
 
 		isAndroidApp &&
 			webToNative.checkPermission &&

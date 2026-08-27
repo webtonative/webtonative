@@ -14,7 +14,7 @@ import { NotificationOptions, NotificationResponse, NotificationIosMessage } fro
 // 			if (type === "checkNotificationPermission") {
 // 				callback && callback(response);
 // 			}
-// 		});
+// 		}, { key: "checkNotificationPermission" });
 
 // 		platform === "ANDROID_APP" && webToNative.checkNotificationPermission();
 
