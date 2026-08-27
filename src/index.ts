@@ -180,6 +180,13 @@ export const openUrlInBrowser = (url: string = ""): void => {
 
 export const enablePullToRefresh = (status: boolean): void => {
 	isAndroidApp && webToNative.enableSwipeRefresh && webToNative.enableSwipeRefresh(status);
+
+	isIosApp &&
+		webToNativeIos &&
+		webToNativeIos.postMessage({
+			action: "setPullToRefresh",
+			enable:status,
+		});
 };
 
 const clear = ({ cacheOnly, reload }: { cacheOnly: boolean; reload: boolean }): void => {
@@ -265,6 +272,38 @@ export const printFunction = (options: PrintFunctionOptions): void => {
 					url,
 				})
 			);
+	}
+};
+
+interface OpenPDFOptions {
+	url: string;
+	title?: string;
+}
+
+export const openPDF = (options: OpenPDFOptions): void => {
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		const { url = "", title = "" } = options || {};
+
+		if (!url) {
+			throw "url is mandatory";
+		}
+
+		isAndroidApp &&
+			webToNative.openPDF &&
+			webToNative.openPDF(
+				JSON.stringify({
+					url,
+					title,
+				})
+			);
+
+		isIosApp &&
+			webToNativeIos &&
+			webToNativeIos.postMessage({
+				action: "openPDF",
+				url,
+				title,
+			});
 	}
 };
 
@@ -800,6 +839,7 @@ export default {
 	downloadBlobFile,
 	customFileDownload,
 	printFunction,
+	openPDF,
 	loadOfferCard,
 	appFirstLoad,
 	getComponentStatus,

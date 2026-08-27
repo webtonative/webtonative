@@ -40,6 +40,9 @@ import * as Truecaller from "./src/Truecaller";
 import * as NFC from "./src/NFC";
 import * as AgeSafety from "./src/AgeSafety";
 import * as Permission from "./src/Permission";
+import * as Sound from "./src/Sound";
+import * as SmartTV from "./src/SmartTV";
+import * as Wallet from "./src/Wallet";
 import { webToNativeIos } from "./src/utills";
 
 // Define the window interface to add WTN property
@@ -91,6 +94,9 @@ declare global {
 			NFC: typeof NFC;
 			AgeSafety: typeof AgeSafety;
 			Permission: typeof Permission;
+			Sound: typeof Sound;
+			SmartTV: typeof SmartTV;
+			Wallet: typeof Wallet;
 		};
 		WebToNativeInterface: any;
 	}
@@ -144,7 +150,9 @@ window.WTN.Truecaller = Truecaller;
 window.WTN.NFC = NFC;
 window.WTN.AgeSafety = AgeSafety;
 window.WTN.Permission = Permission;
-
+window.WTN.Sound = Sound;
+window.WTN.SmartTV = SmartTV;
+window.WTN.Wallet = Wallet;
 
 if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
 	window.navigator.share = function (obj: any) {
