@@ -67,7 +67,7 @@ if (isNativeApp) {
 	};
 }
 
-const registerCb = (cb: CallbackFunction, obj?: RegisterCallbackOptions) => {
+const registerCb = (cb: CallbackFunction, obj: RegisterCallbackOptions) => {
 	if (typeof cb === "function") {
 		if (obj && obj.key) {
 			cbObj[obj["key"]] = { cb, ignoreDelete: obj.ignoreDelete ? true : false };
