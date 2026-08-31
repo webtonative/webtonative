@@ -103,6 +103,10 @@ export const deviceInfo = (): Promise<any> => {
 	return new Promise((resolve, reject) => {
 		registerCb(
 			(results) => {
+
+				if (results && results.type !== undefined && results.type !== "deviceInfo") {
+					return;
+				}
 				if (results) {
 					resolve(results);
 				} else {
