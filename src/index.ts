@@ -574,27 +574,27 @@ export const customBackHandling = (options: CustomBackHandlingOptions): void => 
 	}
 };
 
-interface GetSafeAreaOptions {
-	callback?: (response: BaseResponse) => void;
-}
+// interface GetSafeAreaOptions {
+// 	callback?: (response: BaseResponse) => void;
+// }
 
-export const getSafeArea = (options: GetSafeAreaOptions): void => {
-	if (["IOS_APP"].includes(platform)) {
-		const { callback } = options;
-		registerCb((response: BaseResponse) => {
-			const { type } = response;
-			if (type === "getSafeArea") {
-				callback && callback(response);
-			}
-		}, { key: "getSafeArea" });
+// export const getSafeArea = (options: GetSafeAreaOptions): void => {
+// 	if (["IOS_APP"].includes(platform)) {
+// 		const { callback } = options;
+// 		registerCb((response: BaseResponse) => {
+// 			const { type } = response;
+// 			if (type === "getSafeArea") {
+// 				callback && callback(response);
+// 			}
+// 		}, { key: "getSafeArea" });
 
-		isIosApp &&
-			webToNativeIos &&
-			webToNativeIos.postMessage({
-				action: "getSafeArea",
-			});
-	}
-};
+// 		isIosApp &&
+// 			webToNativeIos &&
+// 			webToNativeIos.postMessage({
+// 				action: "getSafeArea",
+// 			});
+// 	}
+// };
 
 interface GetAddOnStatusOptions {
 	callback?: (response: BaseResponse) => void;
