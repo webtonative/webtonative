@@ -6,7 +6,7 @@ import {
 	AIExtractDataFromImageOptions,
 } from "./types";
 
-const EXTRACT_DATA_FROM_IMAGE = "aiExtractDataFromImage";
+const EXTRACT_DATA_FROM_IMAGE = "extractDataFromImage";
 
 /** Reports a request that was never sent, so no native response is coming for it. */
 const failLocally = (error: string, callback?: AICallback): void => {
