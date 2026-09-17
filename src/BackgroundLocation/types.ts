@@ -19,6 +19,7 @@ export interface BackgroundLocationOptions {
 	activityType?: 'other' | 'automotiveNavigation' | 'fitness' | 'otherNavigation';
 	apiUrl?: string;
 	timeout?: number;
+	batches?:number
 }
 
 export interface BackgroundLocationIosMessage {

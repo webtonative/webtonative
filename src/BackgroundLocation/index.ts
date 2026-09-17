@@ -17,6 +17,7 @@ export const start = (options: BackgroundLocationOptions = {}): void => {
 			activityType = "other",
 			apiUrl,
 			timeout,
+			batches
 		} = options;
 
 		registerCb(
@@ -53,7 +54,8 @@ export const start = (options: BackgroundLocationOptions = {}): void => {
 				interval: timeout,
 				callback,
 				apiUrl,
-				displacement: distanceFilter
+				displacement: distanceFilter,
+				batches
 			}));
 	}
 };
