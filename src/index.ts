@@ -843,6 +843,43 @@ export const getDevicePhoneNumber = (options?: {
 	}
 };
 
+export const startVoiceRecognition = (options?: {
+	showNativeUI?: boolean;
+	uiOptions?: {
+		title?: string;
+		subtitle?: string;
+		bgColor?: string;
+	};
+	callback?: (response: BaseResponse) => void;
+}): void => {
+	if (isAndroidORIosApp) {
+		const { callback, showNativeUI, uiOptions } = options || {};
+
+		registerCb((response: BaseResponse) => {
+			const { type } = response;
+			if (type === "startVoiceRecognition") {
+				callback && callback(response);
+			}
+		}, { key: "startVoiceRecognition" });
+
+		isAndroidApp &&
+			webToNative.startVoiceRecognition &&
+			webToNative.startVoiceRecognition(
+				JSON.stringify({
+					...(showNativeUI !== undefined && { showNativeUI }),
+				})
+			);
+
+		isIosApp &&
+			webToNativeIos &&
+			webToNativeIos.postMessage({
+				action: "startVoiceRecognition",
+				...(showNativeUI !== undefined && { showNativeUI }),
+				...(uiOptions && { uiOptions }),
+			});
+	}
+};
+
 export { platform, isNativeApp };
 
 export default {
@@ -889,4 +926,5 @@ export default {
 	removeAllNotifications,
 	clearAppData,
 	getDevicePhoneNumber,
+	startVoiceRecognition,
 };
