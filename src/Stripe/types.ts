@@ -16,6 +16,7 @@ export interface StripePaymentData {
   isSimulated: boolean;
   captureMethod: string;
   locationId: string;
+  connectedAccountId: string;
   apiUrl?: string;
   client_secret?: string;
 }
@@ -29,9 +30,40 @@ export interface StripeOptions {
   captureMethod?: string;
   connectionToken: string;
   stripeLocationId: string;
+  connectedAccountId?: string;
   clientSecret?: string;
 }
 
 export interface StripeIosMessage extends StripePaymentData {
   action: string;
+}
+
+export type TapToPaySetupAction =
+  | "inspectTapToPaySetup"
+  | "presentTapToPayEducation"
+  | "prepareTapToPaySetup";
+
+export interface TapToPaySetupResponse extends BaseResponse {
+  type: TapToPaySetupAction;
+}
+
+export interface TapToPaySetupCallback extends BaseCallback {
+  (response: TapToPaySetupResponse): void;
+}
+
+export interface TapToPaySetupOptions {
+  callback?: TapToPaySetupCallback;
+}
+
+export interface PrepareTapToPaySetupOptions extends TapToPaySetupOptions {
+  connectionToken: string;
+  stripeLocationId: string;
+  connectedAccountId?: string;
+}
+
+export interface TapToPaySetupIosMessage {
+  action: TapToPaySetupAction;
+  locationId?: string;
+  secretToken?: string;
+  connectedAccountId?: string;
 }
