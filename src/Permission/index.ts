@@ -31,7 +31,7 @@ export const check = (options: PermissionOptions = {}): void => {
 export const request = (options: PermissionOptionsRequest = {}): void => {
 	if (!["ANDROID_APP", "IOS_APP"].includes(platform)) return;
 
-	const { callback, permission } = options;
+	const { callback, ...rest } = options;
 
 	registerCb(
 		(response: PermissionResponse) => {
@@ -43,9 +43,9 @@ export const request = (options: PermissionOptionsRequest = {}): void => {
 	);
 
 	if (platform === "ANDROID_APP") {
-		webToNative.requestPermission && webToNative.requestPermission(JSON.stringify({ permission }));
+		webToNative.requestPermission && webToNative.requestPermission(JSON.stringify({...rest }));
 	} else if (platform === "IOS_APP") {
-		webToNativeIos && webToNativeIos.postMessage({ action: "requestPermission", permission });
+		webToNativeIos && webToNativeIos.postMessage({ action: "requestPermission", ...rest });
 	}
 };
 

@@ -27,5 +27,6 @@ export interface PermissionOptions {
 export interface PermissionOptionsRequest {
 	permission?:PermissionType
 	callback?: (response: PermissionResponse) => void;
+	[ key: string ]: unknown;
 
 }
