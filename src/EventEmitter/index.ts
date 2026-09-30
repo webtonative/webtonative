@@ -6,7 +6,20 @@ interface ListenerEntry {
 	namespace: string;
 }
 
+interface EventOptions {
+	events: string;
+	callback?: EventHandler;
+}
+
+type EventInput = string | EventOptions;
+
 const listeners: Record<string, ListenerEntry[]> = {};
+
+function normalize(input: EventInput, handler?: EventHandler): { events: string; handler?: EventHandler } {
+	return typeof input === "string"
+		? { events: input, handler }
+		: { events: input.events, handler: input.callback ?? handler };
+}
 
 function parseEvent(event: string): { name: string; namespace: string } {
 	const dot = event.indexOf(".");
@@ -25,15 +38,18 @@ function eachEvent(events: string, fn: (name: string, namespace: string) => void
 		});
 }
 
-export const on = (events: string, handler: EventHandler): void => {
+export const on = (input: EventInput, callback?: EventHandler): void => {
+	const { events, handler } = normalize(input, callback);
+	if (!handler) return;
 	eachEvent(events, (name, namespace) => {
 		if (!listeners[name]) listeners[name] = [];
-		listeners[name].push({ handler, callable: handler, namespace });
+		listeners[name].push({ handler: handler!, callable: handler!, namespace });
 	});
 	console.log({ listeners });
 };
 
-export const off = (events: string, handler?: EventHandler): void => {
+export const off = (input: EventInput, callback?: EventHandler): void => {
+	const { events, handler } = normalize(input, callback);
 	eachEvent(events, (name, namespace) => {
 		if (!name) {
 			Object.keys(listeners).forEach((key) => {
@@ -57,17 +73,19 @@ export const off = (events: string, handler?: EventHandler): void => {
 	});
 };
 
-export const once = (events: string, handler: EventHandler): void => {
+export const once = (input: EventInput, callback?: EventHandler): void => {
+	const { events, handler } = normalize(input, callback);
+	if (!handler) return;
 	eachEvent(events, (name, namespace) => {
 		const callable: EventHandler = (data: any) => {
-			handler(data);
+			handler!(data);
 			if (listeners[name]) {
 				listeners[name] = listeners[name].filter((e) => e.callable !== callable);
 				if (!listeners[name].length) delete listeners[name];
 			}
 		};
 		if (!listeners[name]) listeners[name] = [];
-		listeners[name].push({ handler, callable, namespace });
+		listeners[name].push({ handler: handler!, callable, namespace });
 	});
 };
 
