@@ -14,3 +14,7 @@ export interface NotificationOptions {
 export interface NotificationIosMessage {
 	action: string;
 }
+
+export interface SetTagOptions extends NotificationOptions {
+	data: Record<string, any>;
+}
