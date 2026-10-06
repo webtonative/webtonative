@@ -1,13 +1,14 @@
 import { platform, registerCb, webToNative, webToNativeIos } from "../utills";
 import {
 	NFCResponse,
-	NFCCallback,
+	NFCStatusOptions,
 	NFCIosMessage,
 	NFCScanTagOptions,
 	NFCWriteTagOptions,
 } from "./types";
 
-export const status = (callback?: NFCCallback): void => {
+export const status = (options: NFCStatusOptions = {}): void => {
+	const { callback } = options;
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		registerCb((response: NFCResponse) => {
 			const { type } = response;
