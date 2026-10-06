@@ -1,5 +1,5 @@
 import { platform, registerCb, webToNative, webToNativeIos } from "../utills";
-import { NotificationOptions, NotificationResponse, NotificationIosMessage, SetTagOptions } from "./types";
+import { NotificationResponse, NotificationIosMessage, SetTagOptions } from "./types";
 
 /**
  * Checks notification permission status
@@ -43,14 +43,18 @@ export const openAppNotificationPage = (): void => {
 
 const callNotificationInterface = (
 	action: string,
-	callback?: NotificationOptions["callback"],
 	data?: Record<string, any>
-): void => {
-	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+): Promise<NotificationResponse> => {
+	return new Promise((resolve, reject) => {
+		if (!["ANDROID_APP", "IOS_APP"].includes(platform)) {
+			reject("This function will work in Native App Powered By WebToNative");
+			return;
+		}
+
 		registerCb((response: NotificationResponse) => {
 			const { type } = response;
 			if (type === action) {
-				callback && callback(response);
+				resolve(response);
 			}
 		}, { key: action });
 
@@ -64,45 +68,37 @@ const callNotificationInterface = (
 				...(data !== undefined && { data }),
 			} as NotificationIosMessage);
 		}
-	}
+	});
 };
 
 /**
  * Sets notification tags
- * @param options - Tag data and callback
+ * @param options - Tag data
  */
-export const setTag = (options: SetTagOptions): void => {
-	const { data, callback } = options || ({} as SetTagOptions);
+export const setTag = (options: SetTagOptions): Promise<NotificationResponse> => {
+	const { data } = options || ({} as SetTagOptions);
 	if (!data) {
-		throw "data is required";
+		return Promise.reject("data is required");
 	}
-	callNotificationInterface("w2nSetTag", callback, data);
+	return callNotificationInterface("w2nSetTag", data);
 };
 
 /**
  * Subscribes the device to notifications
  */
-export const subscribe = (options: NotificationOptions = {}): void => {
-	callNotificationInterface("w2nSubscribe", options.callback);
-};
+export const subscribe = (): Promise<NotificationResponse> => callNotificationInterface("w2nSubscribe");
 
 /**
  * Unsubscribes the device from notifications
  */
-export const unsubscribe = (options: NotificationOptions = {}): void => {
-	callNotificationInterface("w2nUnsubscribe", options.callback);
-};
+export const unsubscribe = (): Promise<NotificationResponse> => callNotificationInterface("w2nUnsubscribe");
 
 /**
  * Checks whether the device is subscribed to notifications
  */
-export const isSubscribed = (options: NotificationOptions = {}): void => {
-	callNotificationInterface("w2nIsSubscribed", options.callback);
-};
+export const isSubscribed = (): Promise<NotificationResponse> => callNotificationInterface("w2nIsSubscribed");
 
 /**
  * Gets the notification tags set on the device
  */
-export const getTags = (options: NotificationOptions = {}): void => {
-	callNotificationInterface("w2nGetTags", options.callback);
-};
+export const getTags = (): Promise<NotificationResponse> => callNotificationInterface("w2nGetTags");

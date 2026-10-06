@@ -28,9 +28,10 @@ window.WTN.User.login({
     companyName: "Acme Inc",
     department: "engineering"
   },
-  callback: function (response) {
-    console.log(response.success);
-  },
+}, {
+  syncWithNotification: true // optional; false = don't link to notifications
+}).then(function (response) {
+  console.log(response.success, response.notificationSync);
 });
 ```
 
@@ -57,9 +58,10 @@ login({
     companyName: "Acme Inc",
     department: "engineering"
   },
-  callback: (response) => {
-    console.log(response.success);
-  },
+}, {
+  syncWithNotification: true // optional; false = don't link to notifications
+}).then((response) => {
+  console.log(response.success, response.notificationSync);
 });
 ```
 
@@ -98,16 +100,21 @@ meta: {
 }
 ```
 
-| Key        | Type       | Required | Description                                                                                  |
-| ---------- | ---------- | -------- | -------------------------------------------------------------------------------------------- |
-| `callback` | `Function` | No       | Callback function invoked with the response.                                                 |
+### Options
 
-**Callback Response:**
+The second argument is optional.
 
-| Key       | Type      | Description                                          |
-| --------- | --------- | ---------------------------------------------------- |
-| `type`    | `String`  | Always `"unifiedLogin"`.                             |
-| `success` | `Boolean` | `true` if the session was created successfully.      |
+| Key                    | Type      | Required | Description                                                                 |
+| ---------------------- | --------- | -------- | --------------------------------------------------------------------------- |
+| `syncWithNotification` | `Boolean` | No       | Whether to link the user to push notifications. `false` skips the link.     |
+
+**Response** (resolved by the returned Promise):
+
+| Key                | Type      | Description                                          |
+| ------------------ | --------- | ---------------------------------------------------- |
+| `type`             | `String`  | Always `"unifiedLogin"`.                             |
+| `success`          | `Boolean` | `true` if the session was created successfully.      |
+| `notificationSync` | `Boolean` | Whether the user was linked to push notifications.   |
 | `error`   | `String`  | Error message if `success` is `false`.               |
 
 ***
