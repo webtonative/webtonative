@@ -43,7 +43,7 @@ export const openAppNotificationPage = (): void => {
 
 const callNotificationInterface = (
 	action: string,
-	data?: Record<string, any>
+	data?: Record<string, any> | string | string[]
 ): Promise<NotificationResponse> => {
 	return new Promise((resolve, reject) => {
 		if (!["ANDROID_APP", "IOS_APP"].includes(platform)) {
@@ -59,7 +59,11 @@ const callNotificationInterface = (
 		}, { key: action });
 
 		if (platform === "ANDROID_APP") {
-			data === undefined ? webToNative[action]() : webToNative[action](JSON.stringify(data));
+			if (data === undefined) {
+				webToNative[action]();
+			} else {
+				webToNative[action](typeof data === "string" ? data : JSON.stringify(data));
+			}
 		}
 
 		if (platform === "IOS_APP" && webToNativeIos) {
@@ -81,6 +85,21 @@ export const setTag = (options: SetTagOptions): Promise<NotificationResponse> =>
 		return Promise.reject("data is required");
 	}
 	return callNotificationInterface("w2nSetTag", data);
+};
+
+/**
+ * Removes notification tags
+ * @param data - Tag key, or array of tag keys, to remove
+ */
+export const removeTag = (data: string | string[]): Promise<NotificationResponse> => {
+	const isValid =
+		typeof data === "string"
+			? data.length > 0
+			: Array.isArray(data) && data.length > 0 && data.every((tag) => typeof tag === "string");
+	if (!isValid) {
+		return Promise.reject("data must be a non-empty string or array of strings");
+	}
+	return callNotificationInterface("w2nRemoveTag", data);
 };
 
 /**
