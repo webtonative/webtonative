@@ -16,6 +16,7 @@ export interface FacebookPurchaseOptions {
 
 export interface FacebookAnalyticsCollectionOptions {
 	enabled: boolean;
+	callback?: (response: FacebookAnalyticsCollectionStatusResponse) => void;
 }
 
 export interface FacebookAnalyticsCollectionStatusResponse {
