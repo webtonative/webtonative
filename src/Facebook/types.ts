@@ -30,7 +30,6 @@ export interface FacebookAnalyticsCollectionStatusOptions {
 
 export interface FacebookEventIosMessage {
 	action: string;
-	enabled?: boolean;
 	eventName?: string;
 	valueToSum?: number;
 	parameters?: FacebookEventParameters;
