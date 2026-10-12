@@ -12,7 +12,7 @@ Enables or disables Facebook Analytics collection.
 {% tab title="Plain Javascript" %}
 
 ```javascript
-window.WTN.facebook.events.setCollection({
+window.WTN.facebook.setCollection({
   enabled: true,
 });
 ```
@@ -22,9 +22,9 @@ window.WTN.facebook.events.setCollection({
 {% tab title="npm" %}
 
 ```javascript
-import { events } from "webtonative/Facebook";
+import { setCollection, getCollectionStatus } from "webtonative/Facebook";
 
-events.setCollection({
+setCollection({
   enabled: true,
 });
 ```
@@ -48,7 +48,7 @@ Returns whether Facebook Analytics collection is currently enabled.
 {% tab title="Plain Javascript" %}
 
 ```javascript
-window.WTN.facebook.events.getCollectionStatus({
+window.WTN.facebook.getCollectionStatus({
   callback: function (response) {
     console.log(response.enabled);
   },
@@ -60,9 +60,9 @@ window.WTN.facebook.events.getCollectionStatus({
 {% tab title="npm" %}
 
 ```javascript
-import { events } from "webtonative/Facebook";
+import { setCollection, getCollectionStatus } from "webtonative/Facebook";
 
-events.getCollectionStatus({
+getCollectionStatus({
   callback: function (response) {
     console.log(response.enabled);
   },

@@ -11,9 +11,9 @@ import {
 /**
  * Enables or disables Facebook Analytics collection
  * @param options - Options for setting analytics collection
- * @example wtn.facebook.events.setCollection({enabled: true});
+ * @example wtn.facebook.setCollection({enabled: true});
  */
-export const setCollection = (options: FacebookAnalyticsCollectionOptions): void => {
+ const setCollection = (options: FacebookAnalyticsCollectionOptions): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { enabled } = options;
 
@@ -33,9 +33,9 @@ export const setCollection = (options: FacebookAnalyticsCollectionOptions): void
 /**
  * Gets whether Facebook Analytics collection is enabled
  * @param options - Options containing the callback that receives the status
- * @example wtn.facebook.events.getCollectionStatus({callback: (response) => console.log(response.enabled)});
+ * @example wtn.facebook.getCollectionStatus({callback: (response) => console.log(response.enabled)});
  */
-export const getCollectionStatus = (options: FacebookAnalyticsCollectionStatusOptions = {}): void => {
+ const getCollectionStatus = (options: FacebookAnalyticsCollectionStatusOptions = {}): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { callback } = options;
 
@@ -60,4 +60,4 @@ export const getCollectionStatus = (options: FacebookAnalyticsCollectionStatusOp
 	}
 };
 
-export { events };
+export { events ,setCollection, getCollectionStatus };

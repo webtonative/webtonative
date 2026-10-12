@@ -6,7 +6,7 @@ import * as AdMob from "./src/AdMob";
 import { socialLogin } from "./src/SocialLogin/index";
 import * as AppsFlyer from "./src/AppsFlyer";
 import { inAppPurchase, getAllPurchases, getReceiptData } from "./src/InAppPurchase";
-import * as FBEvents from "./src/Facebook/events";
+import * as Facebook from "./src/Facebook";
 import * as BottomNavigation from "./src/BottomNavigation";
 import * as contacts from "./src/NativeContacts";
 import * as backgroundLocation from "./src/BackgroundLocation";
@@ -66,9 +66,7 @@ declare global {
 			appReview: typeof appReview;
 			Biometric: typeof Biometric;
 			ATTConsent: typeof ATTConsent;
-			facebook: {
-				events: typeof FBEvents;
-			};
+			facebook: typeof Facebook;
 			firebaseAnalytics: typeof FirebaseAnalytics;
 			Firebase: typeof Firebase;
 			haptics: typeof Haptics;
@@ -122,9 +120,7 @@ window.WTN.clipboard = clipboard;
 window.WTN.appReview = appReview;
 window.WTN.Biometric = Biometric;
 window.WTN.ATTConsent = ATTConsent;
-window.WTN.facebook = {
-	events: FBEvents,
-};
+window.WTN.facebook = Facebook;
 window.WTN.firebaseAnalytics = FirebaseAnalytics;
 window.WTN.Firebase = Firebase;
 window.WTN.haptics = Haptics;
