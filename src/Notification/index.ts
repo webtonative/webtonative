@@ -1,5 +1,5 @@
 import { platform, registerCb, webToNative, webToNativeIos } from "../utills";
-import { NotificationOptions, NotificationResponse, NotificationIosMessage } from "./types";
+import { NotificationResponse, NotificationIosMessage, SetTagOptions } from "./types";
 
 /**
  * Checks notification permission status
@@ -40,3 +40,84 @@ export const openAppNotificationPage = (): void => {
 		}
 	}
 };
+
+const callNotificationInterface = (
+	action: string,
+	data?: Record<string, any> | string | string[]
+): Promise<NotificationResponse> => {
+	return new Promise((resolve, reject) => {
+		if (!["ANDROID_APP", "IOS_APP"].includes(platform)) {
+			reject("This function will work in Native App Powered By WebToNative");
+			return;
+		}
+
+		registerCb((response: NotificationResponse) => {
+			const { type } = response;
+			if (type === action) {
+				resolve(response);
+			}
+		}, { key: action });
+
+		if (platform === "ANDROID_APP") {
+			if (data === undefined) {
+				webToNative[action]();
+			} else {
+				webToNative[action](typeof data === "string" ? data : JSON.stringify(data));
+			}
+		}
+
+		if (platform === "IOS_APP" && webToNativeIos) {
+			webToNativeIos.postMessage({
+				action,
+				...(data !== undefined && { data }),
+			} as NotificationIosMessage);
+		}
+	});
+};
+
+/**
+ * Sets notification tags
+ * @param options - Tag data
+ */
+export const setTag = (options: SetTagOptions): Promise<NotificationResponse> => {
+	const { data } = options || ({} as SetTagOptions);
+	if (!data) {
+		return Promise.reject("data is required");
+	}
+	return callNotificationInterface("w2nSetTag", data);
+};
+
+/**
+ * Removes notification tags
+ * @param data - Tag key, or array of tag keys, to remove
+ */
+export const removeTag = (data: string | string[]): Promise<NotificationResponse> => {
+	const isValid =
+		typeof data === "string"
+			? data.length > 0
+			: Array.isArray(data) && data.length > 0 && data.every((tag) => typeof tag === "string");
+	if (!isValid) {
+		return Promise.reject("data must be a non-empty string or array of strings");
+	}
+	return callNotificationInterface("w2nRemoveTag", data);
+};
+
+/**
+ * Subscribes the device to notifications
+ */
+export const subscribe = (): Promise<NotificationResponse> => callNotificationInterface("w2nSubscribe");
+
+/**
+ * Unsubscribes the device from notifications
+ */
+export const unsubscribe = (): Promise<NotificationResponse> => callNotificationInterface("w2nUnsubscribe");
+
+/**
+ * Checks whether the device is subscribed to notifications
+ */
+export const isSubscribed = (): Promise<NotificationResponse> => callNotificationInterface("w2nIsSubscribed");
+
+/**
+ * Gets the notification tags set on the device
+ */
+export const getTags = (): Promise<NotificationResponse> => callNotificationInterface("w2nGetTags");
