@@ -13,7 +13,7 @@ import {
  * @param options - Options for setting analytics collection
  * @example wtn.facebook.setCollection({enabled: true});
  */
- const setCollection = (options: FacebookAnalyticsCollectionOptions): void => {
+ const setFacebookAnalyticsCollection = (options: FacebookAnalyticsCollectionOptions): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { enabled } = options;
 
@@ -35,7 +35,7 @@ import {
  * @param options - Options containing the callback that receives the status
  * @example wtn.facebook.getCollectionStatus({callback: (response) => console.log(response.enabled)});
  */
- const getCollectionStatus = (options: FacebookAnalyticsCollectionStatusOptions = {}): void => {
+ const getFacebookAnalyticsCollectionStatus = (options: FacebookAnalyticsCollectionStatusOptions = {}): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { callback } = options;
 
@@ -60,4 +60,4 @@ import {
 	}
 };
 
-export { events ,setCollection, getCollectionStatus };
+export { events ,setFacebookAnalyticsCollection, getFacebookAnalyticsCollectionStatus };
