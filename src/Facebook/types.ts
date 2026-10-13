@@ -14,6 +14,21 @@ export interface FacebookPurchaseOptions {
 	parameters?: FacebookEventParameters;
 }
 
+export interface FacebookAnalyticsCollectionOptions {
+	enabled: boolean;
+	callback?: (response: FacebookAnalyticsCollectionStatusResponse) => void;
+}
+
+export interface FacebookAnalyticsCollectionStatusResponse {
+	type: "getFacebookAnalyticsCollectionStatus";
+	enabled: boolean;
+	[key: string]: any;
+}
+
+export interface FacebookAnalyticsCollectionStatusOptions {
+	callback?: (response: FacebookAnalyticsCollectionStatusResponse) => void;
+}
+
 export interface FacebookEventIosMessage {
 	action: string;
 	eventName?: string;
