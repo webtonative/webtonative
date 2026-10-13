@@ -17,8 +17,8 @@ const setFacebookAnalyticsCollection = (options: FacebookAnalyticsCollectionOpti
 		const { callback, enabled } = options;
 
 		registerCb(
-			(response: FacebookAnalyticsCollectionStatusResponse) => {
-				if (response && response.type === "getFacebookAnalyticsCollectionStatus") {
+			(response) => {
+				if (response && response.type === "setFacebookAnalyticsCollection") {
 					callback && callback(response);
 				}
 			},
