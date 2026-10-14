@@ -3,6 +3,7 @@ import * as events from "./events";
 import { platform, webToNative, webToNativeIos, registerCb } from "../utills";
 import {
 	FacebookAnalyticsCollectionOptions,
+	FacebookAnalyticsCollectionResponse,
 	FacebookAnalyticsCollectionStatusOptions,
 	FacebookAnalyticsCollectionStatusResponse,
 } from "./types";
@@ -10,14 +11,14 @@ import {
 /**
  * Enables or disables Facebook Analytics collection
  * @param options - Options for setting analytics collection
- * @example wtn.facebook.setCollection({enabled: true});
+ * @example wtn.facebook.setFacebookAnalyticsCollection({enabled: true, callback: (response) => console.log(response.success)});
  */
 const setFacebookAnalyticsCollection = (options: FacebookAnalyticsCollectionOptions): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { callback, enabled } = options;
 
 		registerCb(
-			(response) => {
+			(response: FacebookAnalyticsCollectionResponse) => {
 				if (response && response.type === "setFacebookAnalyticsCollection") {
 					callback && callback(response);
 				}
@@ -41,7 +42,7 @@ const setFacebookAnalyticsCollection = (options: FacebookAnalyticsCollectionOpti
 /**
  * Gets whether Facebook Analytics collection is enabled
  * @param options - Options containing the callback that receives the status
- * @example wtn.facebook.getCollectionStatus({callback: (response) => console.log(response.enabled)});
+ * @example wtn.facebook.getFacebookAnalyticsCollectionStatus({callback: (response) => console.log(response.enabled)});
  */
 const getFacebookAnalyticsCollectionStatus = (
 	options: FacebookAnalyticsCollectionStatusOptions = {}

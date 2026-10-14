@@ -16,13 +16,18 @@ export interface FacebookPurchaseOptions {
 
 export interface FacebookAnalyticsCollectionOptions {
 	enabled: boolean;
-	callback?: (response: FacebookAnalyticsCollectionStatusResponse) => void;
+	callback?: (response: FacebookAnalyticsCollectionResponse) => void;
+}
+
+export interface FacebookAnalyticsCollectionResponse {
+	type: "setFacebookAnalyticsCollection";
+	success: boolean;
+	error?: string;
 }
 
 export interface FacebookAnalyticsCollectionStatusResponse {
 	type: "getFacebookAnalyticsCollectionStatus";
 	enabled: boolean;
-	[key: string]: any;
 }
 
 export interface FacebookAnalyticsCollectionStatusOptions {
