@@ -17,7 +17,8 @@ export const start = (options: BackgroundLocationOptions = {}): void => {
 			activityType = "other",
 			apiUrl,
 			timeout,
-			batches
+			batches,
+			offlineQueue
 		} = options;
 
 		registerCb(
@@ -44,6 +45,7 @@ export const start = (options: BackgroundLocationOptions = {}): void => {
 				activityType,
 				apiUrl,
 				timeout,
+				offlineQueue
 			} as BackgroundLocationIosMessage);
 		}
 
@@ -55,7 +57,8 @@ export const start = (options: BackgroundLocationOptions = {}): void => {
 				callback,
 				apiUrl,
 				displacement: distanceFilter,
-				batches
+				batches,
+				offlineQueue
 			}));
 	}
 };

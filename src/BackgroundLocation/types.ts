@@ -20,6 +20,7 @@ export interface BackgroundLocationOptions {
 	apiUrl?: string;
 	timeout?: number;
 	batches?:number
+	offlineQueue?: boolean;
 }
 
 export interface BackgroundLocationIosMessage {
@@ -32,4 +33,5 @@ export interface BackgroundLocationIosMessage {
 	activityType?: string;
 	apiUrl?: string;
 	timeout?: number;
+	offlineQueue?: boolean;
 }
