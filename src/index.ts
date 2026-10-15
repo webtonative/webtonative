@@ -820,6 +820,31 @@ export const removeAllNotifications = (options?: {
 	}
 };
 
+export const showNotificationBlockedScreen = (options?: {
+	callback?: (response: BaseResponse) => void;
+}): void => {
+	if (isAndroidORIosApp) {
+		const { callback } = options || {};
+
+		registerCb((response: BaseResponse) => {
+			const { type } = response;
+			if (type === "showNotificationBlockedScreen") {
+				callback && callback(response);
+			}
+		}, { key: "showNotificationBlockedScreen" });
+
+		isAndroidApp &&
+			webToNative.showNotificationBlockedScreen &&
+			webToNative.showNotificationBlockedScreen();
+
+		isIosApp &&
+			webToNativeIos &&
+			webToNativeIos.postMessage({
+				action: "showNotificationBlockedScreen",
+			});
+	}
+};
+
 export const getDevicePhoneNumber = (options?: {
 	callback?: (response: BaseResponse) => void;
 }): void => {
@@ -842,6 +867,7 @@ export const getDevicePhoneNumber = (options?: {
 			});
 	}
 };
+
 
 export { platform, isNativeApp };
 
@@ -887,6 +913,7 @@ export default {
 	setNavigationBarColor,
 	pinchToZoom,
 	removeAllNotifications,
+	showNotificationBlockedScreen,
 	clearAppData,
 	getDevicePhoneNumber,
 };
