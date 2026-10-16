@@ -3,6 +3,7 @@ import {
 	NotificationResponse,
 	NotificationIosMessage,
 	NotificationOptions,
+	SetExternalUserIdOptions,
 	SetTagOptions,
 } from "./types";
 
@@ -132,6 +133,30 @@ export const isSubscribed = (): Promise<NotificationResponse> =>
  * Gets the notification tags set on the device
  */
 export const getTags = (): Promise<NotificationResponse> => callNotificationInterface("w2nGetTags");
+
+/**
+ * Sets the external user id for notifications
+ * @param options - External user id and an optional callback
+ */
+export const setExternalUserId = (options: SetExternalUserIdOptions = {}): Promise<NotificationResponse> => {
+	const { id, callback } = options;
+	return callNotificationInterface("w2nSetExternalUserId", id).then((response) => {
+		callback && callback(response);
+		return response;
+	});
+};
+
+/**
+ * Removes the external user id for notifications
+ * @param options - Options with an optional callback
+ */
+export const removeExternalUserId = (options: NotificationOptions = {}): Promise<NotificationResponse> => {
+	const { callback } = options;
+	return callNotificationInterface("w2nRemoveExternalUserId").then((response) => {
+		callback && callback(response);
+		return response;
+	});
+};
 
 /**
  * Shows the native screen explaining that notifications are blocked

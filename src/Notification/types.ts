@@ -18,3 +18,8 @@ export interface NotificationIosMessage {
 export interface SetTagOptions {
 	data: Record<string, any>;
 }
+
+export interface SetExternalUserIdOptions {
+	id?: string;
+	callback?: NotificationCallback;
+}
