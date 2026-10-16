@@ -137,18 +137,18 @@ export const getTags = (): Promise<NotificationResponse> => callNotificationInte
  * Shows the native screen explaining that notifications are blocked
  * @param options - Options with an optional callback
  */
-export const showBlockedScreen = (options: NotificationOptions = {}): void => {
-	const { callback } = options;
+export const showBlockedScreen = (): void => {
+	// const { callback } = options;
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
-		registerCb(
-			(response: NotificationResponse) => {
-				const { type } = response;
-				if (type === "showNotificationBlockedScreen") {
-					callback && callback(response);
-				}
-			},
-			{ key: "showNotificationBlockedScreen" }
-		);
+		// registerCb(
+		// 	(response: NotificationResponse) => {
+		// 		const { type } = response;
+		// 		if (type === "showNotificationBlockedScreen") {
+		// 			callback && callback(response);
+		// 		}
+		// 	},
+		// 	{ key: "showNotificationBlockedScreen" }
+		// );
 
 		platform === "ANDROID_APP" &&
 			webToNative.showNotificationBlockedScreen &&
