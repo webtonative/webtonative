@@ -1,5 +1,10 @@
 import { platform, registerCb, webToNative, webToNativeIos } from "../utills";
-import { NotificationResponse, NotificationIosMessage, SetTagOptions } from "./types";
+import {
+	NotificationResponse,
+	NotificationIosMessage,
+	SetExternalUserIdOptions,
+	SetTagOptions,
+} from "./types";
 
 /**
  * Checks notification permission status
@@ -51,12 +56,15 @@ const callNotificationInterface = (
 			return;
 		}
 
-		registerCb((response: NotificationResponse) => {
-			const { type } = response;
-			if (type === action) {
-				resolve(response);
-			}
-		}, { key: action });
+		registerCb(
+			(response: NotificationResponse) => {
+				const { type } = response;
+				if (type === action) {
+					resolve(response);
+				}
+			},
+			{ key: action }
+		);
 
 		if (platform === "ANDROID_APP") {
 			if (data === undefined) {
@@ -77,10 +85,9 @@ const callNotificationInterface = (
 
 /**
  * Sets notification tags
- * @param options - Tag data
+ * @param data - Tag data
  */
-export const setTag = (options: SetTagOptions): Promise<NotificationResponse> => {
-	const { data } = options || ({} as SetTagOptions);
+export const setTag = (data: Record<string, any>): Promise<NotificationResponse> => {
 	if (!data) {
 		return Promise.reject("data is required");
 	}
@@ -105,19 +112,68 @@ export const removeTag = (data: string | string[]): Promise<NotificationResponse
 /**
  * Subscribes the device to notifications
  */
-export const subscribe = (): Promise<NotificationResponse> => callNotificationInterface("w2nSubscribe");
+export const subscribe = (): Promise<NotificationResponse> =>
+	callNotificationInterface("w2nSubscribe");
 
 /**
  * Unsubscribes the device from notifications
  */
-export const unsubscribe = (): Promise<NotificationResponse> => callNotificationInterface("w2nUnsubscribe");
+export const unsubscribe = (): Promise<NotificationResponse> =>
+	callNotificationInterface("w2nUnsubscribe");
 
 /**
  * Checks whether the device is subscribed to notifications
  */
-export const isSubscribed = (): Promise<NotificationResponse> => callNotificationInterface("w2nIsSubscribed");
+export const isSubscribed = (): Promise<NotificationResponse> =>
+	callNotificationInterface("w2nIsSubscribed");
 
 /**
  * Gets the notification tags set on the device
  */
 export const getTags = (): Promise<NotificationResponse> => callNotificationInterface("w2nGetTags");
+
+/**
+ * Sets the external user id for notifications
+ * @param id - External user id
+ */
+export const setExternalUserId = (id: string): Promise<NotificationResponse> => {
+	if (!id) {
+		return Promise.reject("id is required");
+	}
+	return callNotificationInterface("w2nSetExternalUserId", id);
+};
+
+/**
+ * Removes the external user id for notifications
+ */
+export const removeExternalUserId = (): Promise<NotificationResponse> =>
+	callNotificationInterface("w2nRemoveExternalUserId");
+
+/**
+ * Shows the native screen explaining that notifications are blocked
+ * @param options - Options with an optional callback
+ */
+export const showBlockedScreen = (): void => {
+	// const { callback } = options;
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		// registerCb(
+		// 	(response: NotificationResponse) => {
+		// 		const { type } = response;
+		// 		if (type === "showNotificationBlockedScreen") {
+		// 			callback && callback(response);
+		// 		}
+		// 	},
+		// 	{ key: "showNotificationBlockedScreen" }
+		// );
+
+		platform === "ANDROID_APP" &&
+			webToNative.showNotificationBlockedScreen &&
+			webToNative.showNotificationBlockedScreen();
+
+		if (platform === "IOS_APP" && webToNativeIos) {
+			webToNativeIos.postMessage({
+				action: "showNotificationBlockedScreen",
+			} as NotificationIosMessage);
+		}
+	}
+};

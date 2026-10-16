@@ -843,6 +843,7 @@ export const getDevicePhoneNumber = (options?: {
 	}
 };
 
+
 export { platform, isNativeApp };
 
 export default {
