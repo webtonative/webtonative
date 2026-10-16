@@ -2,7 +2,6 @@ import { platform, registerCb, webToNative, webToNativeIos } from "../utills";
 import {
 	NotificationResponse,
 	NotificationIosMessage,
-	NotificationOptions,
 	SetExternalUserIdOptions,
 	SetTagOptions,
 } from "./types";
@@ -86,10 +85,9 @@ const callNotificationInterface = (
 
 /**
  * Sets notification tags
- * @param options - Tag data
+ * @param data - Tag data
  */
-export const setTag = (options: SetTagOptions): Promise<NotificationResponse> => {
-	const { data } = options || ({} as SetTagOptions);
+export const setTag = (data: Record<string, any>): Promise<NotificationResponse> => {
 	if (!data) {
 		return Promise.reject("data is required");
 	}
@@ -136,27 +134,20 @@ export const getTags = (): Promise<NotificationResponse> => callNotificationInte
 
 /**
  * Sets the external user id for notifications
- * @param options - External user id and an optional callback
+ * @param id - External user id
  */
-export const setExternalUserId = (options: SetExternalUserIdOptions = {}): Promise<NotificationResponse> => {
-	const { id, callback } = options;
-	return callNotificationInterface("w2nSetExternalUserId", id).then((response) => {
-		callback && callback(response);
-		return response;
-	});
+export const setExternalUserId = (id: string): Promise<NotificationResponse> => {
+	if (!id) {
+		return Promise.reject("id is required");
+	}
+	return callNotificationInterface("w2nSetExternalUserId", id);
 };
 
 /**
  * Removes the external user id for notifications
- * @param options - Options with an optional callback
  */
-export const removeExternalUserId = (options: NotificationOptions = {}): Promise<NotificationResponse> => {
-	const { callback } = options;
-	return callNotificationInterface("w2nRemoveExternalUserId").then((response) => {
-		callback && callback(response);
-		return response;
-	});
-};
+export const removeExternalUserId = (): Promise<NotificationResponse> =>
+	callNotificationInterface("w2nRemoveExternalUserId");
 
 /**
  * Shows the native screen explaining that notifications are blocked

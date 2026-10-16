@@ -20,6 +20,5 @@ export interface SetTagOptions {
 }
 
 export interface SetExternalUserIdOptions {
-	id?: string;
-	callback?: NotificationCallback;
+	id: string;
 }
