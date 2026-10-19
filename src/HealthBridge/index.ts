@@ -65,23 +65,23 @@ export const openProvider = (options: HealthBridgeOptions = {}): void => {
  * Opens the Health Connect permission/settings screen for the app.
  * Android only — on iOS this is a no-op.
  */
-export const openProviderSettings = (options: HealthBridgeOptions = {}): void => {
-	if (platform !== "ANDROID_APP") return;
+// export const openProviderSettings = (options: HealthBridgeOptions = {}): void => {
+// 	if (platform !== "ANDROID_APP") return;
 
-	const { callback } = options;
+// 	const { callback } = options;
 
-	registerCb(
-		(response: HealthBridgeResponse) => {
-			const { type } = response;
-			if (type === "openHealthBridgeProviderSettings") {
-				callback && callback(response);
-			}
-		},
-		{ key: "openHealthBridgeProviderSettings" }
-	);
+// 	registerCb(
+// 		(response: HealthBridgeResponse) => {
+// 			const { type } = response;
+// 			if (type === "openHealthBridgeProviderSettings") {
+// 				callback && callback(response);
+// 			}
+// 		},
+// 		{ key: "openHealthBridgeProviderSettings" }
+// 	);
 
-	webToNative.openHealthBridgeProviderSettings && webToNative.openHealthBridgeProviderSettings();
-};
+// 	webToNative.openHealthBridgeProviderSettings && webToNative.openHealthBridgeProviderSettings();
+// };
 
 /**
  * Reads health records for one or more data types within a date range.
