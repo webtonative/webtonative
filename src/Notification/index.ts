@@ -98,13 +98,10 @@ export const setTag = (data: Record<string, any>): Promise<NotificationResponse>
  * Removes notification tags
  * @param data - Tag key, or array of tag keys, to remove
  */
-export const removeTag = (data: string | string[]): Promise<NotificationResponse> => {
-	const isValid =
-		typeof data === "string"
-			? data.length > 0
-			: Array.isArray(data) && data.length > 0 && data.every((tag) => typeof tag === "string");
+export const removeTag = (data: string[]): Promise<NotificationResponse> => {
+	const isValid = Array.isArray(data) && data.length > 0 && data.every((tag) => typeof tag === "string");
 	if (!isValid) {
-		return Promise.reject("data must be a non-empty string or array of strings");
+		return Promise.reject("data must be an array of strings");
 	}
 	return callNotificationInterface("w2nRemoveTag", data);
 };
