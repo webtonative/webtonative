@@ -43,6 +43,7 @@ import * as Permission from "./src/Permission";
 import * as Sound from "./src/Sound";
 import * as SmartTV from "./src/SmartTV";
 import * as Wallet from "./src/Wallet";
+import * as HealthBridge from "./src/HealthBridge";
 import { webToNativeIos } from "./src/utills";
 
 // Define the window interface to add WTN property
@@ -95,6 +96,7 @@ declare global {
 			Sound: typeof Sound;
 			SmartTV: typeof SmartTV;
 			Wallet: typeof Wallet;
+			HealthBridge: typeof HealthBridge;
 		};
 		WebToNativeInterface: any;
 	}
@@ -149,6 +151,8 @@ window.WTN.Permission = Permission;
 window.WTN.Sound = Sound;
 window.WTN.SmartTV = SmartTV;
 window.WTN.Wallet = Wallet;
+window.WTN.HealthBridge = HealthBridge;
+
 
 if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
 	window.navigator.share = function (obj: any) {
