@@ -37,13 +37,13 @@ const callPermissionInterface = <T extends BaseResponse>(
 };
 
 export const check = (options: PermissionOptions = {}): Promise<PermissionResponse> => {
-	const { callback, permissions } = options;
-	return callPermissionInterface("checkPermission", { permissions }, callback);
+	const { callback, ...rest } = options;
+	return callPermissionInterface("checkPermission", rest, callback);
 };
 
 export const request = (options: PermissionOptionsRequest = {}): Promise<PermissionResponse> => {
-	const { callback, permission } = options;
-	return callPermissionInterface("requestPermission", { permission }, callback);
+	const { callback, ...rest } = options;
+	return callPermissionInterface("requestPermission", rest, callback);
 };
 
 export const open = (options?: {
