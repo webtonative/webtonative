@@ -20,20 +20,19 @@ import {
  */
 export const inAppPurchase = (options: InAppPurchaseOptions): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
-		const { callback, productId, productType, isConsumable = false, accountToken } = options||{};
+		const { callback, productId, productType, isConsumable = false } = options;
 
 		registerCb((response: InAppPurchaseResponse) => {
 			const { type } = response;
 			if (type === "inAppPurchase") {
 				callback && callback(response);
 			}
-		}, { key: "inAppPurchase" });
+		});
 
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({
 				action: "inAppPurchase",
 				productId,
-				accountToken
 			} as InAppPurchaseIosMessage);
 		}
 
@@ -42,8 +41,7 @@ export const inAppPurchase = (options: InAppPurchaseOptions): void => {
 				action: "inAppPurchase",
 				productId,
 				productType,
-				isConsumable,
-				accountToken
+				isConsumable
 			} as InAppPurchaseAndroidParams));
 	}
 };
@@ -61,7 +59,7 @@ export const getAllPurchases = (options: GetAllPurchasesOptions): void => {
 			if (type === "purchaseList") {
 				callback && callback(response);
 			}
-		}, { key: "purchaseList" });
+		});
 
 		platform === "ANDROID_APP" &&
 			webToNative.getAllPurchases({
@@ -83,7 +81,7 @@ export const getReceiptData = (options: GetReceiptDataOptions): void => {
 			if (type === "getReceiptData") {
 				callback && callback(response);
 			}
-		}, { key: "getReceiptData" });
+		});
 
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({

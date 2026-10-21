@@ -1,4 +1,4 @@
-import { platform, webToNative, webToNativeIos, registerCb } from "../utills";
+import { platform, webToNative, webToNativeIos } from "../utills";
 import { FacebookEventOptions, FacebookPurchaseOptions, FacebookEventIosMessage } from "./types";
 
 /**
@@ -7,10 +7,9 @@ import { FacebookEventOptions, FacebookPurchaseOptions, FacebookEventIosMessage 
  */
 export const send = (options: FacebookEventOptions): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
-		const { event, valueToSum, parameters } = options || {};
+		const { event, valueToSum, parameters } = options;
 
-		platform === "ANDROID_APP" &&
-			webToNative.addFbEvents(event, JSON.stringify(parameters), valueToSum);
+		platform === "ANDROID_APP" && webToNative.addFbEvents(event, JSON.stringify(parameters));
 
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({

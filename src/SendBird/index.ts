@@ -16,8 +16,7 @@ export const sendbirdInitialize = (options: IInitializeSendBird) => {
 		if (type === "sendbirdInitialize") {
 			callback && callback(response);
 		}
-
-	}, { key: "sendbirdInitialize" });
+	});
 
 	if (isAndroidApp) {
 		webToNative.sendbirdInitialize(JSON.stringify(options));
@@ -38,7 +37,7 @@ export const sendbirdIsInitialized = (options?: {
 		if (type === "sendbirdIsInitialized") {
 			callback && callback(response);
 		}
-	}, { key: "sendbirdIsInitialized" });
+	});
 
 	if (isAndroidApp) {
 		webToNative.sendbirdIsInitialized();
@@ -58,7 +57,7 @@ export const sendbirdIsConnected = (options?: {
 		if (type === "sendbirdIsConnected") {
 			callback && callback(response);
 		}
-	}, { key: "sendbirdIsConnected" });
+	});
 
 	if (isAndroidApp) {
 		webToNative.sendbirdIsConnected();
@@ -78,7 +77,7 @@ export const sendbirdGetUserId = (options?: {
 		if (type === "sendbirdGetUserId") {
 			callback && callback(response);
 		}
-	}, { key: "sendbirdGetUserId" });
+	});
 
 	if (isAndroidApp) {
 		webToNative.sendbirdGetUserId();
@@ -103,7 +102,7 @@ export const sendbirdUpdateUserInfo = (options?: ISendbirdUpdateUserInfo) => {
 		if (type === "sendbirdUpdateUserInfo") {
 			callback && callback(response);
 		}
-	}, { key: "sendbirdUpdateUserInfo" });
+	});
 
 	if (isAndroidApp) {
 		webToNative.sendbirdUpdateUserInfo(JSON.stringify(rest));
@@ -130,7 +129,7 @@ export const sendbirdCreateGroupChannel = (options?: ISendbirdCreateGroupChannel
 		if (type === "sendbirdCreateGroupChannel") {
 			callback && callback(response);
 		}
-	}, { key: "sendbirdCreateGroupChannel" });
+	});
 
 	if (isAndroidApp) {
 		webToNative.sendbirdCreateGroupChannel(JSON.stringify(rest));
@@ -151,7 +150,7 @@ export const sendbirdShowUI = (options?: {
 		if (type === "sendbirdShowUI") {
 			callback && callback(response);
 		}
-	}, { key: "sendbirdShowUI" });
+	});
 
 	if (isAndroidApp) {
 		webToNative.sendbirdShowUI();
@@ -174,38 +173,13 @@ export const sendbirdShowChannelUI = (options?: {
 		if (type === "sendbirdShowChannelUI") {
 			callback && callback(response);
 		}
-	}, { key: "sendbirdShowChannelUI" });
+	});
 
 	if (isAndroidApp) {
 		webToNative.sendbirdShowChannelUI(JSON.stringify(rest));
 	} else if (isIosApp && webToNativeIos) {
 		webToNativeIos.postMessage({
 			action: "sendbirdShowChannelUI",
-			...rest,
-		});
-	}
-};
-
-export const sendbirdShowFeedNotificationChannel = (options?: {
-	callback?: (
-		response: BaseResponse & { success?: boolean; status?: string; channelUrl?: string }
-	) => void;
-	url?: string;
-}) => {
-	const { callback, ...rest } = options || {};
-
-	registerCb((response) => {
-		const { type } = response;
-		if (type === "sendbirdShowFeedNotificationChannel") {
-			callback && callback(response);
-		}
-	},{key: "sendbirdShowFeedNotificationChannel"});
-
-	if (isAndroidApp) {
-		webToNative.sendbirdShowFeedNotificationChannel(JSON.stringify(rest));
-	} else if (isIosApp && webToNativeIos) {
-		webToNativeIos.postMessage({
-			action: "sendbirdShowFeedNotificationChannel",
 			...rest,
 		});
 	}
@@ -221,7 +195,7 @@ export const sendbirdDisconnect = (options?: {
 		if (type === "sendbirdDisconnect") {
 			callback && callback(response);
 		}
-	}, { key: "sendbirdDisconnect" });
+	});
 
 	if (isAndroidApp) {
 		webToNative.sendbirdDisconnect();
@@ -242,7 +216,7 @@ export const sendbirdLogout = (options?: {
 		if (type === "sendbirdLogout") {
 			callback && callback(response);
 		}
-	}, { key: "sendbirdLogout" });
+	});
 
 	if (isAndroidApp) {
 		webToNative.sendbirdLogout();

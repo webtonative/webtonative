@@ -14,7 +14,7 @@ export const checkIfAppUpdateAvailable = (options: CheckUpdateOptions): void => 
 			if (type === "checkIfAppUpdateAvailable") {
 				callback && callback(response);
 			}
-		}, { key: "checkIfAppUpdateAvailable" });
+		});
 
 		platform === "ANDROID_APP" && webToNative.checkIfAppUpdateAvailable();
 
@@ -31,7 +31,7 @@ export const checkIfAppUpdateAvailable = (options: CheckUpdateOptions): void => 
  * @param options - Options for updating the application
  */
 export const updateApplication = (options: UpdateApplicationOptions): void => {
-	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+	if (["ANDROID_APP"].includes(platform)) {
 		const { updateType = "immediate", callback } = options;
 
 		registerCb((response: InAppUpdateResponse) => {
@@ -39,15 +39,9 @@ export const updateApplication = (options: UpdateApplicationOptions): void => {
 			if (type === "updateApplication") {
 				callback && callback(response);
 			}
-		}, { key: "updateApplication" });
+		});
 
 		platform === "ANDROID_APP" && webToNative.updateApplication(updateType);
-
-		if (platform === "IOS_APP" && webToNativeIos) {
-			webToNativeIos.postMessage({
-				action: "updateApplication",
-			});
-		}
 	}
 };
 
@@ -60,7 +54,7 @@ export const showInAppUpdateUI = (options: CheckUpdateOptions): void => {
 			if (type === "showInAppUpdateUI") {
 				callback && callback(response);
 			}
-		}, { key: "showInAppUpdateUI" });
+		});
 
 		platform === "ANDROID_APP" && webToNative.showInAppUpdateUI();
 

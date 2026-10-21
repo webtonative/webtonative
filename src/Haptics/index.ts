@@ -12,7 +12,6 @@ export const trigger = (options: HapticsOptions = {}): void => {
 			webToNativeIos.postMessage({
 				action: "haptikEffect",
 				effect: options.effect,
-				soundName: options.soundName
 			} as HapticsIosMessage);
 		}
 		platform === "ANDROID_APP" && webToNative.haptikEffect(JSON.stringify(options));
@@ -31,7 +30,7 @@ export const isHapticSupported = (options: IsHapticSupportedOptions = {}): void 
 			if (response && response.type === "isHapticSupported") {
 				callback && callback(response);
 			}
-		}, { key: "isHapticSupported" });
+		});
 
 		if (platform === "ANDROID_APP") {
 			webToNative.isHapticSupported && webToNative.isHapticSupported();

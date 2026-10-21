@@ -6,7 +6,7 @@ import * as AdMob from "./src/AdMob";
 import { socialLogin } from "./src/SocialLogin/index";
 import * as AppsFlyer from "./src/AppsFlyer";
 import { inAppPurchase, getAllPurchases, getReceiptData } from "./src/InAppPurchase";
-import * as Facebook from "./src/Facebook";
+import * as FBEvents from "./src/Facebook/events";
 import * as BottomNavigation from "./src/BottomNavigation";
 import * as contacts from "./src/NativeContacts";
 import * as backgroundLocation from "./src/BackgroundLocation";
@@ -37,13 +37,6 @@ import * as User from "./src/User";
 import * as SendBird from "./src/SendBird";
 import * as Auth0 from "./src/Auth0";
 import * as Truecaller from "./src/Truecaller";
-import * as NFC from "./src/NFC";
-import * as AgeSafety from "./src/AgeSafety";
-import * as Permission from "./src/Permission";
-import * as Sound from "./src/Sound";
-import * as SmartTV from "./src/SmartTV";
-import * as Wallet from "./src/Wallet";
-import * as HealthBridge from "./src/HealthBridge";
 import { webToNativeIos } from "./src/utills";
 
 // Define the window interface to add WTN property
@@ -67,7 +60,9 @@ declare global {
 			appReview: typeof appReview;
 			Biometric: typeof Biometric;
 			ATTConsent: typeof ATTConsent;
-			facebook: typeof Facebook;
+			facebook: {
+				events: typeof FBEvents;
+			};
 			firebaseAnalytics: typeof FirebaseAnalytics;
 			Firebase: typeof Firebase;
 			haptics: typeof Haptics;
@@ -90,13 +85,6 @@ declare global {
 			SendBird: typeof SendBird;
 			Auth0: typeof Auth0;
 			Truecaller: typeof Truecaller;
-			NFC: typeof NFC;
-			AgeSafety: typeof AgeSafety;
-			Permission: typeof Permission;
-			Sound: typeof Sound;
-			SmartTV: typeof SmartTV;
-			Wallet: typeof Wallet;
-			HealthBridge: typeof HealthBridge;
 		};
 		WebToNativeInterface: any;
 	}
@@ -122,7 +110,9 @@ window.WTN.clipboard = clipboard;
 window.WTN.appReview = appReview;
 window.WTN.Biometric = Biometric;
 window.WTN.ATTConsent = ATTConsent;
-window.WTN.facebook = Facebook;
+window.WTN.facebook = {
+	events: FBEvents,
+};
 window.WTN.firebaseAnalytics = FirebaseAnalytics;
 window.WTN.Firebase = Firebase;
 window.WTN.haptics = Haptics;
@@ -145,14 +135,6 @@ window.WTN.User = User;
 window.WTN.SendBird = SendBird;
 window.WTN.Auth0 = Auth0;
 window.WTN.Truecaller = Truecaller;
-window.WTN.NFC = NFC;
-window.WTN.AgeSafety = AgeSafety;
-window.WTN.Permission = Permission;
-window.WTN.Sound = Sound;
-window.WTN.SmartTV = SmartTV;
-window.WTN.Wallet = Wallet;
-window.WTN.HealthBridge = HealthBridge;
-
 
 if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
 	window.navigator.share = function (obj: any) {

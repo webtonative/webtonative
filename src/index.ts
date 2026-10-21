@@ -104,10 +104,6 @@ export const deviceInfo = (): Promise<any> => {
 	return new Promise((resolve, reject) => {
 		registerCb(
 			(results) => {
-
-				if (results && results.type !== undefined && results.type !== "deviceInfo") {
-					return;
-				}
 				if (results) {
 					resolve(results);
 				} else {
@@ -149,7 +145,7 @@ export const isDeviceGPSEnabled = (options: GPSEnabledOptions = {}): void => {
 			if (type === "isDeviceGPSEnabled") {
 				callback && callback(response);
 			}
-		}, { key: "isDeviceGPSEnabled" });
+		});
 
 		platform === "ANDROID_APP" &&
 			webToNative.isLocationServiceEnabled &&
@@ -185,13 +181,6 @@ export const openUrlInBrowser = (url: string = ""): void => {
 
 export const enablePullToRefresh = (status: boolean): void => {
 	isAndroidApp && webToNative.enableSwipeRefresh && webToNative.enableSwipeRefresh(status);
-
-	isIosApp &&
-		webToNativeIos &&
-		webToNativeIos.postMessage({
-			action: "setPullToRefresh",
-			enable:status,
-		});
 };
 
 const clear = ({ cacheOnly, reload }: { cacheOnly: boolean; reload: boolean }): void => {
@@ -247,7 +236,7 @@ export const showDateTimePicker = (options: DateTimePickerOptions): void => {
 			if (type === "DATE_TIME_PICKER") {
 				callback && callback(response);
 			}
-		}, { key: "DATE_TIME_PICKER" });
+		});
 
 		isAndroidApp &&
 			webToNative.pickDateTime &&
@@ -280,57 +269,6 @@ export const printFunction = (options: PrintFunctionOptions): void => {
 	}
 };
 
-interface OpenPDFOptions {
-	url: string;
-	title?: string;
-}
-
-export const openPDF = (options: OpenPDFOptions): void => {
-	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
-		const { url = "", title = "" } = options || {};
-
-		if (!url) {
-			throw "url is mandatory";
-		}
-
-		isAndroidApp &&
-			webToNative.openPDF &&
-			webToNative.openPDF(
-				JSON.stringify({
-					url,
-					title,
-				})
-			);
-
-		isIosApp &&
-			webToNativeIos &&
-			webToNativeIos.postMessage({
-				action: "openPDF",
-				url,
-				title,
-			});
-	}
-};
-
-export const showMultiPurposeModal = (modalId: string = ""): void => {
-	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
-		if (!modalId) {
-			throw "modalId is mandatory";
-		}
-
-		isAndroidApp &&
-			webToNative.showMultiPurposeModal &&
-			webToNative.showMultiPurposeModal(modalId);
-
-		isIosApp &&
-			webToNativeIos &&
-			webToNativeIos.postMessage({
-				action: "showMultiPurposeModal",
-				modalId,
-			});
-	}
-};
-
 interface NFCSupportedOptions {
 	callback?: (response: BaseResponse) => void;
 }
@@ -343,7 +281,7 @@ export const nfcSupported = (options: NFCSupportedOptions): void => {
 			if (type === "nfcSupported") {
 				callback && callback(response);
 			}
-		}, { key: "nfcSupported" });
+		});
 
 		isAndroidApp && webToNative.nfcSupported && webToNative.nfcSupported();
 
@@ -415,36 +353,6 @@ export const appFirstLoad = (): Promise<any> => {
 	});
 };
 
-interface GetAppStatusOptions {
-	keys?: ("app" | "layout" | "components" | "features" | "permissions" | "webView")[];
-	callback?: (response: BaseResponse) => void;
-}
-
-export const getComponentStatus = (options: GetAppStatusOptions = {}): void => {
-	if (isAndroidORIosApp) {
-		const { keys, callback } = options;
-
-		registerCb(
-			(response: BaseResponse) => {
-				const { type } = response;
-				if (type === "getComponentStatus") {
-					callback && callback(response);
-				}
-			},
-			{ key: "getComponentStatus" }
-		);
-
-		if (platform === "ANDROID_APP") {
-			const keysJson = keys && keys.length > 0 ? JSON.stringify({ keys }) : null;
-			webToNative.getComponentStatus && webToNative.getComponentStatus(keysJson);
-		} else if (platform === "IOS_APP") {
-			const payload: Record<string, any> = { action: "getComponentStatus" };
-			if (keys && keys.length > 0) payload.keys = keys;
-			webToNativeIos && webToNativeIos.postMessage(payload);
-		}
-	}
-};
-
 export const forceUpdateCookies = (): void => {
 	if (["ANDROID_APP"].includes(platform)) {
 		isAndroidApp && webToNative.forceUpdateCookies && webToNative.forceUpdateCookies();
@@ -456,11 +364,6 @@ interface OpenAppSettingForPermissionOptions {
 	values?: any;
 }
 
-/**
- * @deprecated This function is deprecated and will be removed in a future release.
- * Use {@link Permission.open} instead.
- */
-
 export const openAppSettingForPermission = (options: OpenAppSettingForPermissionOptions): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { callback, values } = options;
@@ -469,7 +372,7 @@ export const openAppSettingForPermission = (options: OpenAppSettingForPermission
 			if (type === "openAppSettingForPermission") {
 				callback && callback(response);
 			}
-		}, { key: "openAppSettingForPermission" });
+		});
 
 		isAndroidApp &&
 			webToNative.openAppSettingForPermission &&
@@ -491,10 +394,6 @@ interface ShowPermissionOptions {
 	alertDialogStyle?: any;
 }
 
-/**
- * @deprecated This function is deprecated and will be removed in a future release.
- * Use {@link Permission.request} instead.
- */
 export const showPermission = (options: ShowPermissionOptions): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { callback, permission, openAppSetting = false, alertDialogStyle } = options;
@@ -503,7 +402,7 @@ export const showPermission = (options: ShowPermissionOptions): void => {
 			if (type === "showPermission" || typeValue === "showPermission") {
 				callback && callback(response);
 			}
-		}, { key: "showPermission" });
+		});
 
 		isAndroidApp &&
 			webToNative.showPermission &&
@@ -525,8 +424,6 @@ export const showPermission = (options: ShowPermissionOptions): void => {
 			});
 	}
 };
-
-
 
 interface UpdateAppIconOptions {
 	active?: boolean;
@@ -597,10 +494,7 @@ export const customBackHandling = (options: CustomBackHandlingOptions): void => 
 interface GetSafeAreaOptions {
 	callback?: (response: BaseResponse) => void;
 }
-/**
- * @deprecated This function is deprecated and will be removed in a future release.
- * Use {@link SafeArea.getSafeArea} instead for ANDROID and IOS both.
- */
+
 export const getSafeArea = (options: GetSafeAreaOptions): void => {
 	if (["IOS_APP"].includes(platform)) {
 		const { callback } = options;
@@ -609,7 +503,7 @@ export const getSafeArea = (options: GetSafeAreaOptions): void => {
 			if (type === "getSafeArea") {
 				callback && callback(response);
 			}
-		}, { key: "getSafeArea" });
+		});
 
 		isIosApp &&
 			webToNativeIos &&
@@ -632,7 +526,7 @@ export const getAddOnStatus = (options: GetAddOnStatusOptions): void => {
 			if (type === "getAddOnStatus") {
 				callback && callback(response);
 			}
-		}, { key: "getAddOnStatus" });
+		});
 
 		isAndroidApp &&
 			webToNative.getAddOnStatus &&
@@ -656,11 +550,6 @@ interface CheckPermissionOptions {
 	permissionName?: string[];
 }
 
-/**
- * @deprecated This function is deprecated and will be removed in a future release.
- * Use {@link Permission.check} instead.
- */
-
 export const checkPermission = (options: CheckPermissionOptions): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { callback, permissionName } = options;
@@ -670,7 +559,7 @@ export const checkPermission = (options: CheckPermissionOptions): void => {
 			if (type === "checkPermission") {
 				callback && callback(response);
 			}
-		}, { key: "checkPermission" });
+		});
 
 		isAndroidApp &&
 			webToNative.checkPermission &&
@@ -754,7 +643,7 @@ export const registerNotification = (options?: RegisterNotificationOptions): voi
 			if (type === "registerNotification") {
 				callback && callback(response);
 			}
-		}, { key: "registerNotification" });
+		});
 
 		isAndroidApp && webToNative.registerNotification && webToNative.registerNotification();
 		isIosApp &&
@@ -809,7 +698,7 @@ export const removeAllNotifications = (options?: {
 			if (type === "removeAllNotifications") {
 				callback && callback(response);
 			}
-		}, { key: "removeAllNotifications" });
+		});
 
 		isAndroidApp && webToNative.removeAllNotifications();
 
@@ -832,7 +721,7 @@ export const getDevicePhoneNumber = (options?: {
 			if (type === "getDevicePhoneNumber") {
 				callback && callback(response);
 			}
-		}, { key: "getDevicePhoneNumber" });
+		});
 
 		isAndroidApp && webToNative.getDevicePhoneNumber();
 
@@ -843,7 +732,6 @@ export const getDevicePhoneNumber = (options?: {
 			});
 	}
 };
-
 
 export { platform, isNativeApp };
 
@@ -867,11 +755,8 @@ export default {
 	downloadBlobFile,
 	customFileDownload,
 	printFunction,
-	openPDF,
-	showMultiPurposeModal,
 	loadOfferCard,
 	appFirstLoad,
-	getComponentStatus,
 	addToSiri,
 	showPermission,
 	forceUpdateCookies,
