@@ -19,7 +19,7 @@ export type CallbackFunction = (response: any) => void;
 
 // Register callback options
 export interface RegisterCallbackOptions {
-	key?: string;
+	key: string;
 	ignoreDelete?: boolean;
 }
 

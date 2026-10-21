@@ -9,7 +9,7 @@ export const setAppData = (options: ISetAppDataOptions = {}) => {
 			if (type === "setAppData") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "setAppData" });
 
 		platform === "ANDROID_APP" &&
 			webToNative.setAppData(
@@ -37,7 +37,7 @@ export const getAppData = (options: IGetAppDataOptions = {}) => {
 			if (type === "getAppData") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "getAppData" });
 
 		platform === "ANDROID_APP" && webToNative.getAppData(keyName);
 
@@ -58,7 +58,7 @@ export const deleteAppData = (options: IDeleteAppDataOptions = {}) => {
 			if (type === "deleteAppData") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "deleteAppData" });
 
 		platform === "ANDROID_APP" && webToNative.deleteAppData(keyName);
 
@@ -79,7 +79,7 @@ export const setCloudData = (options: ISetAppDataOptions = {}) => {
 			if (type === "setCloudData") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "setCloudData" });
 
 		platform === "ANDROID_APP" &&
 			webToNative.setCloudData(
@@ -107,7 +107,7 @@ export const getCloudData = (options: IGetAppDataOptions = {}) => {
 			if (type === "getCloudData") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "getCloudData" });
 
 		platform === "ANDROID_APP" && webToNative.getCloudData(keyName);
 
@@ -128,7 +128,7 @@ export const deleteCloudData = (options: IDeleteAppDataOptions = {}) => {
 			if (type === "deleteCloudData") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "deleteCloudData" });
 
 		platform === "ANDROID_APP" && webToNative.deleteCloudData(keyName);
 
