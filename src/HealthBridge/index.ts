@@ -209,4 +209,5 @@ export const deleteRecords = (options: HealthBridgeDeleteOptions): void => {
 	}
 };
 
-export default { isAvailable, openProvider, openProviderSettings, read, write, deleteRecords };
+export default { isAvailable, openProvider, read, write, deleteRecords };
+// export default { isAvailable, openProvider, openProviderSettings, read, write, deleteRecords };
