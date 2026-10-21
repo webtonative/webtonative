@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../android-app-webtonative"
+		},
+		{
+			"path": "../../ios-app"
+		}
+	],
+	"settings": {}
+}

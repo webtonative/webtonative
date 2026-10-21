@@ -18,7 +18,7 @@ export const get = (options: GetClipboardOptions = {}): void => {
 			if (type === "CLIPBOARD_CONTENT") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "CLIPBOARD_CONTENT" });
 
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({

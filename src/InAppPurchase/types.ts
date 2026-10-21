@@ -16,6 +16,7 @@ export interface InAppPurchaseOptions {
 	callback?: InAppPurchaseCallback;
 	productType?: string;
 	isConsumable?: boolean;
+	accountToken?: string;
 }
 
 export interface GetAllPurchasesOptions {
