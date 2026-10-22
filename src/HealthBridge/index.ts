@@ -1,5 +1,6 @@
 import { platform, registerCb, webToNative, webToNativeIos } from "../utills";
 import {
+	HealthBridgeCallback,
 	HealthBridgeDeleteOptions,
 	HealthBridgeIosMessage,
 	HealthBridgeOptions,
@@ -9,78 +10,86 @@ import {
 	HealthRecord,
 } from "./types";
 
+const NOT_NATIVE_ERROR = "This function will work in Native App Powered By WebToNative";
+
+/**
+ * Registers a one-shot listener for `action`, triggers the native call and resolves with the response.
+ * `androidData` is JSON-stringified for the Android bridge (omit for no-arg methods);
+ * `iosData` is spread into the iOS postMessage payload.
+ */
+const callHealthBridge = (
+	action: string,
+	callback?: HealthBridgeCallback,
+	androidData?: object,
+	iosData: Omit<HealthBridgeIosMessage, "action"> = {}
+): Promise<HealthBridgeResponse> => {
+	return new Promise((resolve, reject) => {
+		if (!["ANDROID_APP", "IOS_APP"].includes(platform)) {
+			reject(NOT_NATIVE_ERROR);
+			return;
+		}
+
+		registerCb(
+			(response: HealthBridgeResponse) => {
+				if (response.type === action) {
+					callback && callback(response);
+					resolve(response);
+				}
+			},
+			{ key: action }
+		);
+
+		if (platform === "ANDROID_APP") {
+			if (!webToNative[action]) {
+				reject(`${action} is not supported in this app version`);
+				return;
+			}
+			androidData ? webToNative[action](JSON.stringify(androidData)) : webToNative[action]();
+		} else if (webToNativeIos) {
+			webToNativeIos.postMessage({ action, ...iosData } as HealthBridgeIosMessage);
+		}
+	});
+};
+
 /**
  * Checks whether the health provider (Health Connect on Android, HealthKit on iOS)
  * is available on the device and usable by the app.
  * @example
- * wtn.HealthBridge.isAvailable({ callback: (res) => console.log(res.isAvailable) });
+ * wtn.HealthBridge.isAvailable().then((res) => console.log(res.isAvailable));
  */
-export const isAvailable = (options: HealthBridgeOptions = {}): void => {
-	if (!["ANDROID_APP", "IOS_APP"].includes(platform)) return;
-
+export const isAvailable = (options: HealthBridgeOptions = {}): Promise<HealthBridgeResponse> => {
 	const { callback } = options;
-
-	registerCb(
-		(response: HealthBridgeResponse) => {
-			const { type } = response;
-			if (type === "isHealthBridgeAvailable") {
-				callback && callback(response);
-			}
-		},
-		{ key: "isHealthBridgeAvailable" }
-	);
-
-	if (platform === "ANDROID_APP") {
-		webToNative.isHealthBridgeAvailable && webToNative.isHealthBridgeAvailable();
-	} else if (webToNativeIos) {
-		webToNativeIos.postMessage({
-			action: "isHealthBridgeAvailable",
-		} as HealthBridgeIosMessage);
-	}
+	return callHealthBridge("isHealthBridgeAvailable", callback);
 };
 
 /**
  * Opens the Health Connect app so the user can install it or manage app permissions.
- * Android only — on iOS this is a no-op.
+ * Android only — on iOS the promise rejects.
  */
-export const openProvider = (options: HealthBridgeOptions = {}): void => {
-	if (platform !== "ANDROID_APP") return;
+export const openProvider = (options: HealthBridgeOptions = {}): Promise<HealthBridgeResponse> => {
+	if (platform !== "ANDROID_APP") {
+		return Promise.reject(
+			platform === "IOS_APP" ? "openProvider is only available on Android" : NOT_NATIVE_ERROR
+		);
+	}
 
 	const { callback } = options;
-
-	registerCb(
-		(response: HealthBridgeResponse) => {
-			const { type } = response;
-			if (type === "openHealthBridgeProvider") {
-				callback && callback(response);
-			}
-		},
-		{ key: "openHealthBridgeProvider" }
-	);
-
-	webToNative.openHealthBridgeProvider && webToNative.openHealthBridgeProvider();
+	return callHealthBridge("openHealthBridgeProvider", callback);
 };
 
 /**
  * Opens the Health Connect permission/settings screen for the app.
- * Android only — on iOS this is a no-op.
+ * Android only — on iOS the promise rejects.
  */
-// export const openProviderSettings = (options: HealthBridgeOptions = {}): void => {
-// 	if (platform !== "ANDROID_APP") return;
+// export const openProviderSettings = (options: HealthBridgeOptions = {}): Promise<HealthBridgeResponse> => {
+// 	if (platform !== "ANDROID_APP") {
+// 		return Promise.reject(
+// 			platform === "IOS_APP" ? "openProviderSettings is only available on Android" : NOT_NATIVE_ERROR
+// 		);
+// 	}
 
 // 	const { callback } = options;
-
-// 	registerCb(
-// 		(response: HealthBridgeResponse) => {
-// 			const { type } = response;
-// 			if (type === "openHealthBridgeProviderSettings") {
-// 				callback && callback(response);
-// 			}
-// 		},
-// 		{ key: "openHealthBridgeProviderSettings" }
-// 	);
-
-// 	webToNative.openHealthBridgeProviderSettings && webToNative.openHealthBridgeProviderSettings();
+// 	return callHealthBridge("openHealthBridgeProviderSettings", callback);
 // };
 
 /**
@@ -90,55 +99,35 @@ export const openProvider = (options: HealthBridgeOptions = {}): void => {
  *   dataTypes: ["steps", "distance"],
  *   startDate: "2026-08-16T00:00:00Z",
  *   endDate: "2026-08-17T00:00:00Z",
- *   callback: (res) => console.log(res.data),
- * });
+ * }).then((res) => console.log(res.data));
  */
-export const read = (options: HealthBridgeReadOptions): void => {
-	if (!["ANDROID_APP", "IOS_APP"].includes(platform)) return;
-
+export const read = (options: HealthBridgeReadOptions): Promise<HealthBridgeResponse> => {
 	const { dataTypes, startDate, endDate, limit, pageToken, callback } =
 		options || ({} as HealthBridgeReadOptions);
 
-	registerCb(
-		(response: HealthBridgeResponse) => {
-			const { type } = response;
-			if (type === "readHealthBridge") {
-				callback && callback(response);
-			}
-		},
-		{ key: "readHealthBridge" }
+	return callHealthBridge(
+		"readHealthBridge",
+		callback,
+		{ dataTypes, startDate, endDate, limit },
+		{ dataTypes, startDate, endDate, pageToken }
 	);
-
-	if (platform === "ANDROID_APP") {
-		webToNative.readHealthBridge &&
-			webToNative.readHealthBridge(JSON.stringify({ dataTypes, startDate, endDate, limit }));
-	} else if (webToNativeIos) {
-		webToNativeIos.postMessage({
-			action: "readHealthBridge",
-			dataTypes,
-			startDate,
-			endDate,
-			pageToken,
-		} as HealthBridgeIosMessage);
-	}
 };
 
 /**
  * Writes one or more health records. The whole batch goes out in a single native call on both
- * platforms and the callback fires once.
+ * platforms and the promise resolves once.
  * @example
  * wtn.HealthBridge.write({
  *   records: [
  *     { dataType: "steps", value: 1000, unit: "count", start: "2026-08-17T08:30:00Z", end: "2026-08-17T09:00:00Z" },
  *   ],
- *   callback: (res) => console.log(res.success),
- * });
+ * }).then((res) => console.log(res.success));
  */
-export const write = (options: HealthBridgeWriteOptions): void => {
-	if (!["ANDROID_APP", "IOS_APP"].includes(platform)) return;
-
+export const write = (options: HealthBridgeWriteOptions): Promise<HealthBridgeResponse> => {
 	const { records, callback } = options || ({} as HealthBridgeWriteOptions);
-	if (!records || !records.length) return;
+	if (!records || !records.length) {
+		return Promise.reject("records must be a non-empty array");
+	}
 
 	const normalized = records.map((record: HealthRecord) => {
 		const { dataType, value, unit } = record;
@@ -151,25 +140,12 @@ export const write = (options: HealthBridgeWriteOptions): void => {
 		};
 	});
 
-	registerCb(
-		(response: HealthBridgeResponse) => {
-			const { type } = response;
-			if (type === "writeHealthBridge") {
-				callback && callback(response);
-			}
-		},
-		{ key: "writeHealthBridge" }
+	return callHealthBridge(
+		"writeHealthBridge",
+		callback,
+		{ records: normalized },
+		{ records: normalized }
 	);
-
-	if (platform === "ANDROID_APP") {
-		webToNative.writeHealthBridge &&
-			webToNative.writeHealthBridge(JSON.stringify({ records: normalized }));
-	} else if (webToNativeIos) {
-		webToNativeIos.postMessage({
-			action: "writeHealthBridge",
-			records: normalized,
-		} as HealthBridgeIosMessage);
-	}
 };
 
 /**
@@ -179,34 +155,17 @@ export const write = (options: HealthBridgeWriteOptions): void => {
  * wtn.HealthBridge.deleteRecords({
  *   dataType: "steps",
  *   recordIds: ["b9eadc1d-2bce-4990-9c14-4d976bb29aef"],
- *   callback: (res) => console.log(res.success),
- * });
+ * }).then((res) => console.log(res.success));
  */
-export const deleteRecords = (options: HealthBridgeDeleteOptions): void => {
-	if (!["ANDROID_APP", "IOS_APP"].includes(platform)) return;
-
+export const deleteRecords = (options: HealthBridgeDeleteOptions): Promise<HealthBridgeResponse> => {
 	const { dataType, recordIds, callback } = options || ({} as HealthBridgeDeleteOptions);
 
-	registerCb(
-		(response: HealthBridgeResponse) => {
-			const { type } = response;
-			if (type === "deleteHealthBridge") {
-				callback && callback(response);
-			}
-		},
-		{ key: "deleteHealthBridge" }
+	return callHealthBridge(
+		"deleteHealthBridge",
+		callback,
+		{ dataType, recordIds },
+		{ dataType, recordIds }
 	);
-
-	if (platform === "ANDROID_APP") {
-		webToNative.deleteHealthBridge &&
-			webToNative.deleteHealthBridge(JSON.stringify({ dataType, recordIds }));
-	} else if (webToNativeIos) {
-		webToNativeIos.postMessage({
-			action: "deleteHealthBridge",
-			dataType,
-			recordIds,
-		} as HealthBridgeIosMessage);
-	}
 };
 
 export default { isAvailable, openProvider, read, write, deleteRecords };
