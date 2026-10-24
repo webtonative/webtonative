@@ -29,6 +29,13 @@ export interface RewardsAdOptions {
   [key: string]: any;
 }
 
+// Rewarded interstitial ad options
+export interface RewardedInterstitialAdOptions {
+  adId?: string;
+  rewardedInterstitialAdCallback?: AdMobCallback;
+  [key: string]: any;
+}
+
 // iOS message structure
 export interface AdMobIosMessage {
   action: string;

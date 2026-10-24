@@ -14,6 +14,7 @@ import {
 	BannerAdOptions,
 	FullScreenAdOptions,
 	RewardsAdOptions,
+	RewardedInterstitialAdOptions,
 	AdMobIosMessage,
 } from "./types";
 
@@ -168,7 +169,45 @@ const rewardsAd = (options: RewardsAdOptions = {}): any => {
 	}
 };
 
-const checkAdmobPrivacyFormRequired = (options: { callback: (val: any) => any }): any => {
+/**
+ * This function shows rewarded interstitial ad
+ * @param options - Rewarded interstitial ad options
+ * @example wtn.rewardedInterstitialAd({
+ *  adId: "ca-app-pub-xxx",
+ *  rewardedInterstitialAdCallback:(value)=>{
+ *    console.log(value);
+ *  }
+ * });
+ */
+const rewardedInterstitialAd = (options: RewardedInterstitialAdOptions = {}): any => {
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		const { rewardedInterstitialAdCallback } = options;
+		registerForAbMobCb((response: AdMobResponse) => {
+			const { status } = response;
+			adMobCb && adMobCb(response);
+			if (status === "adDismissed") {
+				adMobCb = null;
+			}
+			if (["adDismissed", "adLoadError", "adError"].indexOf(status) > -1) {
+				deRegisterForAbMobCb();
+			}
+		});
+		if (platform === "IOS_APP" && webToNativeIos) {
+			webToNativeIos.postMessage({
+				action: "showRewardedInterstitialAd",
+				adId: options.adId || "",
+			} as AdMobIosMessage);
+		}
+		platform === "ANDROID_APP" &&
+			webToNative.showRewardedInterstitialAd(JSON.stringify(options));
+		if (typeof rewardedInterstitialAdCallback === "function") {
+			adMobCb = rewardedInterstitialAdCallback;
+		}
+		return this;
+	}
+};
+
+const checkAdmobPrivacyFormRequired =(options: { callback: (val: any) => any }): any => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { callback } = options || {};
 		registerForAbMobCb((response: AdMobResponse) => {
@@ -223,6 +262,7 @@ export {
 	bannerAd,
 	fullScreenAd,
 	rewardsAd,
+	rewardedInterstitialAd,
 	requestAdmobConsent,
 	checkAdmobConsentStatus,
 	requestAdmobPrivacyForm,
