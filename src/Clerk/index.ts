@@ -6,78 +6,68 @@ interface IClerk {
 	callback?: CallbackFunction;
 }
 
-export const initialize = (options: IClerk = {}) => {
-	const { callback } = options || {};
+const NOT_NATIVE_ERROR = "This function will work in Native App Powered By WebToNative";
 
-	registerCb((response) => {
-		const { type } = response;
-		if (type === "initializeClerk") {
-			callback && callback(response);
+/**
+ * Registers a one-shot listener for `action`, triggers the native call and resolves with the response.
+ */
+const callClerk = (action: string, callback?: CallbackFunction): Promise<any> => {
+	return new Promise((resolve, reject) => {
+		if (!isAndroidApp && !isIosApp) {
+			reject(NOT_NATIVE_ERROR);
+			return;
+		}
+
+		registerCb(
+			(response) => {
+				if (response.type === action) {
+					callback && callback(response);
+					resolve(response);
+				}
+			},
+			{ key: action }
+		);
+
+		if (isAndroidApp) {
+			if (!webToNative[action]) {
+				reject(`${action} is not supported in this app version`);
+				return;
+			}
+			webToNative[action]();
+		} else if (webToNativeIos) {
+			webToNativeIos.postMessage({ action });
 		}
 	});
-
-	if (isAndroidApp) {
-		webToNative.initializeClerk && webToNative.initializeClerk();
-	} else if (isIosApp && webToNativeIos) {
-		webToNativeIos.postMessage({
-			action: "initializeClerk",
-		});
-	}
 };
 
-export const login = (options: IClerk = {}) => {
+/**
+ * @example wtn.Clerk.initialize().then((res) => console.log(res));
+ */
+export const initialize = (options: IClerk = {}): Promise<any> => {
 	const { callback } = options || {};
-
-	registerCb((response) => {
-		const { type } = response;
-		if (type === "loginWithClerkAuth") {
-			callback && callback(response);
-		}
-	});
-
-	if (isAndroidApp) {
-		webToNative.loginWithClerkAuth && webToNative.loginWithClerkAuth();
-	} else if (isIosApp && webToNativeIos) {
-		webToNativeIos.postMessage({
-			action: "loginWithClerkAuth",
-		});
-	}
+	return callClerk("initializeClerk", callback);
 };
 
-export const logout = (options: IClerk = {}) => {
+/**
+ * @example wtn.Clerk.login().then((res) => console.log(res));
+ */
+export const login = (options: IClerk = {}): Promise<any> => {
 	const { callback } = options || {};
-
-	registerCb((response) => {
-		const { type } = response;
-		if (type === "logoutWithClerkAuth") {
-			callback && callback(response);
-		}
-	});
-
-	if (isAndroidApp) {
-		webToNative.logoutWithClerkAuth && webToNative.logoutWithClerkAuth();
-	} else if (isIosApp && webToNativeIos) {
-		webToNativeIos.postMessage({
-			action: "logoutWithClerkAuth",
-		});
-	}
+	return callClerk("loginWithClerkAuth", callback);
 };
 
-export const getToken = (options: IClerk = {}) => {
+/**
+ * @example wtn.Clerk.logout().then((res) => console.log(res));
+ */
+export const logout = (options: IClerk = {}): Promise<any> => {
 	const { callback } = options || {};
+	return callClerk("logoutWithClerkAuth", callback);
+};
 
-	registerCb((response) => {
-		const { type } = response;
-		if (type === "getClerkAuthToken") {
-			callback && callback(response);
-		}
-	});
-
-	if (isAndroidApp) {
-		webToNative.getClerkAuthToken && webToNative.getClerkAuthToken();
-	} else if (isIosApp && webToNativeIos) {
-		webToNativeIos.postMessage({
-			action: "getClerkAuthToken",
-		});
-	}
+/**
+ * @example wtn.Clerk.getToken().then((res) => console.log(res));
+ */
+export const getToken = (options: IClerk = {}): Promise<any> => {
+	const { callback } = options || {};
+	return callClerk("getClerkAuthToken", callback);
 };
