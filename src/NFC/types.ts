@@ -8,6 +8,10 @@ export interface NFCCallback {
 	(response: NFCResponse): void;
 }
 
+export interface NFCStatusOptions {
+	callback?: NFCCallback;
+}
+
 export interface NFCScanTagOptions {
 	message?: string;
 	openUrl?:boolean

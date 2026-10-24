@@ -6,6 +6,7 @@
  * const wtn = webtonative();
  */
 import { isNativeApp, webToNative, platform, webToNativeIos, registerCb } from "./utills";
+export { on, off, once } from "./EventEmitter";
 import {
 	StatusBarOptions,
 	DownloadBlobFileOptions,
@@ -103,6 +104,9 @@ export const deviceInfo = (): Promise<any> => {
 	return new Promise((resolve, reject) => {
 		registerCb(
 			(results) => {
+				if (results && results.type !== undefined && results.type !== "deviceInfo") {
+					return;
+				}
 				if (results) {
 					resolve(results);
 				} else {
@@ -139,12 +143,15 @@ interface GPSEnabledOptions {
 export const isDeviceGPSEnabled = (options: GPSEnabledOptions = {}): void => {
 	const { callback } = options;
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
-		registerCb((response: BaseResponse) => {
-			const { type } = response;
-			if (type === "isDeviceGPSEnabled") {
-				callback && callback(response);
-			}
-		});
+		registerCb(
+			(response: BaseResponse) => {
+				const { type } = response;
+				if (type === "isDeviceGPSEnabled") {
+					callback && callback(response);
+				}
+			},
+			{ key: "isDeviceGPSEnabled" }
+		);
 
 		platform === "ANDROID_APP" &&
 			webToNative.isLocationServiceEnabled &&
@@ -185,7 +192,7 @@ export const enablePullToRefresh = (status: boolean): void => {
 		webToNativeIos &&
 		webToNativeIos.postMessage({
 			action: "setPullToRefresh",
-			enable:status,
+			enable: status,
 		});
 };
 
@@ -237,12 +244,15 @@ interface DateTimePickerOptions {
 export const showDateTimePicker = (options: DateTimePickerOptions): void => {
 	if (["ANDROID_APP"].includes(platform)) {
 		const { callback, showDate, showTime } = options;
-		registerCb((response: BaseResponse) => {
-			const { type } = response;
-			if (type === "DATE_TIME_PICKER") {
-				callback && callback(response);
-			}
-		});
+		registerCb(
+			(response: BaseResponse) => {
+				const { type } = response;
+				if (type === "DATE_TIME_PICKER") {
+					callback && callback(response);
+				}
+			},
+			{ key: "DATE_TIME_PICKER" }
+		);
 
 		isAndroidApp &&
 			webToNative.pickDateTime &&
@@ -307,6 +317,23 @@ export const openPDF = (options: OpenPDFOptions): void => {
 	}
 };
 
+export const showMultiPurposeModal = (modalId: string = ""): void => {
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		if (!modalId) {
+			throw "modalId is mandatory";
+		}
+
+		isAndroidApp && webToNative.showMultiPurposeModal && webToNative.showMultiPurposeModal(modalId);
+
+		isIosApp &&
+			webToNativeIos &&
+			webToNativeIos.postMessage({
+				action: "showMultiPurposeModal",
+				modalId,
+			});
+	}
+};
+
 interface NFCSupportedOptions {
 	callback?: (response: BaseResponse) => void;
 }
@@ -314,12 +341,15 @@ interface NFCSupportedOptions {
 export const nfcSupported = (options: NFCSupportedOptions): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { callback } = options;
-		registerCb((response: BaseResponse) => {
-			const { type } = response;
-			if (type === "nfcSupported") {
-				callback && callback(response);
-			}
-		});
+		registerCb(
+			(response: BaseResponse) => {
+				const { type } = response;
+				if (type === "nfcSupported") {
+					callback && callback(response);
+				}
+			},
+			{ key: "nfcSupported" }
+		);
 
 		isAndroidApp && webToNative.nfcSupported && webToNative.nfcSupported();
 
@@ -440,12 +470,15 @@ interface OpenAppSettingForPermissionOptions {
 export const openAppSettingForPermission = (options: OpenAppSettingForPermissionOptions): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { callback, values } = options;
-		registerCb((response: BaseResponse) => {
-			const { type, typeValue } = response;
-			if (type === "openAppSettingForPermission") {
-				callback && callback(response);
-			}
-		});
+		registerCb(
+			(response: BaseResponse) => {
+				const { type, typeValue } = response;
+				if (type === "openAppSettingForPermission") {
+					callback && callback(response);
+				}
+			},
+			{ key: "openAppSettingForPermission" }
+		);
 
 		isAndroidApp &&
 			webToNative.openAppSettingForPermission &&
@@ -474,12 +507,15 @@ interface ShowPermissionOptions {
 export const showPermission = (options: ShowPermissionOptions): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { callback, permission, openAppSetting = false, alertDialogStyle } = options;
-		registerCb((response: BaseResponse) => {
-			const { type, typeValue } = response;
-			if (type === "showPermission" || typeValue === "showPermission") {
-				callback && callback(response);
-			}
-		});
+		registerCb(
+			(response: BaseResponse) => {
+				const { type, typeValue } = response;
+				if (type === "showPermission" || typeValue === "showPermission") {
+					callback && callback(response);
+				}
+			},
+			{ key: "showPermission" }
+		);
 
 		isAndroidApp &&
 			webToNative.showPermission &&
@@ -501,8 +537,6 @@ export const showPermission = (options: ShowPermissionOptions): void => {
 			});
 	}
 };
-
-
 
 interface UpdateAppIconOptions {
 	active?: boolean;
@@ -573,16 +607,22 @@ export const customBackHandling = (options: CustomBackHandlingOptions): void => 
 interface GetSafeAreaOptions {
 	callback?: (response: BaseResponse) => void;
 }
-
+/**
+ * @deprecated This function is deprecated and will be removed in a future release.
+ * Use {@link SafeArea.getSafeArea} instead for ANDROID and IOS both.
+ */
 export const getSafeArea = (options: GetSafeAreaOptions): void => {
 	if (["IOS_APP"].includes(platform)) {
 		const { callback } = options;
-		registerCb((response: BaseResponse) => {
-			const { type } = response;
-			if (type === "getSafeArea") {
-				callback && callback(response);
-			}
-		});
+		registerCb(
+			(response: BaseResponse) => {
+				const { type } = response;
+				if (type === "getSafeArea") {
+					callback && callback(response);
+				}
+			},
+			{ key: "getSafeArea" }
+		);
 
 		isIosApp &&
 			webToNativeIos &&
@@ -600,12 +640,15 @@ interface GetAddOnStatusOptions {
 export const getAddOnStatus = (options: GetAddOnStatusOptions): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { callback, addOnName } = options;
-		registerCb((response: BaseResponse) => {
-			const { type } = response;
-			if (type === "getAddOnStatus") {
-				callback && callback(response);
-			}
-		});
+		registerCb(
+			(response: BaseResponse) => {
+				const { type } = response;
+				if (type === "getAddOnStatus") {
+					callback && callback(response);
+				}
+			},
+			{ key: "getAddOnStatus" }
+		);
 
 		isAndroidApp &&
 			webToNative.getAddOnStatus &&
@@ -638,12 +681,15 @@ export const checkPermission = (options: CheckPermissionOptions): void => {
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		const { callback, permissionName } = options;
 
-		registerCb((response: BaseResponse) => {
-			const { type } = response;
-			if (type === "checkPermission") {
-				callback && callback(response);
-			}
-		});
+		registerCb(
+			(response: BaseResponse) => {
+				const { type } = response;
+				if (type === "checkPermission") {
+					callback && callback(response);
+				}
+			},
+			{ key: "checkPermission" }
+		);
 
 		isAndroidApp &&
 			webToNative.checkPermission &&
@@ -722,12 +768,15 @@ export const registerNotification = (options?: RegisterNotificationOptions): voi
 	if (isAndroidORIosApp) {
 		const { callback } = options || {};
 
-		registerCb((response: BaseResponse) => {
-			const { type } = response;
-			if (type === "registerNotification") {
-				callback && callback(response);
-			}
-		});
+		registerCb(
+			(response: BaseResponse) => {
+				const { type } = response;
+				if (type === "registerNotification") {
+					callback && callback(response);
+				}
+			},
+			{ key: "registerNotification" }
+		);
 
 		isAndroidApp && webToNative.registerNotification && webToNative.registerNotification();
 		isIosApp &&
@@ -777,12 +826,15 @@ export const removeAllNotifications = (options?: {
 	if (isAndroidORIosApp) {
 		const { callback } = options || {};
 
-		registerCb((response: BaseResponse) => {
-			const { type } = response;
-			if (type === "removeAllNotifications") {
-				callback && callback(response);
-			}
-		});
+		registerCb(
+			(response: BaseResponse) => {
+				const { type } = response;
+				if (type === "removeAllNotifications") {
+					callback && callback(response);
+				}
+			},
+			{ key: "removeAllNotifications" }
+		);
 
 		isAndroidApp && webToNative.removeAllNotifications();
 
@@ -800,12 +852,15 @@ export const getDevicePhoneNumber = (options?: {
 	if (isAndroidORIosApp) {
 		const { callback } = options || {};
 
-		registerCb((response: BaseResponse) => {
-			const { type } = response;
-			if (type === "getDevicePhoneNumber") {
-				callback && callback(response);
-			}
-		});
+		registerCb(
+			(response: BaseResponse) => {
+				const { type } = response;
+				if (type === "getDevicePhoneNumber") {
+					callback && callback(response);
+				}
+			},
+			{ key: "getDevicePhoneNumber" }
+		);
 
 		isAndroidApp && webToNative.getDevicePhoneNumber();
 
@@ -840,6 +895,7 @@ export default {
 	customFileDownload,
 	printFunction,
 	openPDF,
+	showMultiPurposeModal,
 	loadOfferCard,
 	appFirstLoad,
 	getComponentStatus,

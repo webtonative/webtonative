@@ -13,7 +13,7 @@ export const checkStatus = (options: BiometricOptions = {}): void => {
 			if (type === "checkBiometricStatus") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "checkBiometricStatus" });
 
 		platform === "ANDROID_APP" &&
         	webToNative.checkBiometricStatus();
@@ -38,7 +38,7 @@ export const saveSecret = (options: BiometricOptions = {}): void => {
 			if (type === "saveBiometricSecret") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "saveBiometricSecret" });
 
 		platform === "ANDROID_APP" &&
         	webToNative.saveSecret(secret);
@@ -64,7 +64,7 @@ export const deleteSecret = (options: BiometricOptions = {}): void => {
 			if (type === "deleteBiometricSecret") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "deleteBiometricSecret" });
 
 		platform === "ANDROID_APP" &&
         	webToNative.deleteSecret();
@@ -89,7 +89,7 @@ export const show = (options: BiometricOptions = {}): void => {
 			if (type === "showBiometric") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "showBiometric" });
 
 		platform === "ANDROID_APP" &&
         	webToNative.callBiometric(prompt || "Authenticate to continue!");
@@ -115,7 +115,7 @@ export const biometricAuthWithDismissOnCancel = (options: BiometricOptions = {})
 			if (type === "biometricAuthWithDismissOnCancel") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "biometricAuthWithDismissOnCancel" });
 
 		platform === "ANDROID_APP" &&
         	webToNative.biometricAuthWithDismissOnCancel(JSON.stringify({
