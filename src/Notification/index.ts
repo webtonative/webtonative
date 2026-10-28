@@ -1,5 +1,10 @@
 import { platform, registerCb, webToNative, webToNativeIos } from "../utills";
-import { NotificationOptions, NotificationResponse, NotificationIosMessage } from "./types";
+import {
+	NotificationResponse,
+	NotificationIosMessage,
+	SetExternalUserIdOptions,
+	SetTagOptions,
+} from "./types";
 
 /**
  * Checks notification permission status
@@ -14,7 +19,7 @@ import { NotificationOptions, NotificationResponse, NotificationIosMessage } fro
 // 			if (type === "checkNotificationPermission") {
 // 				callback && callback(response);
 // 			}
-// 		});
+// 		}, { key: "checkNotificationPermission" });
 
 // 		platform === "ANDROID_APP" && webToNative.checkNotificationPermission();
 
@@ -36,6 +41,135 @@ export const openAppNotificationPage = (): void => {
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({
 				action: "openAppNotificationPage",
+			} as NotificationIosMessage);
+		}
+	}
+};
+
+const callNotificationInterface = (
+	action: string,
+	data?: Record<string, any> | string | string[]
+): Promise<NotificationResponse> => {
+	return new Promise((resolve, reject) => {
+		if (!["ANDROID_APP", "IOS_APP"].includes(platform)) {
+			reject("This function will work in Native App Powered By WebToNative");
+			return;
+		}
+
+		registerCb(
+			(response: NotificationResponse) => {
+				const { type } = response;
+				if (type === action) {
+					resolve(response);
+				}
+			},
+			{ key: action }
+		);
+
+		if (platform === "ANDROID_APP") {
+			if (data === undefined) {
+				webToNative[action]();
+			} else {
+				webToNative[action](typeof data === "string" ? data : JSON.stringify(data));
+			}
+		}
+
+		if (platform === "IOS_APP" && webToNativeIos) {
+			webToNativeIos.postMessage({
+				action,
+				...(data !== undefined && { data }),
+			} as NotificationIosMessage);
+		}
+	});
+};
+
+/**
+ * Sets notification tags
+ * @param data - Tag data
+ */
+export const setTag = (data: Record<string, any>): Promise<NotificationResponse> => {
+	if (!data) {
+		return Promise.reject("data is required");
+	}
+	return callNotificationInterface("w2nSetTag", data);
+};
+
+/**
+ * Removes notification tags
+ * @param data - Tag key, or array of tag keys, to remove
+ */
+export const removeTag = (data: string[]): Promise<NotificationResponse> => {
+	const isValid = Array.isArray(data) && data.length > 0 && data.every((tag) => typeof tag === "string");
+	if (!isValid) {
+		return Promise.reject("data must be an array of strings");
+	}
+	return callNotificationInterface("w2nRemoveTag", data);
+};
+
+/**
+ * Subscribes the device to notifications
+ */
+export const subscribe = (): Promise<NotificationResponse> =>
+	callNotificationInterface("w2nSubscribe");
+
+/**
+ * Unsubscribes the device from notifications
+ */
+export const unsubscribe = (): Promise<NotificationResponse> =>
+	callNotificationInterface("w2nUnsubscribe");
+
+/**
+ * Checks whether the device is subscribed to notifications
+ */
+export const isSubscribed = (): Promise<NotificationResponse> =>
+	callNotificationInterface("w2nIsSubscribed");
+
+/**
+ * Gets the notification tags set on the device
+ */
+export const getTags = (): Promise<NotificationResponse> => callNotificationInterface("w2nGetTags");
+
+/**
+ * Sets the external user id for notifications
+ * @param id - External user id
+ */
+export const setExternalUserId = (id: string): Promise<NotificationResponse> => {
+	if (!id) {
+		return Promise.reject("id is required");
+	}
+	return callNotificationInterface("w2nSetExternalUserId", id);
+};
+
+/**
+ * Removes the external user id for notifications
+ */
+export const removeExternalUserId = (): Promise<NotificationResponse> =>
+	callNotificationInterface("w2nRemoveExternalUserId");
+
+/**
+ * Shows the native screen explaining that notifications are blocked
+ * @param options - Options with an optional callback
+ */
+export const showBlockedScreen = (): void => {
+	// const { callback } = options;
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		// registerCb(
+		// 	(response: NotificationResponse) => {
+		// 		const { type } = response;
+		// 		if (type === "showNotificationBlockedScreen") {
+		// 			callback && callback(response);
+		// 		}
+		// 	},
+		// 	{ key: "showNotificationBlockedScreen" }
+		// );
+
+		platform === "ANDROID_APP" &&
+			webToNative.showNotificationBlockedScreen &&
+			webToNative.showNotificationBlockedScreen();
+
+		if (platform === "IOS_APP" && webToNativeIos) {
+			webToNativeIos.postMessage({
+				action: "showNotificationBlockedScreen",
 			} as NotificationIosMessage);
 		}
 	}

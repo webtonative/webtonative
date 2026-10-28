@@ -1,20 +1,21 @@
 import { platform, registerCb, webToNative, webToNativeIos } from "../utills";
 import {
 	NFCResponse,
-	NFCCallback,
+	NFCStatusOptions,
 	NFCIosMessage,
 	NFCScanTagOptions,
 	NFCWriteTagOptions,
 } from "./types";
 
-export const status = (callback?: NFCCallback): void => {
+export const status = (options: NFCStatusOptions = {}): void => {
+	const { callback } = options;
 	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
 		registerCb((response: NFCResponse) => {
 			const { type } = response;
 			if (type === "nfcGetStatus") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "nfcGetStatus" });
 
 		platform === "ANDROID_APP" && webToNative.nfcGetStatus();
 
@@ -36,7 +37,7 @@ export const read = (options: NFCScanTagOptions = {}): void => {
 					callback && callback(response);
 				}
 			},
-			{ ignoreDelete: continuous }
+			{ ignoreDelete: continuous, key: "nfcScanTag" }
 		);
 
 		platform === "ANDROID_APP" && webToNative.nfcScanTag(JSON.stringify(options));
@@ -60,7 +61,7 @@ export const write = (options: NFCWriteTagOptions): void => {
 			if (responseType === "nfcWriteTag") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "nfcWriteTag" });
 
 		platform === "ANDROID_APP" && webToNative.nfcWriteTag(JSON.stringify(options));
 

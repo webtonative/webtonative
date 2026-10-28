@@ -20,7 +20,7 @@ const showMetaBannerAd = (options: IShowMetaBannerAd = {}): void => {
 			if (type === "showMetaBannerAd") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "showMetaBannerAd" });
 
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({
@@ -42,7 +42,7 @@ const showMetaFullscreenAd = (options: IShowMetaFullscreenAd = {}): void => {
 			if (type === "showMetaFullscreenAd") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "showMetaFullscreenAd" });
 
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({
@@ -64,7 +64,7 @@ const showMetaRewardedAd = (options: IShowMetaFullscreenAd = {}): void => {
 			if (type === "showMetaRewardedAd") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "showMetaRewardedAd" });
 
 		if (platform === "IOS_APP" && webToNativeIos) {
 			webToNativeIos.postMessage({

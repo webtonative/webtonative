@@ -9,7 +9,7 @@ export const configure = (options) => {
 		if (type === "configure") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "configure" });
 
 	if (isAndroidApp) {
 		webToNative.configure(JSON.stringify(options));
@@ -30,7 +30,7 @@ export const isInitialized = (options) => {
 		if (type === "isInitialized") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "isInitialized" });
 
 	if (isAndroidApp) {
 		webToNative.isInitialized();
@@ -49,7 +49,7 @@ export const setUserId = (options) => {
 		if (type === "setUserId") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "setUserId" });
 
 	if (isAndroidApp) {
 		webToNative.setUserId(JSON.stringify(options));
@@ -69,7 +69,7 @@ export const getCustomerInfo = (options) => {
 		if (type === "getCustomerInfo") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "getCustomerInfo" });
 
 	if (isAndroidApp) {
 		webToNative.getCustomerInfo();
@@ -88,7 +88,7 @@ export const showPaywall = (options) => {
 		if (type === "showPaywall") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "showPaywall" });
 
 	if (isAndroidApp) {
 		webToNative.showPaywall(JSON.stringify(options));
@@ -108,7 +108,7 @@ export const makePurchase = (options) => {
 		if (type === "makePurchase") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "makePurchase" });
 
 	if (isAndroidApp) {
 		webToNative.makePurchase(JSON.stringify(options));
@@ -128,7 +128,7 @@ export const restorePurchase = (options) => {
 		if (type === "restorePurchase") {
 			callback && callback(response);
 		}
-	});
+	}, { key: "restorePurchase" });
 
 	if (isAndroidApp) {
 		webToNative.restorePurchase();

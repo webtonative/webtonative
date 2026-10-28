@@ -3,10 +3,11 @@ import { Platform, WebToNativeInterface, WebToNativeIosInterface, CallbackFuncti
 const isClient: boolean = typeof window !== "undefined";
 const webToNative: WebToNativeInterface = (isClient && (window as any).WebToNativeInterface) || {};
 const webToNativeIos: WebToNativeIosInterface | false =
-	isClient &&
-	(window as any).webkit &&
-	(window as any).webkit.messageHandlers &&
-	(window as any).webkit.messageHandlers.webToNativeInterface;
+	(isClient &&
+		(window as any).webkit &&
+		(window as any).webkit.messageHandlers &&
+		(window as any).webkit.messageHandlers.webToNativeInterface) ||
+	false;
 const platform: Platform = webToNative.getAndroidVersion
 	? "ANDROID_APP"
 	: webToNativeIos
@@ -16,68 +17,57 @@ const isNativeApp: boolean = isClient && platform !== "WEBSITE";
 const cbObj: Record<string | number, { cb: CallbackFunction; ignoreDelete?: boolean }> = {};
 let counter: number = 1;
 let abMobCb: CallbackFunction | null = null;
+const handleNativeCallback = (results: string) => {
+	let response: any = results;
+	let parsed = true;
+	if (typeof results == "string") {
+		try {
+			response = JSON.parse(results);
+		} catch (e) {
+			parsed = false;
+			console.log(e);
+		}
+	}
+	// `routed` means the response identified this callback by key, so the call it
+	// belongs to is finished and the callback can be dropped. An unrouted broadcast
+	// must never drop anything: the callback is still waiting on its own response,
+	// and deleting it here would leave that response with nowhere to go.
+	const fireCb = (key: string | number, routed: boolean) => {
+		const entry = cbObj[key];
+		if (!entry) {
+			return;
+		}
+		if (routed && !entry.ignoreDelete) {
+			delete cbObj[key];
+		}
+		entry.cb(response);
+	};
+	if (response && response.reqType) {
+		fireCb(response.reqType, true);
+	} else if (parsed && response && typeof response.type === "string" && cbObj[response.type]) {
+		fireCb(response.type, true);
+	} else if (parsed && response) {
+		for (const key of Object.keys(cbObj)) {
+			fireCb(key, false);
+		}
+	}
+};
 if (isNativeApp) {
-	webToNative.androidCBHook = (results: string) => {
-		var response: any = results;
-		try {
-			if (typeof results == "string") {
-		     response = JSON.parse(results);
-	        }
-		} catch (e) {
-			console.log(e);
-		}
-		const { type } = response;
-		for (var key in cbObj) {
-			const { cb, ignoreDelete = false } = cbObj[key];
-			if (response && response.reqType) {
-				if (key == response["reqType"]) {
-					cb(response);
-					if (!ignoreDelete) {
-						delete cbObj[key];
-					}
-				}
-			} else {
-				// No reqType in response — all pending callbacks are fired and deleted. Call functions sequentially to avoid losing callbacks.
-				cb(response);
-				if (!ignoreDelete) {
-					delete cbObj[key];
-				}
-			}
-		}
-	};
+	webToNative.androidCBHook = handleNativeCallback;
+	(window as any).iosCBHook = handleNativeCallback;
 	(window as any).iOSAdMobCBHook = webToNative.androidAdMobCBHook = (results: string) => {
-		const responseObj = JSON.parse(results);
-		abMobCb && abMobCb(responseObj);
-	};
-	(window as any).iosCBHook = (results: string) => {
-		var response: any = results;
+		let responseObj: any;
 		try {
-			if (typeof results == "string") {
-		     response = JSON.parse(results);
-	        }
+			responseObj = JSON.parse(results);
 		} catch (e) {
 			console.log(e);
+			return;
 		}
-		for (var key in cbObj) {
-			const { cb, ignoreDelete = false } = cbObj[key];
-			if (response && response.reqType) {
-				if (key == response["reqType"]) {
-					cb(response);
-					if (!ignoreDelete) {
-						delete cbObj[key];
-					}
-				}
-			} else {
-				cb(response);
-				if (!ignoreDelete) {
-					delete cbObj[key];
-				}
-			}
-		}
+		abMobCb && abMobCb(responseObj);
 	};
 }
 
-const registerCb = (cb: CallbackFunction, obj?: RegisterCallbackOptions) => {
+const registerCb = (cb: CallbackFunction, obj: RegisterCallbackOptions) => {
 	if (typeof cb === "function") {
 		if (obj && obj.key) {
 			cbObj[obj["key"]] = { cb, ignoreDelete: obj.ignoreDelete ? true : false };

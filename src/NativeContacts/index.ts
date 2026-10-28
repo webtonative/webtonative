@@ -13,7 +13,7 @@ export const getPermissionStatus = (options: ContactsOptions = {}): void => {
 			if (type === "contactPermissionStatus") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "contactPermissionStatus" });
 
 		platform === "ANDROID_APP" && webToNative.getPermissionStatus();
 
@@ -37,7 +37,7 @@ export const getAll = (options: ContactsOptions = {}): void => {
 			if (type === "contactDetails") {
 				callback && callback(response);
 			}
-		});
+		}, { key: "contactDetails" });
 
 		platform === "ANDROID_APP" && webToNative.getAll();
 

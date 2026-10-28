@@ -43,7 +43,7 @@ const BarcodeScan = (options: BarcodeScanOptions): void => {
         onBarcodeSearch && onBarcodeSearch(value);
         callback && callback(response);
       }
-    });
+    }, { key: "BARCODE_SCAN" });
     
     if (platform === "ANDROID_APP" && webToNative.startScanner) {
       webToNative.startScanner(

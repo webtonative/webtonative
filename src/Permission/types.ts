@@ -22,10 +22,12 @@ export interface PermissionResponse {
 
 export interface PermissionOptions {
 	permissions?:PermissionType[]
+	[key: string]: any;
 	callback?: (response: PermissionResponse) => void;
 }
 export interface PermissionOptionsRequest {
 	permission?:PermissionType
+	[key: string]: any;
 	callback?: (response: PermissionResponse) => void;
 
 }
