@@ -1,4 +1,5 @@
-import { platform, webToNativeIos } from "../utills";
+import { platform, webToNative, webToNativeIos, registerCb } from "../utills";
+import { BaseResponse } from "../types";
 import { HapticsOptions, HapticsIosMessage } from "./types";
 
 /**
@@ -11,7 +12,34 @@ export const trigger = (options: HapticsOptions = {}): void => {
 			webToNativeIos.postMessage({
 				action: "haptikEffect",
 				effect: options.effect,
+				soundName: options.soundName
 			} as HapticsIosMessage);
+		}
+		platform === "ANDROID_APP" && webToNative.haptikEffect(JSON.stringify(options));
+	}
+};
+
+interface IsHapticSupportedOptions {
+	callback?: (response: BaseResponse) => void;
+}
+
+export const isHapticSupported = (options: IsHapticSupportedOptions = {}): void => {
+	if (["ANDROID_APP", "IOS_APP"].includes(platform)) {
+		const { callback } = options || {};
+
+		registerCb((response: BaseResponse) => {
+			if (response && response.type === "isHapticSupported") {
+				callback && callback(response);
+			}
+		}, { key: "isHapticSupported" });
+
+		if (platform === "ANDROID_APP") {
+			webToNative.isHapticSupported && webToNative.isHapticSupported();
+		} else if (platform === "IOS_APP") {
+			webToNativeIos &&
+				webToNativeIos.postMessage({
+					action: "isHapticSupported",
+				});
 		}
 	}
 };
