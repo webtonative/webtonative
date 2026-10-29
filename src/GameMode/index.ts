@@ -1,5 +1,5 @@
 import { platform, registerCb, webToNative } from "../utills";
-import { GameModeCallback, GameModeOptions, GameModeResponse, SetGameStateOptions } from "./types";
+import { GameModeResponse, SetGameStateOptions } from "./types";
 
 const NOT_NATIVE_ERROR = "This function will work in Native App Powered By WebToNative";
 
@@ -8,11 +8,7 @@ const NOT_NATIVE_ERROR = "This function will work in Native App Powered By WebTo
  * Game Mode is Android only — on iOS the promise rejects.
  * `data` is JSON-stringified for the Android bridge (omit for no-arg methods).
  */
-const callGameMode = (
-	action: string,
-	callback?: GameModeCallback,
-	data?: object
-): Promise<GameModeResponse> => {
+const callGameMode = (action: string, data?: object): Promise<GameModeResponse> => {
 	return new Promise((resolve, reject) => {
 		if (platform !== "ANDROID_APP") {
 			reject(platform === "IOS_APP" ? `${action} is only available on Android` : NOT_NATIVE_ERROR);
@@ -22,7 +18,6 @@ const callGameMode = (
 		registerCb(
 			(response: GameModeResponse) => {
 				if (response.type === action) {
-					callback && callback(response);
 					resolve(response);
 				}
 			},
@@ -44,9 +39,8 @@ const callGameMode = (
  * @example
  * wtn.GameMode.getGameMode().then((res) => console.log(res.mode));
  */
-export const getGameMode = (options: GameModeOptions = {}): Promise<GameModeResponse> => {
-	const { callback } = options || {};
-	return callGameMode("getGameMode", callback);
+export const getGameMode = (): Promise<GameModeResponse> => {
+	return callGameMode("getGameMode");
 };
 
 /**
@@ -60,6 +54,6 @@ export const getGameMode = (options: GameModeOptions = {}): Promise<GameModeResp
  * }).then((res) => console.log(res.success));
  */
 export const setGameState = (options: SetGameStateOptions): Promise<GameModeResponse> => {
-	const { isLoading = false, mode, callback } = options || ({} as SetGameStateOptions);
-	return callGameMode("setGameState", callback, { isLoading, mode });
+	const { isLoading = false, mode } = options || ({} as SetGameStateOptions);
+	return callGameMode("setGameState", { isLoading, mode });
 };

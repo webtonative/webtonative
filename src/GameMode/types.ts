@@ -22,16 +22,7 @@ export interface GameModeResponse {
 	[key: string]: any;
 }
 
-export interface GameModeCallback {
-	(response: GameModeResponse): void;
-}
-
-export interface GameModeOptions {
-	callback?: GameModeCallback;
-}
-
 export interface SetGameStateOptions {
 	mode: GameStateMode;
 	isLoading?: boolean;
-	callback?: GameModeCallback;
 }
