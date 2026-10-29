@@ -45,6 +45,7 @@ import * as Geofencing from "./src/Geofencing";
 import * as SmartTV from "./src/SmartTV";
 import * as Wallet from "./src/Wallet";
 import * as HealthBridge from "./src/HealthBridge";
+import * as GameMode from "./src/GameMode";
 import { webToNativeIos } from "./src/utills";
 
 // Define the window interface to add WTN property
@@ -99,6 +100,7 @@ declare global {
 			SmartTV: typeof SmartTV;
 			Wallet: typeof Wallet;
 			HealthBridge: typeof HealthBridge;
+			GameMode: typeof GameMode;
 		};
 		WebToNativeInterface: any;
 	}
@@ -155,6 +157,7 @@ window.WTN.Geofencing = Geofencing;
 window.WTN.SmartTV = SmartTV;
 window.WTN.Wallet = Wallet;
 window.WTN.HealthBridge = HealthBridge;
+window.WTN.GameMode = GameMode;
 
 
 if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
