@@ -850,15 +850,19 @@ export const startVoiceRecognition = (options?: {
 		subtitle?: string;
 		bgColor?: string;
 	};
-	callback?: (response: BaseResponse) => void;
-}): void => {
-	if (isAndroidORIosApp) {
-		const { callback, showNativeUI, uiOptions } = options || {};
+}): Promise<BaseResponse> => {
+	return new Promise((resolve, reject) => {
+		if (!isAndroidORIosApp) {
+			reject("This function will work in Native App Powered By WebToNative");
+			return;
+		}
+
+		const { showNativeUI, uiOptions } = options || {};
 
 		registerCb((response: BaseResponse) => {
 			const { type } = response;
 			if (type === "startVoiceRecognition") {
-				callback && callback(response);
+				resolve(response);
 			}
 		}, { key: "startVoiceRecognition" });
 
@@ -877,7 +881,7 @@ export const startVoiceRecognition = (options?: {
 				...(showNativeUI !== undefined && { showNativeUI }),
 				...(uiOptions && { uiOptions }),
 			});
-	}
+	});
 };
 
 export { platform, isNativeApp };
