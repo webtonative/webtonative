@@ -32,7 +32,7 @@ export const startBluetoothScan = (options: BluetoothScanOptions = {}): void => 
  * @param options - Options for pairing with a Bluetooth device
  */
 export const pairDevice = (options: BluetoothPairOptions = {}): void => {
-	const { callback, address, timeout = 10 } = options;
+	const { callback, timeout = 10,...rest } = options;
 	if (["ANDROID_APP"].includes(platform)) {
 		registerCb((response: BluetoothResponse) => {
 			const { type } = response;
@@ -43,8 +43,9 @@ export const pairDevice = (options: BluetoothPairOptions = {}): void => {
 
 		platform === "ANDROID_APP" &&
         	webToNative.pairWithDevice(JSON.stringify({
-				address,
-				timeout
+
+				timeout,
+				...rest
 		} as BluetoothPairParams));
 	}
 };

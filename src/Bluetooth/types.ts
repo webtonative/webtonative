@@ -23,6 +23,7 @@ export interface BluetoothPairOptions {
 	callback?: BluetoothCallback;
 	address?: string;
 	timeout?: number;
+	[key: string]: any;
 }
 
 export interface BluetoothUnpairOptions {
