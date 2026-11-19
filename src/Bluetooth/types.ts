@@ -48,7 +48,3 @@ export interface BluetoothWriteParams {
 	address: string;
 	serviceUuid: string;
 }
-
-export interface BluetoothWriteOptions extends BluetoothWriteParams {
-	callback: BluetoothCallback;
-}

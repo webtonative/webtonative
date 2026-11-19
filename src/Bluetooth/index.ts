@@ -6,7 +6,7 @@ import {
 	BluetoothResponse,
 	BluetoothPairParams,
 	BluetoothUnpairParams,
-	BluetoothWriteOptions
+	BluetoothWriteParams
 } from "./types";
 
 /**
@@ -19,7 +19,6 @@ export const startBluetoothScan = (options: BluetoothScanOptions = {}): void => 
 		registerCb((response: BluetoothResponse) => {
 			const { type } = response;
 			if (type === "startBluetoothScan") {
-				callback && callback(response);
 			}
 		}, { key: "startBluetoothScan" });
 
@@ -74,19 +73,18 @@ export const unpairDevice = (options: BluetoothUnpairOptions = {}): void => {
 
 /**
  * Writes a value to a characteristic of a connected Bluetooth device (Android only).
- * Calls `callback` and resolves the returned promise with the native response.
+ * Resolves with the native response.
  * @example
- * wtn.Bluetooth.bluetoothWrite({
+ * wtn.Bluetooth.write({
  *   address: "AA:BB:CC:DD:EE:FF",
  *   serviceUuid: "6e400001-b5a3-f393-e0a9-e50e24dcca9e",
  *   characteristicUuid: "6e400002-b5a3-f393-e0a9-e50e24dcca9e",
  *   value: "hello",
  *   encoding: "utf8",
  *   withResponse: true,
- *   callback: (res) => console.log(res),
  * }).then((res) => console.log(res));
  */
-export const bluetoothWrite = (options: BluetoothWriteOptions): Promise<BluetoothResponse> => {
+export const write = (options: BluetoothWriteParams): Promise<BluetoothResponse> => {
 	return new Promise((resolve, reject) => {
 		if (platform !== "ANDROID_APP") {
 			reject(
@@ -97,11 +95,8 @@ export const bluetoothWrite = (options: BluetoothWriteOptions): Promise<Bluetoot
 			return;
 		}
 
-		const { callback, ...params } = options || ({} as BluetoothWriteOptions);
-
 		registerCb((response: BluetoothResponse) => {
 			if (response.type === "bluetoothWrite") {
-				callback && callback(response);
 				resolve(response);
 			}
 		}, { key: "bluetoothWrite" });
@@ -110,6 +105,6 @@ export const bluetoothWrite = (options: BluetoothWriteOptions): Promise<Bluetoot
 			reject("bluetoothWrite is not supported in this app version");
 			return;
 		}
-		webToNative.bluetoothWrite(JSON.stringify(params));
+		webToNative.bluetoothWrite(JSON.stringify(options));
 	});
 };
