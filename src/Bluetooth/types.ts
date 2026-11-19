@@ -39,3 +39,16 @@ export interface BluetoothPairParams {
 export interface BluetoothUnpairParams {
 	address?: string;
 }
+
+export interface BluetoothWriteParams {
+	characteristicUuid: string;
+	value: string;
+	encoding: "utf8" | "hex" | "base64";
+	withResponse: boolean;
+	address: string;
+	serviceUuid: string;
+}
+
+export interface BluetoothWriteOptions extends BluetoothWriteParams {
+	callback: BluetoothCallback;
+}
