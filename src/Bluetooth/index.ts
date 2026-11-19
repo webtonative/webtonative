@@ -19,6 +19,7 @@ export const startBluetoothScan = (options: BluetoothScanOptions = {}): void => 
 		registerCb((response: BluetoothResponse) => {
 			const { type } = response;
 			if (type === "startBluetoothScan") {
+				callback && callback(response);
 			}
 		}, { key: "startBluetoothScan" });
 
