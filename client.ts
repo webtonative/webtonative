@@ -46,6 +46,7 @@ import * as SmartTV from "./src/SmartTV";
 import * as Wallet from "./src/Wallet";
 import * as HealthBridge from "./src/HealthBridge";
 import * as GameMode from "./src/GameMode";
+import * as SMS from "./src/SMS";
 import { webToNativeIos } from "./src/utills";
 
 // Define the window interface to add WTN property
@@ -101,6 +102,7 @@ declare global {
 			Wallet: typeof Wallet;
 			HealthBridge: typeof HealthBridge;
 			GameMode: typeof GameMode;
+			SMS: typeof SMS;
 		};
 		WebToNativeInterface: any;
 	}
@@ -158,6 +160,7 @@ window.WTN.SmartTV = SmartTV;
 window.WTN.Wallet = Wallet;
 window.WTN.HealthBridge = HealthBridge;
 window.WTN.GameMode = GameMode;
+window.WTN.SMS = SMS;
 
 
 if (window && window.WebToNativeInterface && window.WebToNativeInterface.getAndroidVersion) {
