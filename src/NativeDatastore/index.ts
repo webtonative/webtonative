@@ -6,7 +6,6 @@ import {
 	IEnableCloudSyncOptions,
 	IGetAppDataOptions,
 	ISetAppDataOptions,
-	ISetCloudEncryptionKeyOptions,
 } from "./type";
 
 export const setAppData = (options: ISetAppDataOptions = {}) => {
@@ -212,15 +211,4 @@ export const disableCloudSync = (options: IDisableCloudSyncOptions = {}): Promis
  */
 export const getCloudSyncStatus = (): Promise<ICloudSyncResponse> => {
 	return callCloudSync("getCloudSyncStatus");
-};
-
-/**
- * Sets the key used to encrypt cloud data (Android only). `key` is base64 of 32 bytes; "" clears it.
- * `key` is optional; when omitted, `{}` is sent.
- * @example
- * wtn.NativeDatastore.setCloudEncryptionKey({ key: "<base64 of 32 bytes>" }).then((res) => console.log(res));
- */
-export const setCloudEncryptionKey = (options: ISetCloudEncryptionKeyOptions = {}): Promise<ICloudSyncResponse> => {
-	const { key } = options;
-	return callCloudSync("setCloudEncryptionKey", JSON.stringify(key !== undefined ? { key } : {}));
 };

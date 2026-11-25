@@ -40,8 +40,3 @@ export type IEnableCloudSyncOptions = {
 export type IDisableCloudSyncOptions = {
 	deleteRemote?: boolean;
 };
-
-export type ISetCloudEncryptionKeyOptions = {
-	/** base64 of 32 bytes; "" clears it. Optional. */
-	key?: string;
-};
