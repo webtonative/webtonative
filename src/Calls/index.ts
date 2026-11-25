@@ -3,7 +3,6 @@ import {
 	CallsAudioRoutesResponse,
 	CallsCallIdParams,
 	CallsCallResponse,
-	CallsEvent,
 	CallsOpenSettingsParams,
 	CallsPendingEventsResponse,
 	CallsPermissionsResponse,
@@ -56,55 +55,6 @@ const callCalls = <T extends CallsResponse>(action: string, params: object = {})
 			webToNativeIos.postMessage({ action, ...params });
 		}
 	});
-};
-
-/* ---------- Events ---------- */
-
-type CallsEventHandler = (event: CallsEvent) => void;
-const eventHandlers: CallsEventHandler[] = [];
-let eventsRegistered = false;
-
-/**
- * Listens for events native sends on its own (`incomingCall`, `callConnected`, `callEnded`, …).
- * Returns a function that removes the listener.
- * Events that happened while the page wasn't loaded come from `getPendingEvents` instead.
- * @example
- * const off = wtn.Calls.onEvent(({ event, data }) => {
- *   if (event === "callEnded") console.log(data.reason, data.durationSec);
- * });
- */
-export const onEvent = (handler: CallsEventHandler): (() => void) => {
-	if (typeof handler === "function") {
-		eventHandlers.push(handler);
-	}
-	if (!eventsRegistered) {
-		eventsRegistered = true;
-		registerCb(
-			(response: CallsEvent) => {
-				if (response && response.type === "callsEvent") {
-					eventHandlers.slice().forEach((h) => h(response));
-				}
-			},
-			{ key: "callsEvent", ignoreDelete: true }
-		);
-	}
-	return () => offEvent(handler);
-};
-
-/**
- * Removes a listener added with `onEvent`. With no handler, removes all of them.
- * @example
- * wtn.Calls.offEvent(handler);
- */
-export const offEvent = (handler?: CallsEventHandler): void => {
-	if (!handler) {
-		eventHandlers.length = 0;
-		return;
-	}
-	const index = eventHandlers.indexOf(handler);
-	if (index > -1) {
-		eventHandlers.splice(index, 1);
-	}
 };
 
 /* ---------- Functions ---------- */
