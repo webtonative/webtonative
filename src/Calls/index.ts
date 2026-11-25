@@ -69,7 +69,7 @@ let eventsRegistered = false;
  * Returns a function that removes the listener.
  * Events that happened while the page wasn't loaded come from `getPendingEvents` instead.
  * @example
- * const off = wtn.calls.onEvent(({ event, data }) => {
+ * const off = wtn.Calls.onEvent(({ event, data }) => {
  *   if (event === "callEnded") console.log(data.reason, data.durationSec);
  * });
  */
@@ -94,7 +94,7 @@ export const onEvent = (handler: CallsEventHandler): (() => void) => {
 /**
  * Removes a listener added with `onEvent`. With no handler, removes all of them.
  * @example
- * wtn.calls.offEvent(handler);
+ * wtn.Calls.offEvent(handler);
  */
 export const offEvent = (handler?: CallsEventHandler): void => {
 	if (!handler) {
@@ -112,7 +112,7 @@ export const offEvent = (handler?: CallsEventHandler): void => {
 /**
  * Reports whether calling is available. Works even when calling is turned off — call it first.
  * @example
- * wtn.calls.getStatus().then((res) => console.log(res.enabled, res.video, res.registered));
+ * wtn.Calls.getStatus().then((res) => console.log(res.enabled, res.video, res.registered));
  */
 export const getStatus = (): Promise<CallsStatusResponse> => {
 	return callCalls<CallsStatusResponse>("callsGetStatus");
@@ -122,7 +122,7 @@ export const getStatus = (): Promise<CallsStatusResponse> => {
  * Gets this device's call push token (also asks for notification permission on iOS and Android 13+).
  * Send `callPushToken` and `deviceId` to your backend for the logged-in user.
  * @example
- * wtn.calls.register().then((res) => console.log(res.callPushToken, res.deviceId));
+ * wtn.Calls.register().then((res) => console.log(res.callPushToken, res.deviceId));
  */
 export const register = (): Promise<CallsRegisterResponse> => {
 	return callCalls<CallsRegisterResponse>("callsRegister");
@@ -131,7 +131,7 @@ export const register = (): Promise<CallsRegisterResponse> => {
 /**
  * Stops this device from ringing. Call it on logout.
  * @example
- * wtn.calls.unregister().then((res) => console.log(res.success));
+ * wtn.Calls.unregister().then((res) => console.log(res.success));
  */
 export const unregister = (): Promise<CallsResponse> => {
 	return callCalls("callsUnregister");
@@ -141,7 +141,7 @@ export const unregister = (): Promise<CallsResponse> => {
  * Sets the bearer token native sends to `tokenEndpoint` when the user answers a call.
  * Call it after login and whenever the session token changes.
  * @example
- * wtn.calls.setAuthToken({ token: "session-token" }).then((res) => console.log(res.success));
+ * wtn.Calls.setAuthToken({ token: "session-token" }).then((res) => console.log(res.success));
  */
 export const setAuthToken = (params: CallsSetAuthTokenParams): Promise<CallsResponse> => {
 	return callCalls("callsSetAuthToken", params);
@@ -150,7 +150,7 @@ export const setAuthToken = (params: CallsSetAuthTokenParams): Promise<CallsResp
 /**
  * Reports the current permission state without prompting.
  * @example
- * wtn.calls.checkPermissions().then((res) => console.log(res.permissions));
+ * wtn.Calls.checkPermissions().then((res) => console.log(res.permissions));
  */
 export const checkPermissions = (): Promise<CallsPermissionsResponse> => {
 	return callCalls<CallsPermissionsResponse>("callsCheckPermissions");
@@ -160,7 +160,7 @@ export const checkPermissions = (): Promise<CallsPermissionsResponse> => {
  * Shows the system prompts for the listed permissions and resolves with the state afterwards.
  * Ask for the microphone while the app is open — iOS can't prompt on the lock screen.
  * @example
- * wtn.calls.requestPermissions({ permissions: ["microphone", "camera", "notifications"] })
+ * wtn.Calls.requestPermissions({ permissions: ["microphone", "camera", "notifications"] })
  *   .then((res) => console.log(res.permissions));
  */
 export const requestPermissions = (params: CallsRequestPermissionsParams): Promise<CallsPermissionsResponse> => {
@@ -170,7 +170,7 @@ export const requestPermissions = (params: CallsRequestPermissionsParams): Promi
 /**
  * Opens a system settings screen. `target`: "app" (default) | "fullScreenIntent" | "batteryOptimization" | "autostart".
  * @example
- * wtn.calls.openSettings({ target: "autostart" });
+ * wtn.Calls.openSettings({ target: "autostart" });
  */
 export const openSettings = (params: CallsOpenSettingsParams = {}): Promise<CallsResponse> => {
 	return callCalls("callsOpenSettings", params);
@@ -181,7 +181,7 @@ export const openSettings = (params: CallsOpenSettingsParams = {}): Promise<Call
  * `livekitUrl` and the caller's LiveKit `token`. The callee hasn't answered when this resolves —
  * wait for the `callConnected` event.
  * @example
- * wtn.calls.startCall({
+ * wtn.Calls.startCall({
  *   callId: "6f1c2a3e-…",
  *   roomName: "room-123",
  *   livekitUrl: "wss://x.livekit.cloud",
@@ -198,7 +198,7 @@ export const startCall = (params: CallsStartCallParams): Promise<CallsCallRespon
  * Answers the ringing incoming call (only needed for an in-page answer button).
  * `callId` is required on iOS; Android defaults to the active call.
  * @example
- * wtn.calls.answerCall({ callId }).then((res) => console.log(res.success));
+ * wtn.Calls.answerCall({ callId }).then((res) => console.log(res.success));
  */
 export const answerCall = (params: CallsCallIdParams = {}): Promise<CallsResponse> => {
 	return callCalls("callsAnswerCall", params);
@@ -207,7 +207,7 @@ export const answerCall = (params: CallsCallIdParams = {}): Promise<CallsRespons
 /**
  * Declines the ringing incoming call.
  * @example
- * wtn.calls.declineCall({ callId }).then((res) => console.log(res.success));
+ * wtn.Calls.declineCall({ callId }).then((res) => console.log(res.success));
  */
 export const declineCall = (params: CallsCallIdParams = {}): Promise<CallsResponse> => {
 	return callCalls("callsDeclineCall", params);
@@ -216,7 +216,7 @@ export const declineCall = (params: CallsCallIdParams = {}): Promise<CallsRespon
 /**
  * Hangs up the active call (counts as a decline while ringing).
  * @example
- * wtn.calls.endCall({ callId }).then((res) => console.log(res.success));
+ * wtn.Calls.endCall({ callId }).then((res) => console.log(res.success));
  */
 export const endCall = (params: CallsCallIdParams = {}): Promise<CallsResponse> => {
 	return callCalls("callsEndCall", params);
@@ -225,7 +225,7 @@ export const endCall = (params: CallsCallIdParams = {}): Promise<CallsResponse> 
 /**
  * Mutes or unmutes the microphone.
  * @example
- * wtn.calls.setMuted({ callId, muted: true }).then((res) => console.log(res.success));
+ * wtn.Calls.setMuted({ callId, muted: true }).then((res) => console.log(res.success));
  */
 export const setMuted = (params: CallsSetMutedParams): Promise<CallsResponse> => {
 	return callCalls("callsSetMuted", params);
@@ -234,7 +234,7 @@ export const setMuted = (params: CallsSetMutedParams): Promise<CallsResponse> =>
 /**
  * Turns the local camera on or off.
  * @example
- * wtn.calls.setVideoEnabled({ callId, enabled: true }).then((res) => console.log(res.success));
+ * wtn.Calls.setVideoEnabled({ callId, enabled: true }).then((res) => console.log(res.success));
  */
 export const setVideoEnabled = (params: CallsSetVideoEnabledParams): Promise<CallsResponse> => {
 	return callCalls("callsSetVideoEnabled", params);
@@ -243,7 +243,7 @@ export const setVideoEnabled = (params: CallsSetVideoEnabledParams): Promise<Cal
 /**
  * Switches between the front and back camera.
  * @example
- * wtn.calls.switchCamera({ callId }).then((res) => console.log(res.success));
+ * wtn.Calls.switchCamera({ callId }).then((res) => console.log(res.success));
  */
 export const switchCamera = (params: CallsCallIdParams = {}): Promise<CallsResponse> => {
 	return callCalls("callsSwitchCamera", params);
@@ -252,7 +252,7 @@ export const switchCamera = (params: CallsCallIdParams = {}): Promise<CallsRespo
 /**
  * Lists the audio outputs available now (Android returns an empty list with no active call).
  * @example
- * wtn.calls.getAudioRoutes().then((res) => console.log(res.routes));
+ * wtn.Calls.getAudioRoutes().then((res) => console.log(res.routes));
  */
 export const getAudioRoutes = (): Promise<CallsAudioRoutesResponse> => {
 	return callCalls<CallsAudioRoutesResponse>("callsGetAudioRoutes");
@@ -261,7 +261,7 @@ export const getAudioRoutes = (): Promise<CallsAudioRoutesResponse> => {
 /**
  * Switches audio to a route `id` from `getAudioRoutes`.
  * @example
- * wtn.calls.setAudioRoute({ callId, routeId: "speaker" }).then((res) => console.log(res.success));
+ * wtn.Calls.setAudioRoute({ callId, routeId: "speaker" }).then((res) => console.log(res.success));
  */
 export const setAudioRoute = (params: CallsSetAudioRouteParams): Promise<CallsResponse> => {
 	return callCalls("callsSetAudioRoute", params);
@@ -270,7 +270,7 @@ export const setAudioRoute = (params: CallsSetAudioRouteParams): Promise<CallsRe
 /**
  * Returns the call in progress (`call: null` when there is none). Use it on page load to restore call UI.
  * @example
- * wtn.calls.getActiveCall().then((res) => console.log(res.call));
+ * wtn.Calls.getActiveCall().then((res) => console.log(res.call));
  */
 export const getActiveCall = (): Promise<CallsCallResponse> => {
 	return callCalls<CallsCallResponse>("callsGetActiveCall");
@@ -280,7 +280,7 @@ export const getActiveCall = (): Promise<CallsCallResponse> => {
  * Returns the events that happened while the page wasn't loaded, oldest first, then clears them.
  * Call it on every page load.
  * @example
- * wtn.calls.getPendingEvents().then((res) => res.events?.forEach((e) => console.log(e.event, e.data)));
+ * wtn.Calls.getPendingEvents().then((res) => res.events?.forEach((e) => console.log(e.event, e.data)));
  */
 export const getPendingEvents = (): Promise<CallsPendingEventsResponse> => {
 	return callCalls<CallsPendingEventsResponse>("callsGetPendingEvents");
