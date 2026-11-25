@@ -26,3 +26,22 @@ export type IDeleteAppDataOptions = {
 	callback?: (response: IAppDataCB) => void;
 	keyName?: string;
 };
+
+export type ICloudSyncResponse = {
+	type: string;
+	[key: string]: any;
+};
+
+export type IEnableCloudSyncOptions = {
+	/** true to explicitly pick / switch the Google account */
+	selectAccount?: boolean;
+};
+
+export type IDisableCloudSyncOptions = {
+	deleteRemote?: boolean;
+};
+
+export type ISetCloudEncryptionKeyOptions = {
+	/** base64 of 32 bytes; "" clears it. Optional. */
+	key?: string;
+};

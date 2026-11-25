@@ -1,5 +1,13 @@
 import { platform, registerCb, webToNative, webToNativeIos } from "../utills";
-import { IDeleteAppDataOptions, IGetAppDataOptions, ISetAppDataOptions } from "./type";
+import {
+	ICloudSyncResponse,
+	IDeleteAppDataOptions,
+	IDisableCloudSyncOptions,
+	IEnableCloudSyncOptions,
+	IGetAppDataOptions,
+	ISetAppDataOptions,
+	ISetCloudEncryptionKeyOptions,
+} from "./type";
 
 export const setAppData = (options: ISetAppDataOptions = {}) => {
 	const { callback, keyName, value } = options;
@@ -139,4 +147,80 @@ export const deleteCloudData = (options: IDeleteAppDataOptions = {}) => {
 				keyName,
 			});
 	}
+};
+
+/**
+ * Registers a one-shot listener for `action`, calls the Android bridge and resolves with the response.
+ * Android only — rejects on iOS and on websites.
+ * `arg` is passed as-is; omit it for methods that must be called with no argument.
+ */
+const callCloudSync = (action: string, arg?: string): Promise<ICloudSyncResponse> => {
+	return new Promise((resolve, reject) => {
+		if (platform !== "ANDROID_APP") {
+			reject(
+				platform === "IOS_APP"
+					? `${action} is only available on Android`
+					: "This function will work in Native App Powered By WebToNative"
+			);
+			return;
+		}
+
+		registerCb(
+			(response: ICloudSyncResponse) => {
+				if (response.type === action) {
+					resolve(response);
+				}
+			},
+			{ key: action }
+		);
+
+		if (!webToNative[action]) {
+			reject(`${action} is not supported in this app version`);
+			return;
+		}
+		arg !== undefined ? webToNative[action](arg) : webToNative[action]();
+	});
+};
+
+/**
+ * Turns on cloud sync (Android only). Pass `selectAccount: true` to explicitly switch the Google account.
+ * @example
+ * wtn.NativeDatastore.enableCloudSync().then((res) => console.log(res));
+ * wtn.NativeDatastore.enableCloudSync({ selectAccount: true }).then((res) => console.log(res));
+ */
+export const enableCloudSync = (options: IEnableCloudSyncOptions = {}): Promise<ICloudSyncResponse> => {
+	return callCloudSync(
+		"enableCloudSync",
+		options.selectAccount ? JSON.stringify({ selectAccount: true }) : undefined
+	);
+};
+
+/**
+ * Turns off cloud sync (Android only). `deleteRemote: true` also deletes the synced cloud data.
+ * @example
+ * wtn.NativeDatastore.disableCloudSync({ deleteRemote: false }).then((res) => console.log(res));
+ */
+export const disableCloudSync = (options: IDisableCloudSyncOptions = {}): Promise<ICloudSyncResponse> => {
+	const { deleteRemote = false } = options;
+	return callCloudSync("disableCloudSync", JSON.stringify({ deleteRemote }));
+};
+
+/**
+ * Returns the current cloud sync status (Android only).
+ * @example
+ * wtn.NativeDatastore.getCloudSyncStatus().then((res) => console.log(res));
+ */
+export const getCloudSyncStatus = (): Promise<ICloudSyncResponse> => {
+	return callCloudSync("getCloudSyncStatus");
+};
+
+/**
+ * Sets the key used to encrypt cloud data (Android only). `key` is base64 of 32 bytes; "" clears it.
+ * `key` is optional; when omitted, `{}` is sent.
+ * @example
+ * wtn.NativeDatastore.setCloudEncryptionKey({ key: "<base64 of 32 bytes>" }).then((res) => console.log(res));
+ */
+export const setCloudEncryptionKey = (options: ISetCloudEncryptionKeyOptions = {}): Promise<ICloudSyncResponse> => {
+	const { key } = options;
+	return callCloudSync("setCloudEncryptionKey", JSON.stringify(key !== undefined ? { key } : {}));
 };
