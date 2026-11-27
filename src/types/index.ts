@@ -72,3 +72,9 @@ export interface WebToNativeInterface {
 export interface WebToNativeIosInterface {
 	postMessage: (message: any) => void;
 }
+
+export interface SaveCredentialOptions {
+	username: string;
+	password: string;
+	callback?: (response: BaseResponse) => void;
+}
