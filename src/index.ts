@@ -12,6 +12,7 @@ import {
 	DownloadBlobFileOptions,
 	CustomFileDownloadOptions,
 	BaseResponse,
+	SaveCredentialOptions,
 } from "./types";
 
 export const isAndroidApp: boolean = platform === "ANDROID_APP";
@@ -872,6 +873,48 @@ export const getDevicePhoneNumber = (options?: {
 	}
 };
 
+/**
+ * Saves a username / password to the iOS Keychain (iOS only).
+ * Calls `callback` (optional) and resolves the returned promise with the native response.
+ * @example
+ * wtn.saveCredential({
+ *   username: "user@example.com",
+ *   password: "secret",
+ *   callback: (res) => console.log(res),
+ * }).then((res) => console.log(res));
+ */
+export const saveCredential = (options: SaveCredentialOptions): Promise<BaseResponse> => {
+	return new Promise((resolve, reject) => {
+		if (!isIosApp) {
+			reject(
+				isAndroidApp
+					? "saveCredential is only available on iOS"
+					: "This function will work in Native App Powered By WebToNative"
+			);
+			return;
+		}
+
+		const { callback, username, password } = options || ({} as SaveCredentialOptions);
+
+		registerCb(
+			(response: BaseResponse) => {
+				if (response.type === "saveCredential") {
+					callback && callback(response);
+					resolve(response);
+				}
+			},
+			{ key: "saveCredential" }
+		);
+
+		webToNativeIos &&
+			webToNativeIos.postMessage({
+				action: "saveCredential",
+				username,
+				password,
+			});
+	});
+};
+
 export { platform, isNativeApp };
 
 export default {
@@ -918,4 +961,5 @@ export default {
 	removeAllNotifications,
 	clearAppData,
 	getDevicePhoneNumber,
+	saveCredential,
 };
